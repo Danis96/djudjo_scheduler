@@ -1,0 +1,7 @@
+#define IS_TRIAL_VERSION false
+#define TRIAL_PERIOD_IN_MINUTES 10
+#define AUTHORIZE_APPLICATION_ID false
+#define AUTHORIZED_APPLICATION_ID @""
+#define AMODO_BEACON_UUID @"47410A54-99DD-49F9-A2F4-E1A7EFE03C13"
+#define AMODO_BEACON_PAIRED_REGION_IDENTIFIER @"eu.amodo.drivercopilot.pairedBeaconRegion"
+#define AMODO_BEACON_SCANNING_REGION_IDENTIFIER @"eu.amodo.drivercopilot.beaconScanningRegion"

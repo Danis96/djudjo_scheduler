@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DjudjoInk</string>
+    <!-- SDK Strings -->
+    <string name="TITLE">DjudjoInk</string>
+    <string name="SERVICE_DESCRIPTION">DjudjoInk</string>
+    <string name="SERVICE_DESCRIPTION_TICKER">DjudjoInk</string>
+    <string name="RECORDING_STARTED">Trip recording started.</string>
+    <string name="RECORDING_STOPPED">Trip recording ended.</string>
+    <string name="DRIVE_SENSING_NOTIFY">You should start recording.</string>
+    <string name="DRIVE_SENSING_STOP_NOTIFY">You should stop recording.</string>
+    <string name="AUTOMATIC_RECORDING_NOTIFICATION_TEXT">Trip recording in progress</string>
+    <string name="AUTOMATIC_RECORDING_STOPPED_NOTIFICATION_TEXT">Trip recording ended.</string>
+    <string name="DRIVING_STARTED_NOTIFICATION_TICKER_TEXT">Drive sensing in progress</string>
+    <string name="DRIVING_STOPPED_NOTIFICATION_TICKER_TEXT">Drive sensing stoped.</string>
+    <string name="START_RECORDING_BUTTON_TEXT">Start recording</string>
+    <string name="STOP_RECORDING_BUTTON_TEXT">Stop recording</string>
+    <string name="ENABLE_GPS_DESCRIPTION">You have to enable GPS to be able to record.</string>
+    <string name="ENABLE_GPS_TICKER">Enable GPS for recording</string>
+    <string name="ENABLE_GPS_BUTTON_TEXT">Enable GPS button</string>
+    <string name="RECORDING_STATE_DESCRIPTION">Trip recording in progress</string>
+    <string name="ACITVITY_TRACKING_STATE_DESCRIPTION">Drive sensing in progress</string>
+    <string name="DEFAULT_STATE_DESCRIPTION">Default mode</string>
+    <string name="LOW_BATTERY_NOTIFICATION_TITLE">Low battery</string>
+    <string name="LOW_BATTERY_NOTIFICATION_MESSAGE">Recording is suspended</string>
+    <string name="upload_trip_data_using_wi_fi_only">Upload trip data using Wi-Fi only</string>
+    <string name="battery_warning_level">Battery warning level</string>
+    <string name="power_manager">Power manager</string>
+    <string name="trip">Trip</string>
+
+    <string name="AUTOMATIC_RECORDING_NOTIFICATION_TEXT_FRENCH">Enregistrement du trajet en cours</string>
+    <string name="DRIVING_STARTED_NOTIFICATION_TICKER_TEXT_FRENCH">Détection de la conduite en cours</string>
+    <string name="RECORDING_STATE_DESCRIPTION_FRENCH">Enregistrement du trajet en cours</string>
+    <string name="ACITVITY_TRACKING_STATE_DESCRIPTION_FRENCH">Détection de la conduite en cours</string>
+
+</resources>

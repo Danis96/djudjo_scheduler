@@ -1,0 +1,6 @@
+framework module Mobility_SDK {
+  umbrella header "Mobility_SDK.h"
+
+  export *
+  module * { export * }
+}

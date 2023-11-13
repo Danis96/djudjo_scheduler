@@ -1,0 +1,143 @@
+
+
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+def keystorePropertiesFile = rootProject.file("key.properties")
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    compileSdkVersion 34
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+        checkReleaseBuilds false
+    }
+
+    signingConfigs {
+        sign {
+            storeFile file(keystoreProperties["DJUDJO_KEYSTORE"])
+            storePassword keystoreProperties["DJUDJO_KEYSTORE_PASSWORD"]
+            keyAlias keystoreProperties["DJUDJO_ALIAS"]
+            keyPassword keystoreProperties["DJUDJO_ALIAS_PASSWORD"]
+        }
+        release {
+            storeFile file(keystoreProperties["DJUDJO_KEYSTORE"])
+            storePassword keystoreProperties["DJUDJO_KEYSTORE_PASSWORD"]
+            keyAlias keystoreProperties["DJUDJO_ALIAS"]
+            keyPassword keystoreProperties["DJUDJO_ALIAS_PASSWORD"]
+        }
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        dev {
+            applicationIdSuffix ""
+            versionNameSuffix ""
+            signingConfig signingConfigs.sign
+        }
+        qa {
+            applicationIdSuffix ".qa"
+            versionNameSuffix "-qa"
+        }
+        prod {
+//            applicationId "nz.co.tower.gocarma"
+            applicationIdSuffix ""
+            signingConfig signingConfigs.release
+        }
+    }
+
+    defaultConfig {
+        configurations.all {
+            resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
+        }
+        applicationId "com.djudjo.scheduler"
+        minSdkVersion 23
+        targetSdkVersion 31
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        multiDexEnabled true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
+            shrinkResources false
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation platform('com.google.firebase:firebase-bom:28.1.0')
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation 'androidx.work:work-runtime-ktx:2.8.1'
+    implementation fileTree(dir: 'libs', include: ['*.aar'])
+
+    //Amodo Mobility SDK Dependencies
+    implementation 'cz.msebera.android:httpclient:4.4.1.2'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'com.google.protobuf:protobuf-java:3.19.3'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'org.apache.commons:commons-collections4:4.4'
+    implementation "androidx.work:work-runtime:2.8.1"
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-process:2.6.2'
+    implementation 'com.facebook.android:facebook-share:[5,6)'
+    implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-analytics:21.5.0'
+    implementation "androidx.multidex:multidex:2.0.1"
+    implementation "io.objectbox:objectbox-android:3.5.1"
+    annotationProcessor "io.objectbox:objectbox-processor:3.5.1"
+
+
+}
+
+
+

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "119444540912",
+    "firebase_url": "https://codeex-85c52.firebaseio.com",
+    "project_id": "codeex-85c52",
+    "storage_bucket": "codeex-85c52.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119444540912:android:200f14cabdfc341f1d6135",
+        "android_client_info": {
+          "package_name": "com.djudjo.scheduler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "119444540912-0be5o1h60fmgph9ik7tia7fii4riu3lv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCryBP900hrUJdDMW69yjf_kpV4nSPLnaM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "119444540912-0be5o1h60fmgph9ik7tia7fii4riu3lv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

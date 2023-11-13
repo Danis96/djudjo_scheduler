@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>GoCarma</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(MARKETING_VERSION)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb916003575598529</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>916003575598529</string>
+	<key>FacebookDisplayName</key>
+	<string>GoCarma</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>MinimumOSVersion</key>
+	<string>11.0</string>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Allow Go Carma to use apple music.</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>In order to tag the recorded trips, we ask you to allow the GoCarma app to access your Bluetooth.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>In order to tag the recorded trips, we ask you to allow the GoCarma app to access your Bluetooth.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>GoCarma has an optional profile image feature. Your profile image will be visible in the challenge ranking feature, if you choose to participate in a challenge. The image can be taken with the camera or uploaded from the photo library.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>You have to allow the GoCarma to use your contacts to use this feature.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>GoCarma needs your permission to collect and store your Location data as part of the trip recording feature. The trip recording feature can only work while the application is in the background if you allow the &apos;Always allow&apos; permission.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>GoCarma needs your permission to collect and store your Location data as part of the trip recording and route matching features. The trip recording feature can only work while the application is in the background if you allow the &apos;Always allow&apos; permission.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>GoCarma needs your permission to collect and store your Location data as part of the trip recording and route matching features. Trip data is used for driving behaviour analysis.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>GoCarma needs your permission to collect and store your Location data as part of the trip recording feature. Trip data is used for driving behaviour analysis.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>You have to allow the GoCarma to use your microphone to use this feature.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>GoCarma needs your permission to collect and store your Motion &amp; Activity data as part of the trip recording feature. Motion and activity sensors data is important for trip analysis: acceleration, braking, and cornering events.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>GoCarma has an optional profile image feature. Your profile image will be visible in the challenge ranking feature, if you choose to participate in a challenge. The image can be taken with the camera or uploaded from the photo library.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>location</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+</dict>
+</plist>

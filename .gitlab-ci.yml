@@ -1,0 +1,252 @@
+stages:
+  - build
+
+variables:
+  DISPLAY_NAME: GoCarma
+  UPLOAD_URL: 'https://distributey.abc-softwaredev.com/api/builds'
+  WEBHOOK_URL: https://outlook.office.com/webhook/ecb5035f-40e8-4ab3-88c8-8a49437e948d@6dae9d51-b5ae-4e0e-a048-ea759d350a97/IncomingWebhook/a5538419b9f84b22b29ae143d3bd502d/1e79881c-20ca-4a18-952b-51beec248b95
+
+  SCRIPTS_PATH: /Users/abc/Desktop/GitlabRunnerScripts #Use this path with tags: 'swift-pro'
+  SCRIPTS_PATH_SWIFT_PRO: /Users/home/Desktop/GitlabRunnerScripts #Use this path with tags: 'ios, xcode, swift'
+  SCRIPTS_PATH_SWIFT_RESO: /Users/abc.xcodeserver/Desktop/GitlabRunnerScripts #Use this path with tags: 'xcode_swift_4.2.1'
+
+flutter_build_android_dev:
+  stage: build
+  only:
+    - development_build_android
+  before_script:
+    - export FULL_VERSION_NAME=$(yq r pubspec.yaml 'version')
+    - export VERSION_NAME=${FULL_VERSION_NAME%+*}
+    - export CURRENT_DATE=$(date +%Y%m%d)
+    - flutter packages get
+    - flutter clean
+  script:
+    - PROJECT_NAME="GoCarma"
+    - BUILD_FLAVOR="dev"
+    - CUSTOM_ENVIRONMENT="Dev"
+    - FILE_NAME="${PROJECT_NAME}_${BUILD_FLAVOR}_${VERSION_NAME}_${CURRENT_DATE}"
+    - FILE_PATH="${PROJECT_NAME}/Android/${CUSTOM_ENVIRONMENT}/${CURRENT_DATE}"
+    - echo $GRADLE_PROPERTIES | base64 -d > gradle.properties
+    - flutter build apk --flavor ${BUILD_FLAVOR} -t lib/main_dev.dart --release
+    - PATH=$SCRIPTS_PATH
+    - /usr/bin/python "${PATH}/azure_blob_upload.py" "$PWD/build/app/outputs/flutter-apk/app-${BUILD_FLAVOR}-release.apk" "${FILE_PATH}/${FILE_NAME}.apk"
+    - /usr/bin/python "${PATH}/success_send_email_android.py" "ada.hadzikasimovic@abc-techgroup.com,emir.hamidovic@abc-techgroup.com,urim.gashi@abc-techgroup.com,ana.andric@abc-techgroup.com,danis.preldzic@abc-techgroup.com,adin.halilovic@abc-techgroup.com" "${FILE_NAME}.apk" "${FILE_PATH}"
+    - /usr/bin/python "${PATH}/send_pym_message_android.py" "${PROJECT_NAME}" "${FILE_NAME}.apk" "${CUSTOM_ENVIRONMENT}" "${VERSION_NAME}" "${CURRENT_DATE}" ${WEBHOOK_URL}
+  tags:
+    - AumentABC
+
+flutter_build_ios_dev:
+  stage: build
+  only:
+    - development_build_ios
+  before_script:
+    - flutter packages get
+    - cd ios
+    - pod repo update
+    - cd ..
+    - flutter clean
+  script:
+    - APP_ENVIRONMENT=GoCarmaDev
+    - TARGET=dev
+    - CUSTOM_ENVIRONMENT="Dev"
+    - FILE_NAME_PREFIX="GoCarmaDev"
+    - GENERATED_IPA_NAME="GoCarmaDev"
+    - flutter build ios --flavor dev -t lib/main_dev.dart --release
+    - cd ios
+    - xcodebuild -quiet clean archive -workspace Runner.xcworkspace -scheme ${TARGET}
+    - xcodebuild -quiet archive -workspace Runner.xcworkspace -scheme ${TARGET} -archivePath $PWD/build/${APP_ENVIRONMENT}.xcarchive | learn-xcpretty --color
+
+    - CURRENT_DATE=$(date +"%Y%m%d")
+    - BUNDLE_IDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleIdentifier" $PWD/build/${APP_ENVIRONMENT}.xcarchive/Info.plist)
+    - VERSION=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleShortVersionString" $PWD/build/${APP_ENVIRONMENT}.xcarchive/Info.plist)
+    - xcodebuild -exportArchive -archivePath $PWD/build/${APP_ENVIRONMENT}.xcarchive -exportPath "$PWD/build/${DISPLAY_NAME}/" -exportOptionsPlist ../DevExportOptions.plist | learn-xcpretty --color
+    - FULL_FILE_NAME="${FILE_NAME_PREFIX}_${VERSION}_${CURRENT_DATE}"
+    - FULL_FILE_LOCATION_NAME="${DISPLAY_NAME}/iOS/${CUSTOM_ENVIRONMENT}/${CURRENT_DATE}/${FULL_FILE_NAME}"
+
+    - PATH=$SCRIPTS_PATH
+    - /usr/bin/python "${PATH}/azure_blob_upload.py" "$PWD/build/${DISPLAY_NAME}/${GENERATED_IPA_NAME}.ipa" "${FULL_FILE_LOCATION_NAME}.ipa"
+    - /usr/bin/python "${PATH}/azure_blob_create_html.py" "${FULL_FILE_LOCATION_NAME}" "${FULL_FILE_NAME}"
+    - /usr/bin/python "${PATH}/azure_blob_create_plist.py" "${FULL_FILE_LOCATION_NAME}" "${FULL_FILE_NAME}" "${BUNDLE_IDENTIFIER}" "${VERSION}"
+    - /usr/bin/python "${PATH}/success_send_email.py" "ada.hadzikasimovic@abc-techgroup.com","emir.hamidovic@abc-techgroup.com","urim.gashi@abc-techgroup.com","ana.andric@abc-techgroup.com","danis.preldzic@abc-techgroup.com","adin.halilovic@abc-techgroup.com" "${FULL_FILE_NAME}"
+    - /usr/bin/python "${PATH}/send_pym_message.py" "${DISPLAY_NAME}" "${FILE_NAME_PREFIX}" "${CUSTOM_ENVIRONMENT}" "${VERSION}" "${CURRENT_DATE}" ${WEBHOOK_URL}
+  tags:
+    - AumentABC
+
+flutter_build_ios_prod:
+  stage: build
+  only:
+    - production_build_ios
+  before_script:
+    - flutter packages get
+    - cd ios
+    - pod update
+    - cd ..
+    - flutter clean
+  script:
+    - APP_ENVIRONMENT=GoCarmaProd
+    - TARGET=prod
+    - CUSTOM_ENVIRONMENT="Prod"
+    - FILE_NAME_PREFIX="GoCarmaProd"
+    - GENERATED_IPA_NAME="GoCarma"
+    - flutter build ios --flavor prod -t lib/main_production.dart --release
+    - cd ios
+    - xcodebuild -quiet clean archive -workspace Runner.xcworkspace -scheme ${TARGET}
+    - xcodebuild -quiet archive -workspace Runner.xcworkspace -scheme ${TARGET} -archivePath $PWD/build/${APP_ENVIRONMENT}.xcarchive | learn-xcpretty --color
+
+    - CURRENT_DATE=$(date +"%Y%m%d")
+    - BUNDLE_IDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleIdentifier" $PWD/build/${APP_ENVIRONMENT}.xcarchive/Info.plist)
+    - VERSION=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleShortVersionString" $PWD/build/${APP_ENVIRONMENT}.xcarchive/Info.plist)
+    - xcodebuild -exportArchive -archivePath $PWD/build/${APP_ENVIRONMENT}.xcarchive -exportPath "$PWD/build/${DISPLAY_NAME}/" -exportOptionsPlist ../ProdExportOptions.plist | learn-xcpretty --color
+    - FULL_FILE_NAME="${FILE_NAME_PREFIX}_${VERSION}_${CURRENT_DATE}"
+    - FULL_FILE_LOCATION_NAME="${DISPLAY_NAME}/iOS/${CUSTOM_ENVIRONMENT}/${CURRENT_DATE}/${FULL_FILE_NAME}"
+
+    - PATH=$SCRIPTS_PATH
+    - /usr/bin/python "${PATH}/azure_blob_upload.py" "$PWD/build/${DISPLAY_NAME}/${GENERATED_IPA_NAME}.ipa" "${FULL_FILE_LOCATION_NAME}.ipa"
+    - /usr/bin/python "${PATH}/azure_blob_create_html.py" "${FULL_FILE_LOCATION_NAME}" "${FULL_FILE_NAME}"
+    - /usr/bin/python "${PATH}/azure_blob_create_plist.py" "${FULL_FILE_LOCATION_NAME}" "${FULL_FILE_NAME}" "${BUNDLE_IDENTIFIER}" "${VERSION}"
+    - /usr/bin/python "${PATH}/success_send_email.py" "ada.hadzikasimovic@abc-techgroup.com","emir.hamidovic@abc-techgroup.com","urim.gashi@abc-techgroup.com","ana.andric@abc-techgroup.com","danis.preldzic@abc-techgroup.com","adin.halilovic@abc-techgroup.com" "${FULL_FILE_NAME}"
+    - /usr/bin/python "${PATH}/send_pym_message.py" "${DISPLAY_NAME}" "${FILE_NAME_PREFIX}" "${CUSTOM_ENVIRONMENT}" "${VERSION}" "${CURRENT_DATE}" ${WEBHOOK_URL}
+  tags:
+    - AumentABC
+
+flutter_build_android_prod:
+  stage: build
+  only:
+    - production_build_android
+  before_script:
+    - export FULL_VERSION_NAME=$(yq r pubspec.yaml 'version')
+    - export VERSION_NAME=${FULL_VERSION_NAME%+*}
+    - export CURRENT_DATE=$(date +%Y%m%d)
+    - flutter packages get
+    - flutter clean
+  script:
+    - PROJECT_NAME="GoCarmaProd"
+    - BUILD_FLAVOR="prod"
+    - CUSTOM_ENVIRONMENT="Prod"
+    - FILE_NAME="${PROJECT_NAME}_${BUILD_FLAVOR}_${VERSION_NAME}_${CURRENT_DATE}"
+    - FILE_PATH="${PROJECT_NAME}/Android/${CUSTOM_ENVIRONMENT}/${CURRENT_DATE}"
+    - echo $GRADLE_PROPERTIES | base64 -d > gradle.properties
+    - flutter build apk --flavor ${BUILD_FLAVOR} -t lib/main_production.dart --release
+    - PATH=$SCRIPTS_PATH
+    - /usr/bin/python "${PATH}/azure_blob_upload.py" "$PWD/build/app/outputs/flutter-apk/app-${BUILD_FLAVOR}-release.apk" "${FILE_PATH}/${FILE_NAME}.apk"
+    - /usr/bin/python "${PATH}/success_send_email_android.py" "ada.hadzikasimovic@abc-techgroup.com,emir.hamidovic@abc-techgroup.com,urim.gashi@abc-techgroup.com,ana.andric@abc-techgroup.com,danis.preldzic@abc-techgroup.com,adin.halilovic@abc-techgroup.com" "${FILE_NAME}.apk" "${FILE_PATH}"
+    - /usr/bin/python "${PATH}/send_pym_message_android.py" "${PROJECT_NAME}" "${FILE_NAME}.apk" "${CUSTOM_ENVIRONMENT}" "${VERSION_NAME}" "${CURRENT_DATE}" ${WEBHOOK_URL}
+  tags:
+    - AumentABC
+
+flutter_caching_build_android_dev:
+  stage: build
+  only:
+    - caching_development_build_android
+  before_script:
+    - export FULL_VERSION_NAME=$(yq r pubspec.yaml 'version')
+    - export VERSION_NAME=${FULL_VERSION_NAME%+*}
+    - export CURRENT_DATE=$(date +%Y%m%d)
+    - flutter packages get
+    - flutter clean
+  script:
+    - PROJECT_NAME="GoCarma"
+    - BUILD_FLAVOR="dev"
+    - CUSTOM_ENVIRONMENT="Dev"
+    - FILE_NAME="${PROJECT_NAME}_${BUILD_FLAVOR}_${VERSION_NAME}_${CURRENT_DATE}"
+    - FILE_PATH="${PROJECT_NAME}/Android/${CUSTOM_ENVIRONMENT}/${CURRENT_DATE}"
+    - echo $GRADLE_PROPERTIES | base64 -d > gradle.properties
+    - flutter build apk --flavor ${BUILD_FLAVOR} -t lib/main_dev.dart --release
+    - PATH=$SCRIPTS_PATH
+    - /usr/bin/python "${PATH}/azure_blob_upload.py" "$PWD/build/app/outputs/flutter-apk/app-${BUILD_FLAVOR}-release.apk" "${FILE_PATH}/${FILE_NAME}.apk"
+    - /usr/bin/python "${PATH}/success_send_email_android.py" "ada.hadzikasimovic@abc-techgroup.com,emir.hamidovic@abc-techgroup.com,urim.gashi@abc-techgroup.com,ana.andric@abc-techgroup.com,danis.preldzic@abc-techgroup.com,adin.halilovic@abc-techgroup.com" "${FILE_NAME}.apk" "${FILE_PATH}"
+    - /usr/bin/python "${PATH}/send_pym_message_android.py" "${PROJECT_NAME}" "${FILE_NAME}.apk" "${CUSTOM_ENVIRONMENT}" "${VERSION_NAME}" "${CURRENT_DATE}" ${WEBHOOK_URL}
+  tags:
+    - AumentABC
+
+flutter_caching_build_ios_dev:
+  stage: build
+  only:
+    - caching_development_build_ios
+  before_script:
+    - flutter packages get
+    - flutter clean
+  script:
+    - APP_ENVIRONMENT=GoCarmaDev
+    - TARGET=dev
+    - CUSTOM_ENVIRONMENT="Dev"
+    - FILE_NAME_PREFIX="GoCarmaDev"
+    - GENERATED_IPA_NAME="GoCarmaDev"
+    - flutter build ios --flavor dev -t lib/main_dev.dart --release
+    - cd ios
+    - xcodebuild -quiet clean archive -workspace Runner.xcworkspace -scheme ${TARGET}
+    - xcodebuild -quiet archive -workspace Runner.xcworkspace -scheme ${TARGET} -archivePath $PWD/build/${APP_ENVIRONMENT}.xcarchive | learn-xcpretty --color
+
+    - CURRENT_DATE=$(date +"%Y%m%d")
+    - BUNDLE_IDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleIdentifier" $PWD/build/${APP_ENVIRONMENT}.xcarchive/Info.plist)
+    - VERSION=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleShortVersionString" $PWD/build/${APP_ENVIRONMENT}.xcarchive/Info.plist)
+    - xcodebuild -exportArchive -archivePath $PWD/build/${APP_ENVIRONMENT}.xcarchive -exportPath "$PWD/build/${DISPLAY_NAME}/" -exportOptionsPlist ../DevExportOptions.plist | learn-xcpretty --color
+    - FULL_FILE_NAME="${FILE_NAME_PREFIX}_${VERSION}_${CURRENT_DATE}"
+    - FULL_FILE_LOCATION_NAME="${DISPLAY_NAME}/iOS/${CUSTOM_ENVIRONMENT}/${CURRENT_DATE}/${FULL_FILE_NAME}"
+
+    - PATH=$SCRIPTS_PATH
+    - /usr/bin/python "${PATH}/azure_blob_upload.py" "$PWD/build/${DISPLAY_NAME}/${GENERATED_IPA_NAME}.ipa" "${FULL_FILE_LOCATION_NAME}.ipa"
+    - /usr/bin/python "${PATH}/azure_blob_create_html.py" "${FULL_FILE_LOCATION_NAME}" "${FULL_FILE_NAME}"
+    - /usr/bin/python "${PATH}/azure_blob_create_plist.py" "${FULL_FILE_LOCATION_NAME}" "${FULL_FILE_NAME}" "${BUNDLE_IDENTIFIER}" "${VERSION}"
+    - /usr/bin/python "${PATH}/success_send_email.py" "ada.hadzikasimovic@abc-techgroup.com","emir.hamidovic@abc-techgroup.com","urim.gashi@abc-techgroup.com","ana.andric@abc-techgroup.com","danis.preldzic@abc-techgroup.com","adin.halilovic@abc-techgroup.com" "${FULL_FILE_NAME}"
+    - /usr/bin/python "${PATH}/send_pym_message.py" "${DISPLAY_NAME}" "${FILE_NAME_PREFIX}" "${CUSTOM_ENVIRONMENT}" "${VERSION}" "${CURRENT_DATE}" ${WEBHOOK_URL}
+  tags:
+    - AumentABC
+
+flutter_caching_build_ios_prod:
+  stage: build
+  only:
+    - caching_production_build_ios
+  before_script:
+    - flutter packages get
+    - flutter clean
+  script:
+    - APP_ENVIRONMENT=GoCarmaProd
+    - TARGET=prod
+    - CUSTOM_ENVIRONMENT="Prod"
+    - FILE_NAME_PREFIX="GoCarmaProd"
+    - flutter build ios --flavor prod -t lib/main_production.dart --release
+    - cd ios
+    - xcodebuild -quiet clean archive -workspace Runner.xcworkspace -scheme ${TARGET}
+    - xcodebuild -quiet archive -workspace Runner.xcworkspace -scheme ${TARGET} -archivePath $PWD/build/${APP_ENVIRONMENT}.xcarchive | learn-xcpretty --color
+
+    - CURRENT_DATE=$(date +"%Y%m%d")
+    - BUNDLE_IDENTIFIER=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleIdentifier" $PWD/build/${APP_ENVIRONMENT}.xcarchive/Info.plist)
+    - VERSION=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleShortVersionString" $PWD/build/${APP_ENVIRONMENT}.xcarchive/Info.plist)
+    - xcodebuild -exportArchive -archivePath $PWD/build/${APP_ENVIRONMENT}.xcarchive -exportPath "$PWD/build/${DISPLAY_NAME}/" -exportOptionsPlist ../ProdExportOptions.plist | learn-xcpretty --color
+    - FULL_FILE_NAME="${FILE_NAME_PREFIX}_${VERSION}_${CURRENT_DATE}"
+    - FULL_FILE_LOCATION_NAME="${DISPLAY_NAME}/iOS/${CUSTOM_ENVIRONMENT}/${CURRENT_DATE}/${FULL_FILE_NAME}"
+
+    - PATH=$SCRIPTS_PATH
+    - /usr/bin/python "${PATH}/azure_blob_upload.py" $PWD/build/${DISPLAY_NAME}/${TARGET}.ipa "${FULL_FILE_LOCATION_NAME}.ipa"
+    - /usr/bin/python "${PATH}/azure_blob_create_html.py" "${FULL_FILE_LOCATION_NAME}" "${FULL_FILE_NAME}"
+    - /usr/bin/python "${PATH}/azure_blob_create_plist.py" "${FULL_FILE_LOCATION_NAME}" "${FULL_FILE_NAME}" "${BUNDLE_IDENTIFIER}" "${VERSION}"
+    - /usr/bin/python "${PATH}/success_send_email.py" "ada.hadzikasimovic@abc-techgroup.com","emir.hamidovic@abc-techgroup.com","urim.gashi@abc-techgroup.com","ana.andric@abc-techgroup.com","danis.preldzic@abc-techgroup.com","adin.halilovic@abc-techgroup.com" "${FULL_FILE_NAME}"
+    - /usr/bin/python "${PATH}/send_pym_message.py" "${DISPLAY_NAME}" "${FILE_NAME_PREFIX}" "${CUSTOM_ENVIRONMENT}" "${VERSION}" "${CURRENT_DATE}" ${WEBHOOK_URL}
+  tags:
+    - AumentABC
+
+flutter_caching_build_android_prod:
+  stage: build
+  only:
+    - caching_production_build_android
+  before_script:
+    - export FULL_VERSION_NAME=$(yq r pubspec.yaml 'version')
+    - export VERSION_NAME=${FULL_VERSION_NAME%+*}
+    - export CURRENT_DATE=$(date +%Y%m%d)
+    - flutter packages get
+    - flutter clean
+  script:
+    - PROJECT_NAME="GoCarmaProd"
+    - BUILD_FLAVOR="prod"
+    - CUSTOM_ENVIRONMENT="Prod"
+    - FILE_NAME="${PROJECT_NAME}_${BUILD_FLAVOR}_${VERSION_NAME}_${CURRENT_DATE}"
+    - FILE_PATH="${PROJECT_NAME}/Android/${CUSTOM_ENVIRONMENT}/${CURRENT_DATE}"
+    - echo $GRADLE_PROPERTIES | base64 -d > gradle.properties
+    - flutter build apk --flavor ${BUILD_FLAVOR} -t lib/main_production.dart --release
+    - PATH=$SCRIPTS_PATH
+    - /usr/bin/python "${PATH}/azure_blob_upload.py" "$PWD/build/app/outputs/flutter-apk/app-${BUILD_FLAVOR}-release.apk" "${FILE_PATH}/${FILE_NAME}.apk"
+    - /usr/bin/python "${PATH}/success_send_email_android.py" "ada.hadzikasimovic@abc-techgroup.com,emir.hamidovic@abc-techgroup.com,urim.gashi@abc-techgroup.com,ana.andric@abc-techgroup.com,danis.preldzic@abc-techgroup.com,adin.halilovic@abc-techgroup.com" "${FILE_NAME}.apk" "${FILE_PATH}"
+    - /usr/bin/python "${PATH}/send_pym_message_android.py" "${PROJECT_NAME}" "${FILE_NAME}.apk" "${CUSTOM_ENVIRONMENT}" "${VERSION_NAME}" "${CURRENT_DATE}" ${WEBHOOK_URL}
+  tags:
+    - AumentABC
