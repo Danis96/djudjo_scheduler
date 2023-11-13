@@ -1,7 +1,7 @@
 // import 'package:sqflite/sqflite.dart';
 //
 // import '../../../config/constants.dart';
-// import '../../models/achievement_model.dart';
+// import '../../models/user_model.dart';
 // import '../database_helper.dart';
 //
 // class DBAchievementRepo {

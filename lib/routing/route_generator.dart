@@ -1,4 +1,5 @@
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
+import 'package:djudjo_scheduler/app/view/register_page/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,28 +19,12 @@ mixin RouteGenerator {
     switch (settings.name) {
       case Splash:
         return SlideAnimationTween(
-          widget: Provider<SplashProvider>(
-            create: (_) => SplashProvider(
-              defaultRoute: Login,
-            ),
-            lazy: false,
-            child: SplashPage(),
-          ),
-        );
+            widget: Provider<SplashProvider>(create: (_) => SplashProvider(defaultRoute: Login), lazy: false, child: SplashPage()));
       case Login:
         return SlideAnimationTween(widget: ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider(), child: LoginPage()));
-      // case OldSignIn:
-      // return SlideAnimationTween(
-      //   widget: MultiProvider(
-      // ignore: always_specify_types
-      // providers: [
-      //   ChangeNotifierProvider<LoginProvider>(
-      //     create: (_) => LoginProvider(),
-      //   )
-      // ],
-      // child: OldLogin(),
-      // ),
-      // );
+      case Register:
+        return SlideAnimationTween(
+            widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: RegisterPage()));
 
       default:
         return _errorRoute();

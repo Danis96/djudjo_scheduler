@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-PreferredSizeWidget commonAppBar({
+PreferredSizeWidget commonAppBar(
+  BuildContext context, {
   IconData? icon = Icons.arrow_back_ios,
   Function? onLeadingTap,
   Color? leadingIconColor,
@@ -15,6 +16,8 @@ PreferredSizeWidget commonAppBar({
             onTap: () {
               if (onLeadingTap != null) {
                 onLeadingTap();
+              } else {
+                Navigator.of(context).pop();
               }
             },
             child: Icon(icon, color: leadingIconColor ?? Colors.black),

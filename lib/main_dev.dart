@@ -16,12 +16,7 @@ void main() async {
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  FlavorConfig(
-    flavor: Flavor.DEV,
-    values: FlavorValues(
-      appName: 'DjudjoInk',
-    ),
-  );
+  FlavorConfig(flavor: Flavor.DEV, values: FlavorValues(appName: 'DjudjoInk'));
   WidgetsFlutterBinding.ensureInitialized();
   // FlutterDownloader.initialize(debug: true);
   SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]).then((_) {
