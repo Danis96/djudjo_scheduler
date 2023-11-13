@@ -5,17 +5,14 @@ import '../../repositories/navigation_repo.dart';
 import '../storage_manager/storage_prefs_manager.dart';
 
 class SplashProvider {
-  SplashProvider(
-    String baseUrl, {
-    this.defaultRoute = '/login',
-  }) {
-    onInit(baseUrl);
+  SplashProvider({this.defaultRoute = '/login'}) {
+    onInit();
   }
 
   final NavigationRepo _navigationService = locator<NavigationRepo>();
   final String defaultRoute;
 
-  Future<void> onInit(String baseUrl) async {
+  Future<void> onInit() async {
     await Future<void>.delayed(const Duration(seconds: 2));
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -26,13 +23,10 @@ class SplashProvider {
     final String userData = await storagePrefs.getValue(StoragePrefsManager.USER_DATA_KEY);
     final bool logged = isUserLoggedIn(userData);
     if (logged) {
-
     } else {
       _navigationService.navigateAndRemove(defaultRoute);
     }
   }
 
-  bool isUserLoggedIn(String userData) {
-    return userData != '';
-  }
+  bool isUserLoggedIn(String userData) => userData != '';
 }

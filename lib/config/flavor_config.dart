@@ -8,15 +8,15 @@ enum Flavor {
 
 class FlavorValues {
   FlavorValues({
-    required this.baseUrl,
+    // required this.baseUrl,
     required this.appName,
-    required this.loginResponseUrl,
-    required this.webLogin,
+    // required this.loginResponseUrl,
+    // required this.webLogin,
   });
-  final String baseUrl;
+  // final String baseUrl;
   final String appName;
-  final String loginResponseUrl;
-  final String webLogin;
+  // final String loginResponseUrl;
+  // final String webLogin;
 }
 
 class FlavorConfig {

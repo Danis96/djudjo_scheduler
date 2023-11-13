@@ -13,15 +13,7 @@ void main() async {
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  FlavorConfig(
-    flavor: Flavor.PRODUCTION,
-    values: FlavorValues(
-      baseUrl: 'https://tower-test.drivercopilot.com/',
-      appName: 'DjudjoInk Dev',
-      loginResponseUrl: 'https://tower-test.drivercopilot.com/api/mobile/auth0/?format=json',
-      webLogin: 'https://tower-test.drivercopilot.com/login/auth0/',
-    ),
-  );
+  FlavorConfig(flavor: Flavor.PRODUCTION, values: FlavorValues(appName: 'DjudjoInk Dev'));
   WidgetsFlutterBinding.ensureInitialized();
   // FlutterDownloader.initialize(debug: true);
   SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]).then((_) {

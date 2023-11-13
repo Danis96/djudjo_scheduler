@@ -1,3 +1,4 @@
+import 'package:djudjo_scheduler/app/providers/base_provider.dart';
 import 'package:djudjo_scheduler/app/repositories/navigation_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +31,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   Widget buildApp() {
     return MultiProvider(
-      providers: <SingleChildWidget>[],
+      providers: <SingleChildWidget>[ChangeNotifierProvider<BaseProvider>(create: (_) => BaseProvider())],
       child: MaterialApp(
         navigatorKey: locator<NavigationRepo>().navigationKey,
         title: 'DjudjoInk',

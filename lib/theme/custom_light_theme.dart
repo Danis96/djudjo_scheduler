@@ -10,72 +10,72 @@ class CustomTheme {
       appBarTheme: AppBarTheme(
         color: ColorHelper.mercury.color,
         elevation: 0,
-        centerTitle: true, toolbarTextStyle: TextTheme(
-          headline1: TextStyle(
+        centerTitle: true,
+        toolbarTextStyle: TextTheme(
+          displayLarge: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 15,
             color: ColorHelper.monochromaticGray500.color,
           ),
-        ).bodyText2, titleTextStyle: TextTheme(
-          headline1: TextStyle(
+        ).bodyMedium,
+        titleTextStyle: TextTheme(
+          displayLarge: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 15,
             color: ColorHelper.monochromaticGray500.color,
           ),
-        ).headline6,
+        ).titleLarge,
       ),
       fontFamily: 'SourceSansPro',
       primaryColor: ColorHelper.black.color,
-      backgroundColor: ColorHelper.white.color,
-      errorColor: const Color.fromRGBO(232, 25, 68, 1.0),
       scaffoldBackgroundColor: ColorHelper.white.color,
       textTheme: TextTheme(
-        headline1: TextStyle(
+        displayLarge: TextStyle(
           fontSize: 32,
           fontWeight: FontWeight.w500,
           color: ColorHelper.monochromaticGray500.color,
         ),
-        headline2: TextStyle(
+        displayMedium: TextStyle(
           fontSize: 16.0,
           fontWeight: FontWeight.w600,
           color: ColorHelper.monochromaticGray500.color,
         ),
-        headline3: TextStyle(
+        displaySmall: TextStyle(
           fontSize: 17,
           fontWeight: FontWeight.w500,
           color: ColorHelper.monochromaticGray400.color,
         ),
-        headline4: TextStyle(
+        headlineMedium: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w400,
           color: ColorHelper.white.color,
         ),
-        headline5: TextStyle(
+        headlineSmall: TextStyle(
           color: ColorHelper.foyerBlack.color,
           fontSize: 24,
           fontWeight: FontWeight.w500,
         ),
-        headline6: TextStyle(
+        titleLarge: TextStyle(
           fontWeight: FontWeight.w400,
           fontSize: 17,
           color: ColorHelper.monochromaticGray200.color,
         ),
-        subtitle1: TextStyle(
+        titleMedium: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
           color: ColorHelper.monoDarkGrey.color,
         ),
-        subtitle2: TextStyle(
+        titleSmall: TextStyle(
           color: ColorHelper.monochromaticGray400.color,
           fontSize: 16,
           fontWeight: FontWeight.w400,
         ),
-        bodyText1: TextStyle(
+        bodyLarge: TextStyle(
           fontSize: 13,
           fontWeight: FontWeight.w400,
           color: ColorHelper.monochromaticGray500.color,
         ),
-        bodyText2: TextStyle(
+        bodyMedium: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w400,
           color: ColorHelper.foyerBlack.color,
@@ -88,21 +88,21 @@ class CustomTheme {
               if (states.contains(MaterialState.disabled)) {
                 return ColorHelper.white.color.withOpacity(0.8);
               }
-              return ColorHelper.aigCyan.color;
+              return ColorHelper.towerNavy2.color;
             },
           ),
           side: MaterialStateProperty.resolveWith<BorderSide>(
-                (Set<MaterialState> states) {
+            (Set<MaterialState> states) {
               if (states.contains(MaterialState.disabled)) {
                 return BorderSide(color: ColorHelper.aigCyan.color, width: 2);
               }
-              return BorderSide(color: ColorHelper.aigCyan.color);
+              return BorderSide(color: ColorHelper.towerNavy2.color);
             },
           ),
           foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                (Set<MaterialState> states) {
+            (Set<MaterialState> states) {
               if (states.contains(MaterialState.disabled)) {
-                return ColorHelper.aigCyan.color;
+                return ColorHelper.towerNavy2.color;
               }
               return ColorHelper.white.color;
             },

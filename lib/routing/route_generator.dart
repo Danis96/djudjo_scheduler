@@ -1,10 +1,11 @@
+import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../app/MyApp.dart';
 import '../app/providers/splash_provider/splash_provider.dart';
 import '../app/utils/navigation_animations.dart';
-import '../app/view/splash/splash_page.dart';
+import '../app/view/login_page/login_page.dart';
+import '../app/view/splash_page/splash_page.dart';
 import '../config/flavor_config.dart';
 import '../routing/routes.dart';
 
@@ -19,13 +20,14 @@ mixin RouteGenerator {
         return SlideAnimationTween(
           widget: Provider<SplashProvider>(
             create: (_) => SplashProvider(
-              FlavorConfig.instance.values.baseUrl,
-              defaultRoute: 'ProviderConstants.START_ROUTE',
+              defaultRoute: Login,
             ),
             lazy: false,
             child: SplashPage(),
           ),
         );
+      case Login:
+        return SlideAnimationTween(widget: ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider(), child: LoginPage()));
       // case OldSignIn:
       // return SlideAnimationTween(
       //   widget: MultiProvider(
