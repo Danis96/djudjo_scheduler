@@ -1,16 +1,22 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:djudjo_scheduler/app/models/user_model.dart';
-import 'package:djudjo_scheduler/app/providers/base_provider.dart';
 import 'package:djudjo_scheduler/app/providers/provider_utils/provider_constants.dart';
 import 'package:djudjo_scheduler/app/repositories/admin_firestore_repository/admin_firestore_repository.dart';
 import 'package:djudjo_scheduler/app/utils/language_strings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginProvider extends BaseProvider {
+import '../storage_manager/storage_prefs_manager.dart';
+
+class LoginProvider extends ChangeNotifier {
   LoginProvider() {
     _adminFirestoreRepository = AdminFirestoreRepository();
+    firebase = FirebaseAuth.instance;
   }
+
+  FirebaseAuth? firebase;
 
   AdminFirestoreRepository? _adminFirestoreRepository;
 
@@ -25,21 +31,20 @@ class LoginProvider extends BaseProvider {
   final TextEditingController registerPhoneController = TextEditingController();
   final TextEditingController registerNameController = TextEditingController();
 
+  Admin _admin = Admin();
 
-  Admin? _admin = Admin();
-  Admin? get admin => _admin;
+  Admin get admin => _admin;
 
   Future<String?> registerUser() async {
-    if (areFieldsCompleted()) {
+    if (areFieldsCompletedRegister()) {
       try {
-        await firebase!.createUserWithEmailAndPassword(email: loginEmailController.text, password: loginPasswordController.text).then(
-          (UserCredential user) async {
-            await _setLoggedUserToAdminModel(user.user!);
-            await _adminFirestoreRepository!.addAdminToFirestore(_admin!);
-          },
-        );
+        final UserCredential user = await firebase!
+            .createUserWithEmailAndPassword(email: registerEmailController.text, password: registerConfirmPasswordController.text);
+        await _setLoggedUserToAdminModel(user.user!);
+        await _adminFirestoreRepository!.addAdminToFirestore(_admin);
+        await _setUserDataToStorage(_admin);
       } on FirebaseAuthException catch (e) {
-        returnErrorMsgFirebaseAuthReg(e.code);
+        return e.message;
       } catch (e) {
         return e.toString();
       }
@@ -50,21 +55,21 @@ class LoginProvider extends BaseProvider {
   }
 
   Future<String?> loginUser() async {
-    if (areFieldsCompleted()) {
-      try {
-        await firebase!.signInWithEmailAndPassword(email: loginEmailController.text, password: loginPasswordController.text).then(
-          (UserCredential user) async {
-            await _setLoggedUserToAdminModel(user.user!);
-          },
+    try {
+      if (areFieldsCompletedLogin()) {
+        final UserCredential user = await firebase!.signInWithEmailAndPassword(
+          email: loginEmailController.text,
+          password: loginPasswordController.text,
         );
-      } on FirebaseAuthException catch (e) {
-        returnErrorMsgFirebaseAuthLogin(e.code);
-      } catch (e) {
-        return e.toString();
+        await _setLoggedUserToAdminModel(user.user!);
+        await _setUserDataToStorage(_admin);
+      } else {
+        return Language.all_fields;
       }
-      return null;
-    } else {
-      return Language.all_fields;
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    } catch (e) {
+      return e.toString();
     }
   }
 
@@ -74,30 +79,37 @@ class LoginProvider extends BaseProvider {
       creationTime: user.metadata.creationTime.toString(),
       id: user.uid,
       lastSignIn: user.metadata.lastSignInTime.toString(),
-      name: user.displayName,
-      phone: user.phoneNumber,
+      name: registerNameController.text,
+      phone: registerPhoneController.text,
     );
   }
 
-  String? returnErrorMsgFirebaseAuthReg(String e) {
-    if (e == ProviderConstants.f_weak_password_code) {
-      return Language.weak_password;
-    } else if (e == ProviderConstants.f_email_already_in_use) {
-      return Language.acc_exist;
-    } else {
+  Future<String?> logout() async {
+    try {
+      await firebase!.signOut();
+      await storagePrefs.deleteAll();
       return null;
+    } catch (e) {
+      return e.toString();
     }
   }
 
-  String? returnErrorMsgFirebaseAuthLogin(String e) {
-    if (e == ProviderConstants.f_user_not_found) {
-      return Language.user_not_found;
-    } else if (e == ProviderConstants.f_wrong_password) {
-      return Language.wrong_password;
-    } else {
-      return null;
-    }
+  Future<void> _setUserDataToStorage(Admin admin) async {
+    await storagePrefs.deleteForKey(StoragePrefsManager.USER_DATA_KEY);
+    await storagePrefs.setValue(StoragePrefsManager.USER_DATA_KEY, json.encode(admin.toFirestore()));
   }
 
-  bool areFieldsCompleted() => loginPasswordController.text.isNotEmpty && loginEmailController.text.isNotEmpty;
+  bool areFieldsCompletedLogin() => loginPasswordController.text.isNotEmpty && loginEmailController.text.isNotEmpty;
+
+  bool areFieldsCompletedRegister() =>
+      registerPasswordController.text.isNotEmpty &&
+      registerConfirmPasswordController.text.isNotEmpty &&
+      registerPhoneController.text.isNotEmpty &&
+      registerNameController.text.isNotEmpty &&
+      registerEmailController.text.isNotEmpty;
+
+  bool areRegPasswordIdentical() =>
+      registerConfirmPasswordController.text.isNotEmpty &&
+      registerPasswordController.text.isNotEmpty &&
+      (registerConfirmPasswordController.text == registerPasswordController.text);
 }

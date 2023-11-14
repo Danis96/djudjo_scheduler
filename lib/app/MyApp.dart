@@ -1,4 +1,3 @@
-import 'package:djudjo_scheduler/app/providers/base_provider.dart';
 import 'package:djudjo_scheduler/app/repositories/navigation_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,21 +29,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Widget buildApp() {
-    return MultiProvider(
-      providers: <SingleChildWidget>[ChangeNotifierProvider<BaseProvider>(create: (_) => BaseProvider())],
-      child: MaterialApp(
-        navigatorKey: locator<NavigationRepo>().navigationKey,
-        title: 'DjudjoInk',
-        builder: (BuildContext context, Widget? child) {
-          final MediaQueryData data = MediaQuery.of(context);
-          return MediaQuery(data: data.copyWith(textScaleFactor: 1.0), child: child!);
-        },
-        initialRoute: Splash,
-        onGenerateRoute: RouteGenerator.generateRoute,
-        debugShowCheckedModeBanner: false,
-        theme: CustomTheme.lightTheme,
-        themeMode: currentTheme.currentTheme,
-      ),
+    return MaterialApp(
+      navigatorKey: locator<NavigationRepo>().navigationKey,
+      title: 'DjudjoInk',
+      builder: (BuildContext context, Widget? child) {
+        final MediaQueryData data = MediaQuery.of(context);
+        return MediaQuery(data: data.copyWith(textScaleFactor: 1.0), child: child!);
+      },
+      initialRoute: Splash,
+      onGenerateRoute: RouteGenerator.generateRoute,
+      debugShowCheckedModeBanner: false,
+      theme: CustomTheme.lightTheme,
+      themeMode: currentTheme.currentTheme,
     );
   }
 }

@@ -86,7 +86,7 @@ class CustomTheme {
           backgroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.disabled)) {
-                return ColorHelper.white.color.withOpacity(0.8);
+                return ColorHelper.black.color.withOpacity(0.2);
               }
               return ColorHelper.towerNavy2.color;
             },
@@ -94,7 +94,7 @@ class CustomTheme {
           side: MaterialStateProperty.resolveWith<BorderSide>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.disabled)) {
-                return BorderSide(color: ColorHelper.aigCyan.color, width: 2);
+                return BorderSide(color: ColorHelper.black.color.withOpacity(0.2), width: 2);
               }
               return BorderSide(color: ColorHelper.towerNavy2.color);
             },
@@ -102,7 +102,7 @@ class CustomTheme {
           foregroundColor: MaterialStateProperty.resolveWith<Color>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.disabled)) {
-                return ColorHelper.towerNavy2.color;
+                return ColorHelper.black.color.withOpacity(0.2);
               }
               return ColorHelper.white.color;
             },

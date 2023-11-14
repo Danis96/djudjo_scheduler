@@ -21,6 +21,9 @@ class Admin {
     );
   }
 
+  Map<String, dynamic> toJson() =>
+      <String, dynamic>{'name': name, 'email': email, 'phone': phone, 'creationTime': creationTime, 'lastSignIn': lastSignIn};
+
   final String? id;
   final String? name;
   final String? phone;

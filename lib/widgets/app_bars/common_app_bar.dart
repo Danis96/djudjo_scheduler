@@ -7,9 +7,13 @@ PreferredSizeWidget commonAppBar(
   Color? leadingIconColor,
   Color? color,
   bool hideLeading = false,
+  Widget? action,
 }) {
   return AppBar(
     backgroundColor: color ?? Colors.transparent,
+    actions: <Widget>[
+      action ?? const SizedBox()
+    ],
     leading: hideLeading
         ? const SizedBox()
         : GestureDetector(

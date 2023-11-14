@@ -1,3 +1,4 @@
+import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../locator.dart';
@@ -23,6 +24,7 @@ class SplashProvider {
     final String userData = await storagePrefs.getValue(StoragePrefsManager.USER_DATA_KEY);
     final bool logged = isUserLoggedIn(userData);
     if (logged) {
+      _navigationService.navigateAndRemove(Home);
     } else {
       _navigationService.navigateAndRemove(defaultRoute);
     }

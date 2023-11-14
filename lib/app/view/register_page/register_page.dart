@@ -1,4 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:djudjo_scheduler/routing/routes.dart';
+import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 import '../../../widgets/buttons/common_button.dart';
 import '../../../widgets/dialogs/simple_dialog.dart';
+import '../../../widgets/tappable_texts/custom_tappable_text.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../providers/login_provider/login_provider.dart';
 import '../../utils/language_strings.dart';
@@ -17,6 +19,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: _buildAppBar(context),
       body: _buildBody(context),
       bottomNavigationBar: _buildBottomBar(context),
@@ -27,38 +30,43 @@ class RegisterPage extends StatelessWidget {
 PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(
       context,
       color: ColorHelper.towerNavy2.color,
-      leadingIconColor: ColorHelper.white.color,
+      hideLeading: true,
+      action: _buildTappableLogin(context),
     );
 
 Widget _buildBody(BuildContext context) {
-  return ListView(reverse: true, shrinkWrap: true, children: <Widget>[_buildTopContainer(context), _buildForm(context)].reversed.toList());
+  return ListView(shrinkWrap: true, children: <Widget>[_buildTopContainer(context), _buildForm(context)]);
 }
 
 Widget _buildTopContainer(BuildContext context) {
   return Stack(
     alignment: Alignment.bottomCenter,
     children: <Widget>[
-      Container(height: MediaQuery.of(context).size.height / 2, color: ColorHelper.towerNavy2.color),
-      ClipPath(clipper: WaveClipperOne(reverse: true), child: Container(height: 80, color: Colors.white)),
+      Container(
+        height: MediaQuery.of(context).size.height / 4,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: const <double>[0.9, 1],
+            colors: [ColorHelper.towerNavy2.color, ColorHelper.white.color],
+          ),
+        ),
+      ),
+      ClipPath(clipper: WaveClipperOne(reverse: true), child: Container(height: 60, color: Colors.white)),
       // _buildHeadline(context),
     ],
   );
 }
 
-Widget _buildBottomBar(BuildContext context) {
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-    child: CommonButton(
-      onPressed: () {
-        context.read<LoginProvider>().registerUser().then((String? error) {
-          if (error != null) {
-            customSimpleDialog(context, buttonText: Language.common_ok, title: Language.common_error, content: error);
-          } else {
-            print(FirebaseAuth.instance.currentUser!.email);
-          }
-        });
-      },
-      buttonTitle: Language.reg_btn,
+Widget _buildTappableLogin(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+    child: CustomTappableText(
+      text: Language.login_tappable,
+      links: Language.login_tappable,
+      linkStyle: const TextStyle(decoration: TextDecoration.none, color: Colors.white, fontSize: 17),
+      onPressed: (int i) => Navigator.of(context).pushNamed(Login),
     ),
   );
 }
@@ -68,7 +76,10 @@ Widget _buildForm(BuildContext context) {
     padding: const EdgeInsets.symmetric(horizontal: 24),
     child: Form(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          _buildHeadline(context),
+          const SizedBox(height: 20),
           _buildNameField(context),
           _buildPhoneField(context),
           _buildEmailField(context),
@@ -85,6 +96,7 @@ Widget _buildEmailField(BuildContext context) {
     controller: context.read<LoginProvider>().registerEmailController,
     hintText: Language.email_hint,
     key: const Key('reg_email'),
+    keyboardType: TextInputType.emailAddress,
     onFieldSubmitted: (String? s) {
       FocusScope.of(context).nextFocus();
     },
@@ -107,6 +119,7 @@ Widget _buildPhoneField(BuildContext context) {
     controller: context.read<LoginProvider>().registerPhoneController,
     hintText: Language.reg_phone_hint,
     key: const Key('reg_phone'),
+    keyboardType: TextInputType.phone,
     onFieldSubmitted: (String? s) {
       FocusScope.of(context).nextFocus();
     },
@@ -137,13 +150,31 @@ Widget _buildConfirmPasswordField(BuildContext context) {
   );
 }
 
-Widget _buildHeadline(BuildContext context) {
-  return Column(
-    mainAxisSize: MainAxisSize.max,
-    mainAxisAlignment: MainAxisAlignment.end,
-    children: <Widget>[
-      Text('data'),
-      Text('data'),
-    ],
+Widget _buildHeadline(BuildContext context) => Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(Language.reg_headline, style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 24)),
+        Image.asset('assets/ic_logo.png', width: 50),
+      ],
+    );
+
+Widget _buildBottomBar(BuildContext context) {
+  return Container(
+    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+    child: CommonButton(
+      disabled: !context.watch<LoginProvider>().areRegPasswordIdentical(),
+      onPressed: () {
+        customLoaderCircleWhite(context: context);
+        context.read<LoginProvider>().registerUser().then((String? error) {
+          Navigator.of(context).pop();
+          if (error != null) {
+            customSimpleDialog(context, buttonText: Language.common_ok, title: Language.common_error, content: error);
+          } else {
+            Navigator.of(context).pushNamed(Home);
+          }
+        });
+      },
+      buttonTitle: Language.reg_btn,
+    ),
   );
 }
