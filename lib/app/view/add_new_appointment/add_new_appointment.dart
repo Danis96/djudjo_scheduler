@@ -16,14 +16,9 @@ import '../../../widgets/app_bars/common_app_bar.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../utils/language_strings.dart';
 
-class NewAppointmentPage extends StatefulWidget {
-  const NewAppointmentPage();
+class NewAppointmentPage extends StatelessWidget {
 
-  @override
-  State<NewAppointmentPage> createState() => _NewAppointmentPageState();
-}
 
-class _NewAppointmentPageState extends State<NewAppointmentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: _buildAppBar(context), body: _buildBody(context), bottomNavigationBar: _buildBottomBar(context));
@@ -73,21 +68,56 @@ class _NewAppointmentPageState extends State<NewAppointmentPage> {
         children: <Widget>[
           _buildIsFinishedSwitch(context),
           const SizedBox(height: 20),
-          _buildNameField(context),
-          _buildPhoneField(context),
-          _buildEmailField(context),
-          _buildTimeField(context),
-          const SizedBox(height: 30),
-          _buildDateField(context),
-          _buildPlacementField(context),
-          _buildSizeField(context),
-          _buildDescriptionField(context),
-          const SizedBox(height: 30),
-          _buildUploadImg(context),
+          _buildMandatoryFields(context),
+          _buildOptionalFields(context),
         ],
       ),
     );
   }
+
+  Widget _buildMandatoryFields(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Text(Language.ana_mandatory_title, style: Theme.of(context).textTheme.displayMedium),
+        ),
+        _buildDivider(context),
+        const SizedBox(height: 10),
+        _buildNameField(context),
+        _buildPhoneField(context),
+        _buildEmailField(context),
+        _buildTimeField(context),
+        const SizedBox(height: 30),
+        _buildDateField(context),
+      ],
+    );
+  }
+
+  Widget _buildOptionalFields(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: Text(Language.ana_optional_title, style: Theme.of(context).textTheme.displayMedium),
+        ),
+        _buildDivider(context),
+        const SizedBox(height: 10),
+        _buildPlacementField(context),
+        _buildSizeField(context),
+        _buildDescriptionField(context),
+        const SizedBox(height: 30),
+        _buildUploadImg(context),
+      ],
+    );
+  }
+
+  Widget _buildDivider(BuildContext context) => const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        child: SizedBox(width: 100, child: Divider()),
+      );
 
   Widget _buildNameField(BuildContext context) {
     return Padding(
@@ -137,8 +167,8 @@ class _NewAppointmentPageState extends State<NewAppointmentPage> {
 
   Widget _buildTimeField(BuildContext context) {
     return TimeRange(
-        fromTitle: Text('From', style: _timeRangeStyle),
-        toTitle: Text('To', style: _timeRangeStyle),
+        fromTitle: Text(Language.ana_from_time, style: _timeRangeStyle),
+        toTitle: Text(Language.ana_to_time, style: _timeRangeStyle),
         titlePadding: 24,
         textStyle: const TextStyle(fontWeight: FontWeight.normal, color: Colors.black87),
         activeTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
@@ -181,7 +211,7 @@ class _NewAppointmentPageState extends State<NewAppointmentPage> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: CustomTextFormField(
         controller: context.read<AppointmentProvider>().placementController,
-        hintText: 'Placement',
+        hintText: Language.ana_placement_hint,
         key: const Key('ana_placement'),
         onFieldSubmitted: (String? s) {
           FocusScope.of(context).nextFocus();
@@ -195,7 +225,7 @@ class _NewAppointmentPageState extends State<NewAppointmentPage> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: CustomTextFormField(
         controller: context.read<AppointmentProvider>().sizeController,
-        hintText: 'Size',
+        hintText: Language.ana_size_hint,
         key: const Key('ana_size'),
         onFieldSubmitted: (String? s) {
           FocusScope.of(context).nextFocus();
@@ -209,7 +239,7 @@ class _NewAppointmentPageState extends State<NewAppointmentPage> {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: CustomTextFormField(
         controller: context.read<AppointmentProvider>().descriptionController,
-        hintText: 'Description',
+        hintText: Language.ana_description_hint,
         type: TextFieldType.textAreaType,
         key: const Key('ana_description'),
         onFieldSubmitted: (String? s) {
@@ -230,8 +260,7 @@ class _NewAppointmentPageState extends State<NewAppointmentPage> {
         removePadding: true,
         switchBool: context.watch<AppointmentProvider>().appointmentFinished,
         switchActiveColor: ColorHelper.black.color,
-        subTitle:
-            'Here you can manually switch your appointment status. Appointment status will automatically be Finished (ON) if the time you add is in the past.',
+        subTitle: Language.ana_manually_finished,
       ),
     );
   }
@@ -247,7 +276,7 @@ class _NewAppointmentPageState extends State<NewAppointmentPage> {
         child: Column(
           children: <Widget>[
             Image.asset('assets/ic_img_upload.png', height: 50),
-            Text('Upload image'),
+            const Text(Language.ana_img),
           ],
         ),
       ),
@@ -263,14 +292,14 @@ class _NewAppointmentPageState extends State<NewAppointmentPage> {
           context.read<AppointmentProvider>().addAppointment().then((String? error) {
             Navigator.of(context).pop();
             if (error != null) {
-              customSimpleDialog(context, title: 'Error', content: error, buttonText: 'Ok');
+              customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
             } else {
               context.read<AppointmentProvider>().clearControllers();
               showSuccessModal(context);
             }
           });
         },
-        buttonTitle: 'Save Appointment',
+        buttonTitle: Language.ana_button,
       ),
     );
   }
@@ -288,7 +317,7 @@ class _NewAppointmentPageState extends State<NewAppointmentPage> {
         return ListenableProvider<AppointmentProvider>.value(
           value: context.read<AppointmentProvider>(),
           child: CustomModalSheet(
-            title: 'Choose date',
+            title: Language.ana_choose_date,
             bodyWidget: SfDateRangePicker(
               view: DateRangePickerView.month,
               navigationMode: DateRangePickerNavigationMode.snap,
@@ -328,14 +357,14 @@ class _NewAppointmentPageState extends State<NewAppointmentPage> {
         return ListenableProvider<AppointmentProvider>.value(
           value: context.read<AppointmentProvider>(),
           child: CustomModalSheet(
-            title: 'You have successfully added an appointment.',
+            title: Language.ana_success_title,
             onClosePressed: () => Navigator.of(context).pushNamed(Home),
             bodyWidget: Container(child: Image.asset('assets/ic_logo.png')),
             bottomWidget: CommonButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(Home);
               },
-              buttonTitle: 'Ok',
+              buttonTitle: Language.common_ok,
             ),
           ),
         );

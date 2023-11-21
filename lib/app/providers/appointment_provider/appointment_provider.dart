@@ -75,7 +75,6 @@ class AppointmentProvider extends ChangeNotifier {
 
   void setAppointmentFinished(bool value) {
     appointmentFinished = value;
-    print('appointmentConfirmed $value');
     notifyListeners();
   }
 

@@ -40,6 +40,18 @@ class Language {
   static const String ana_email_hint = 'Enter email';
   static const String ana_time_hint = 'Enter time range';
   static const String ana_date_hint = 'Enter date';
+  static const String ana_placement_hint = 'Placement';
+  static const String ana_description_hint = 'Placement';
+  static const String ana_size_hint = 'Size';
+  static const String ana_from_time = 'From';
+  static const String ana_to_time = 'To';
+  static const String ana_img = 'Upload image';
+  static const String ana_button = 'Save Appointment';
+  static const String ana_choose_date = 'Choose date';
+  static const String ana_success_title = 'You have successfully added an appointment.';
+  static const String ana_manually_finished = 'Here you can manually switch your appointment status. Appointment status will automatically be Finished (ON) if the time you add is in the past.';
+  static const String ana_mandatory_title = 'Mandatory';
+  static const String ana_optional_title = 'Optional';
 
 
 

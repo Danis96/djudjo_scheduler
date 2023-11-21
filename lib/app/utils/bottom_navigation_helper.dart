@@ -1,4 +1,3 @@
-import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/bottom_navigation_bar/custom_bottom_navigation_bar.dart';
 import '../view/bottom_navigation_bar/bottom_navigation_page.dart';
