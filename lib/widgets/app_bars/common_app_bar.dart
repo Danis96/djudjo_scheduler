@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+
+
 PreferredSizeWidget commonAppBar(
   BuildContext context, {
   IconData? icon = Icons.arrow_back_ios,
@@ -8,12 +10,15 @@ PreferredSizeWidget commonAppBar(
   Color? color,
   bool hideLeading = false,
   Widget? action,
+  Size? preferredSizeForBottom,
+  Widget? bottomWidget,
 }) {
   return AppBar(
     backgroundColor: color ?? Colors.transparent,
-    actions: <Widget>[
-      action ?? const SizedBox()
-    ],
+    elevation: 0,
+    bottom:
+        PreferredSize(preferredSize: preferredSizeForBottom ?? const Size(0, 0), child: bottomWidget ?? const SizedBox()),
+    actions: <Widget>[action ?? const SizedBox()],
     leading: hideLeading
         ? const SizedBox()
         : GestureDetector(

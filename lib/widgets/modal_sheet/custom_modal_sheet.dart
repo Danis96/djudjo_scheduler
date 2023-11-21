@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class CustomModalSheet extends StatelessWidget {
   const CustomModalSheet({
     this.height = 512,
@@ -52,7 +51,10 @@ class CustomModalSheet extends StatelessWidget {
               margin: const EdgeInsets.only(bottom: 10),
               child: topIcon!,
             ),
-          if (title.isNotEmpty) Text(title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall) else const SizedBox(),
+          if (title.isNotEmpty)
+            Text(title, textAlign: TextAlign.center, style: Theme.of(context).textTheme.headlineSmall)
+          else
+            const SizedBox(),
           SizedBox(height: searchWidget != null ? 0 : 15),
           if (searchWidget != null) searchWidget!,
           const SizedBox(height: 10),
@@ -61,7 +63,7 @@ class CustomModalSheet extends StatelessWidget {
               child: bodyWidget!,
             ),
           const SizedBox(height: 28),
-          bottomWidget!,
+          if (bottomWidget != null) bottomWidget!,
           const SizedBox(height: 28),
         ],
       ),

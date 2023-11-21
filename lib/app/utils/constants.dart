@@ -4,3 +4,7 @@ class FirebaseConstants {
   static const String MESSAGING_SENDER_ID = '171346661195';
   static const String PROJECT_ID = 'djudjoink';
 }
+
+class FontConstants {
+  static const String POPPINS_FONT = 'Poppins';
+}

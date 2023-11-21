@@ -1,9 +1,14 @@
+import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
+import 'package:djudjo_scheduler/app/utils/int_extensions.dart';
+import 'package:djudjo_scheduler/routing/routes.dart';
+import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
+import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 import '../../../widgets/drawer/custom_drawer.dart';
-import '../../../widgets/tappable_texts/custom_tappable_text.dart';
 import '../../utils/drawer_helper.dart';
 import '../../utils/language_strings.dart';
 
@@ -22,26 +27,22 @@ class _HomepageState extends State<Homepage> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: _buildDrawer(context),
-      backgroundColor: ColorHelper.towerNavy2.color,
+      backgroundColor: ColorHelper.white.color,
       appBar: _buildAppBar(context),
       body: _buildBody(context),
     );
   }
 
-
   PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(
-    context,
-    color: ColorHelper.towerNavy2.color,
-    icon: Icons.menu_rounded,
-    leadingIconColor: ColorHelper.white.color,
-    onLeadingTap: () => _scaffoldKey.currentState!.openDrawer(),
-    action: IconButton(
-      onPressed: () {
-        print('Add new appointment');
-      },
-      icon: const Icon(Icons.add),
-    ),
-  );
+        context,
+        color: ColorHelper.black.color,
+        icon: Icons.menu_rounded,
+        leadingIconColor: ColorHelper.white.color,
+        onLeadingTap: () => _scaffoldKey.currentState!.openDrawer(),
+        action: IconButton(
+            onPressed: () => Navigator.of(context).pushNamed(NewAppointment, arguments: context.read<AppointmentProvider>()),
+            icon: const Icon(Icons.add)),
+      );
 
   Widget _buildDrawer(BuildContext context) {
     final DrawerHelper _drawerHelper = DrawerHelper();
@@ -97,7 +98,62 @@ class _HomepageState extends State<Homepage> {
   }
 
   Widget _buildBody(BuildContext context) {
-    return ListView(shrinkWrap: true, children: <Widget>[]);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ClipPath(clipper: BackgroundWaveClipper(), child: Container(height: 60, color: Colors.black)),
+        _buildHeadline(context),
+        const SizedBox(height: 20),
+        _buildTitle(context),
+        const SizedBox(height: 20),
+        Expanded(child: _listOfAppointments(context)),
+      ],
+    );
   }
-
 }
+
+Widget _buildHeadline(BuildContext context) => Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(Language.home_headline,
+              style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 24, fontWeight: FontWeight.w700)),
+          const Icon(Icons.calendar_month_sharp),
+        ],
+      ),
+    );
+
+Widget _buildTitle(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 24),
+    child: Text('Today',
+        style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 18, color: ColorHelper.black.color.withOpacity(0.5))),
+  );
+}
+
+Widget _listOfAppointments(BuildContext context) {
+  return ListView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      shrinkWrap: true,
+      itemCount: 10,
+      itemBuilder: (BuildContext context, int index) {
+        return AppointmentCard(
+          name: 'Danis',
+          day: '15',
+          month: 'November',
+          phone: '062 748 065',
+          time: '11:00 h - 13:00 h',
+          dotColor: index.getRandomColor(),
+          finished: false,
+        );
+      });
+}
+
+/// todo
+/// add month/day separator check on pub dev
+/// add tri state switch for is finished
+/// convert time - send timestamp, convert to format
+/// convert date - send timestamp, convert to format
+///

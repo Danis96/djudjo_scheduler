@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:djudjo_scheduler/app/models/user_model.dart';
-import 'package:djudjo_scheduler/app/providers/provider_utils/provider_constants.dart';
 import 'package:djudjo_scheduler/app/repositories/admin_firestore_repository/admin_firestore_repository.dart';
 import 'package:djudjo_scheduler/app/utils/language_strings.dart';
 import 'package:firebase_auth/firebase_auth.dart';

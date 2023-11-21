@@ -1,1 +1,3 @@
-extension DoubleAddition on double {}
+extension DoubleAddition on double {
+
+}

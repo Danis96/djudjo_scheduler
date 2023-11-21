@@ -15,7 +15,7 @@ import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  const LoginPage();
 
   @override
   Widget build(BuildContext context) {
@@ -26,122 +26,115 @@ class LoginPage extends StatelessWidget {
       bottomNavigationBar: _buildBottomBar(context),
     );
   }
-}
 
-PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(
-      context,
-      color: ColorHelper.towerNavy2.color,
-      hideLeading: true,
-      action: _buildTappableRegister(context),
-    );
+  PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(context, color: ColorHelper.black.color, hideLeading: true);
 
-Widget _buildBody(BuildContext context) {
-  return ListView(
-      physics: const NeverScrollableScrollPhysics(),
-      reverse: true,
-      shrinkWrap: true,
-      children: <Widget>[_buildTopContainer(context), _buildForm(context)].reversed.toList());
-}
+  Widget _buildBody(BuildContext context) {
+    return ListView(
+        physics: const NeverScrollableScrollPhysics(),
+        reverse: true,
+        shrinkWrap: true,
+        children: <Widget>[_buildTopContainer(context), _buildForm(context)].reversed.toList());
+  }
 
-Widget _buildTopContainer(BuildContext context) {
-  return Stack(
-    alignment: Alignment.bottomCenter,
-    children: <Widget>[
-      Container(
-        height: MediaQuery.of(context).size.height / 2,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            stops: const <double>[0.9, 1],
-            colors: [ColorHelper.towerNavy2.color, ColorHelper.white.color],
+  Widget _buildTopContainer(BuildContext context) {
+    return Stack(
+      alignment: Alignment.bottomCenter,
+      children: <Widget>[
+        Container(
+          height: MediaQuery.of(context).size.height / 2,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: const <double>[0.9, 1],
+              colors: <Color>[ColorHelper.black.color, ColorHelper.white.color],
+            ),
           ),
         ),
+        ClipPath(clipper: WaveClipperOne(reverse: true), child: Container(height: 80, color: Colors.white)),
+      ],
+    );
+  }
+
+  Widget _buildForm(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Form(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _buildHeadline(context),
+            const SizedBox(height: 20),
+            _buildEmailField(context),
+            _buildPasswordField(context),
+            _buildTappableRegister(context),
+          ],
+        ),
       ),
-      ClipPath(clipper: WaveClipperOne(reverse: true), child: Container(height: 80, color: Colors.white)),
-      // _buildHeadline(context),
-    ],
-  );
-}
+    );
+  }
 
-Widget _buildForm(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 24),
-    child: Form(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          _buildHeadline(context),
-          const SizedBox(height: 20),
-          _buildEmailField(context),
-          _buildPasswordField(context),
-        ],
-      ),
-    ),
-  );
-}
+  Widget _buildEmailField(BuildContext context) {
+    return CustomTextFormField(
+      controller: context.read<LoginProvider>().loginEmailController,
+      hintText: Language.email_hint,
+      key: const Key('login_email'),
+      onFieldSubmitted: (String? s) {
+        FocusScope.of(context).nextFocus();
+      },
+    );
+  }
 
-Widget _buildEmailField(BuildContext context) {
-  return CustomTextFormField(
-    controller: context.read<LoginProvider>().loginEmailController,
-    hintText: Language.email_hint,
-    key: const Key('login_email'),
-    onFieldSubmitted: (String? s) {
-      FocusScope.of(context).nextFocus();
-    },
-  );
-}
+  Widget _buildPasswordField(BuildContext context) {
+    return CustomTextFormField(
+      type: TextFieldType.passwordType,
+      controller: context.read<LoginProvider>().loginPasswordController,
+      hintText: Language.password_hint,
+      key: const Key('login_pass'),
+      onFieldSubmitted: (String? s) {
+        FocusScope.of(context).nextFocus();
+      },
+    );
+  }
 
-Widget _buildPasswordField(BuildContext context) {
-  return CustomTextFormField(
-    type: TextFieldType.passwordType,
-    controller: context.read<LoginProvider>().loginPasswordController,
-    hintText: Language.password_hint,
-    key: const Key('login_pass'),
-    onFieldSubmitted: (String? s) {
-      FocusScope.of(context).nextFocus();
-    },
-  );
-}
-
-Widget _buildTappableRegister(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-    child: CustomTappableText(
-      text: Language.reg_tappable,
-      links: Language.reg_tappable,
-      linkStyle: const TextStyle(decoration: TextDecoration.none, color: Colors.white, fontSize: 17),
+  Widget _buildTappableRegister(BuildContext context) {
+    return CustomTappableText(
+      text: Language.reg_tappable_text,
+      links: Language.reg_tappable_link,
+      linkStyle: const TextStyle(decoration: TextDecoration.underline, fontSize: 16),
       onPressed: (int i) {
         Navigator.of(context).pushNamed(Register, arguments: context.read<LoginProvider>());
       },
-    ),
-  );
-}
-
-Widget _buildHeadline(BuildContext context) => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(Language.login_headline, style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 24)),
-        Image.asset('assets/ic_logo.png', width: 50),
-      ],
     );
+  }
 
-Widget _buildBottomBar(BuildContext context) {
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
-    child: CommonButton(
-      onPressed: () {
-        customLoaderCircleWhite(context: context);
-        context.read<LoginProvider>().loginUser().then((String? error) {
-          Navigator.of(context).pop();
-          if (error != null) {
-            customSimpleDialog(context, buttonText: Language.common_ok, title: Language.common_error, content: error);
-          } else {
-            Navigator.of(context).pushNamed(Home);
-          }
-        });
-      },
-      buttonTitle: Language.login_btn,
-    ),
+  Widget _buildHeadline(BuildContext context) => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+      Text(Language.login_headline, style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 24)),
+      Image.asset('assets/ic_logo.png', width: 50),
+    ],
   );
+
+  Widget _buildBottomBar(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+      child: CommonButton(
+        onPressed: () {
+          customLoaderCircleWhite(context: context);
+          context.read<LoginProvider>().loginUser().then((String? error) {
+            Navigator.of(context).pop();
+            if (error != null) {
+              customSimpleDialog(context, buttonText: Language.common_ok, title: Language.common_error, content: error);
+            } else {
+              Navigator.of(context).pushNamed(Home);
+            }
+          });
+        },
+        buttonTitle: Language.login_btn,
+      ),
+    );
+  }
 }

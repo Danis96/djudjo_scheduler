@@ -5,11 +5,11 @@ import '../../models/user_model.dart';
 class AdminFirestoreRepository {
 
   AdminFirestoreRepository(){
-    firestore = FirebaseFirestore.instance;
-    adminsCollection = firestore!.collection('admins');
+    _firestore = FirebaseFirestore.instance;
+    adminsCollection = _firestore!.collection('admins');
   }
 
-  FirebaseFirestore? firestore;
+  FirebaseFirestore? _firestore;
   CollectionReference<dynamic>? adminsCollection;
 
   Future<String?> addAdminToFirestore(Admin user) async {

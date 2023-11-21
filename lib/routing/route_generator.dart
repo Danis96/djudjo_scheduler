@@ -1,8 +1,11 @@
+import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
-import 'package:djudjo_scheduler/app/view/home_page/home_page.dart';
+import 'package:djudjo_scheduler/app/view/add_new_appointment/add_new_appointment.dart';
+import 'package:djudjo_scheduler/app/view/bottom_navigation_bar/bottom_navigation_page.dart';
 import 'package:djudjo_scheduler/app/view/register_page/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
 import '../app/providers/splash_provider/splash_provider.dart';
 import '../app/utils/navigation_animations.dart';
@@ -22,7 +25,15 @@ mixin RouteGenerator {
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: RegisterPage()));
       case Home:
-        return SlideAnimationTween(widget: Homepage());
+        return SlideAnimationTween(
+            widget: MultiProvider(
+          providers: <SingleChildWidget>[ChangeNotifierProvider<AppointmentProvider>(create: (_) => AppointmentProvider())],
+          child: BottomNavigationPage(),
+        ));
+      case NewAppointment:
+        return SlideAnimationTween(
+            widget: ChangeNotifierProvider<AppointmentProvider>.value(
+                value: settings.arguments as AppointmentProvider, child: NewAppointmentPage()));
 
       default:
         return _errorRoute();

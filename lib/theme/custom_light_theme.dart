@@ -88,7 +88,7 @@ class CustomTheme {
               if (states.contains(MaterialState.disabled)) {
                 return ColorHelper.black.color.withOpacity(0.2);
               }
-              return ColorHelper.towerNavy2.color;
+              return ColorHelper.black.color;
             },
           ),
           side: MaterialStateProperty.resolveWith<BorderSide>(
