@@ -9,7 +9,7 @@ class Appointment {
     this.size = '',
     this.dateRange = '',
     this.description = '',
-    this.pictures,
+    this.pictures = const <String>[],
     this.placement = '',
     this.suggestedDate = '',
     this.suggestedTime = '',
@@ -17,8 +17,8 @@ class Appointment {
     this.appointmentFinished = false,
   });
 
-  factory Appointment.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    final Map<String, dynamic>? data = snapshot.data();
+  factory Appointment.fromFirestore(DocumentSnapshot<dynamic> snapshot) {
+    final Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>;
     return Appointment(
       name: data!['name'] as String,
       email: data['email'] as String,
@@ -32,25 +32,9 @@ class Appointment {
       description: data['description'] as String,
       dateRange: data['date_range'] as String,
       size: data['size'] as String,
-      pictures: data['pictures'] as List<String>,
+      pictures: data['pictures'] != null ? data['pictures'] as List<String> : <String>[],
     );
   }
-
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'name': name,
-        'email': email,
-        'phone': phone,
-        'id': id,
-        'description': description,
-        'date_range': dateRange,
-        'placement': placement,
-        'size': size,
-        'pictures': pictures,
-        'appointment_finished': appointmentFinished,
-        'appointment_confirmed': appointmentConfirmed,
-        'suggested_time': suggestedTime,
-        'suggested_date': suggestedDate,
-      };
 
   final String? id;
   final String name;
@@ -59,7 +43,7 @@ class Appointment {
   final String? description;
   final String? placement;
   final String? size;
-  final List<String>? pictures;
+  final List<String> pictures;
   final bool appointmentConfirmed;
   final bool appointmentFinished;
   final String dateRange;
@@ -75,7 +59,7 @@ class Appointment {
       if (description != null) 'description': description,
       if (placement != null) 'placement': placement,
       if (size != null) 'size': size,
-      if (pictures != null) 'pictures': pictures,
+      'pictures': pictures,
       'date_range': dateRange,
       'appointment_confirmed': appointmentConfirmed,
       'appointment_finished': appointmentFinished,

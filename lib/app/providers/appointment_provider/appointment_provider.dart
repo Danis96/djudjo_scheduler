@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 import 'package:djudjo_scheduler/app/repositories/appointment_firestore_repository/appointment_firestore_repository.dart';
+import 'package:djudjo_scheduler/app/utils/language_strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AppointmentProvider extends ChangeNotifier {
   AppointmentProvider() {
-    _firestore = FirebaseFirestore.instance;
-    _appointmentsCollection = _firestore!.collection('appointments');
+
     _appointmentFirestoreRepository = AppointmentFirestoreRepository();
   }
 
-  FirebaseFirestore? _firestore;
-  CollectionReference<dynamic>? _appointmentsCollection;
+
   AppointmentFirestoreRepository? _appointmentFirestoreRepository;
 
   final TextEditingController nameController = TextEditingController();
@@ -44,10 +44,20 @@ class AppointmentProvider extends ChangeNotifier {
   Future<String?> addAppointment() async {
     if (!areMandatoryFieldsEmpty()) {
       setDataToAppointmentModel();
-      final String? result = await _appointmentFirestoreRepository!.addAppointmentToFirestore(_appointmentsCollection!, _appointment);
+      final String? result = await _appointmentFirestoreRepository!.addAppointmentToFirestore(_appointment);
       return result;
     }
-    return 'Need to fulfill all mandatory fields.';
+    return Language.mandatory_fields;
+  }
+
+  Future<String?> fetchAppointments() async {
+    final dynamic result = await _appointmentFirestoreRepository!.fetchAppointments();
+    if(result is List<Appointment>) {
+      _appointments = result;
+    } else {
+      print(result.toString());
+    }
+    notifyListeners();
   }
 
   void setDataToAppointmentModel() {
@@ -111,4 +121,9 @@ class AppointmentProvider extends ChangeNotifier {
     placementController.clear();
     appointmentFinished = false;
   }
+
+  MaskTextInputFormatter maskFormatterPhone =  MaskTextInputFormatter(
+      mask: '###-###/###',
+      type: MaskAutoCompletionType.lazy
+  );
 }

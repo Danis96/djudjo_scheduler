@@ -12,6 +12,10 @@ class Language {
   static const String wrong_password = 'Wrong password provided for that user.';
   static const String invalid_cred = 'Invalid login credentials';
 
+  // appointment provider
+  static const String mandatory_fields = 'Need to fulfill all mandatory fields.';
+
+
   // login page
   static const String login_btn = 'Login';
   static const String login_tappable = 'Login';
@@ -41,7 +45,7 @@ class Language {
   static const String ana_time_hint = 'Enter time range';
   static const String ana_date_hint = 'Enter date';
   static const String ana_placement_hint = 'Placement';
-  static const String ana_description_hint = 'Placement';
+  static const String ana_description_hint = 'Description';
   static const String ana_size_hint = 'Size';
   static const String ana_from_time = 'From';
   static const String ana_to_time = 'To';

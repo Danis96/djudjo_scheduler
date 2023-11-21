@@ -1,5 +1,7 @@
+import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/utils/int_extensions.dart';
+import 'package:djudjo_scheduler/app/utils/string_extensions.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
 import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
@@ -21,6 +23,16 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    _getInitialData(context);
+    super.initState();
+  }
+
+  Future<void> _getInitialData(BuildContext context) async {
+    await context.read<AppointmentProvider>().fetchAppointments();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,23 +149,20 @@ Widget _listOfAppointments(BuildContext context) {
   return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       shrinkWrap: true,
-      itemCount: 10,
+      itemCount: context.watch<AppointmentProvider>().appointments.length,
       itemBuilder: (BuildContext context, int index) {
+        final Appointment _singleAppointment = context.read<AppointmentProvider>().appointments[index];
         return AppointmentCard(
-          name: 'Danis',
-          day: '15',
-          month: 'November',
-          phone: '062 748 065',
-          time: '11:00 h - 13:00 h',
+          name: _singleAppointment.name,
+          day: _singleAppointment.suggestedDate.returnDateDayForHomeCard(),
+          month: _singleAppointment.suggestedDate.returnDateMonthForHomeCard(),
+          phone: _singleAppointment.phone,
+          time: _singleAppointment.suggestedTime.returnTimeForHomeCard(),
           dotColor: index.getRandomColor(),
-          finished: false,
+          finished: _singleAppointment.appointmentFinished,
         );
       });
 }
 
 /// todo
 /// add month/day separator check on pub dev
-/// add tri state switch for is finished
-/// convert time - send timestamp, convert to format
-/// convert date - send timestamp, convert to format
-///

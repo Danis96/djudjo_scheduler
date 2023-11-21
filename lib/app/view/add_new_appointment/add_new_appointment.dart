@@ -6,6 +6,7 @@ import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
 import 'package:djudjo_scheduler/widgets/modal_sheet/custom_modal_sheet.dart';
 import 'package:djudjo_scheduler/widgets/switches/switch_with_title_description.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:time_range/time_range.dart';
@@ -17,8 +18,6 @@ import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../utils/language_strings.dart';
 
 class NewAppointmentPage extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: _buildAppBar(context), body: _buildBody(context), bottomNavigationBar: _buildBottomBar(context));
@@ -139,6 +138,7 @@ class NewAppointmentPage extends StatelessWidget {
       child: CustomTextFormField(
         controller: context.read<AppointmentProvider>().phoneController,
         hintText: Language.ana_phone_hint,
+        inputFormatters: <TextInputFormatter>[context.read<AppointmentProvider>().maskFormatterPhone],
         keyboardType: TextInputType.phone,
         key: const Key('ana_phone'),
         onFieldSubmitted: (String? s) {

@@ -3,19 +3,33 @@ import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 
 class AppointmentFirestoreRepository {
 
-  Future<String?> addAppointmentToFirestore(CollectionReference<dynamic> reference, Appointment appointment) async {
+  AppointmentFirestoreRepository() {
+    _firestore = FirebaseFirestore.instance;
+    _appointmentsCollection = _firestore!.collection('appointments');
+  }
+
+  FirebaseFirestore? _firestore;
+  CollectionReference<dynamic>? _appointmentsCollection;
+
+  Future<String?> addAppointmentToFirestore(Appointment appointment) async {
     try {
-      await reference.doc().set(appointment.toFirestore());
+      await _appointmentsCollection!.add(appointment.toFirestore());
       return null;
     } catch (e) {
       return e.toString();
     }
   }
 
-  Future<dynamic> fetchAppointments(CollectionReference<dynamic> reference,) async {
+  Future<dynamic> fetchAppointments() async {
+    List<Appointment> _appointments = <Appointment>[];
     try {
-      final QuerySnapshot<dynamic> value = await reference.get();
-      return value;
+      await _appointmentsCollection!.get().then((QuerySnapshot<dynamic> value) {
+         for(final DocumentSnapshot<dynamic> doc in value.docs) {
+            final Appointment _app = Appointment.fromFirestore(doc);
+            _appointments.add(_app);
+         }
+      });
+      return _appointments;
     } catch (e) {
       print(e);
       return e.toString();

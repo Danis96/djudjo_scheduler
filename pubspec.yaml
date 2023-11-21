@@ -41,6 +41,7 @@ dependencies:
     cloud_firestore: ^4.13.0
     time_range: ^1.1.0
     syncfusion_flutter_datepicker: ^23.2.4
+    mask_text_input_formatter: ^2.6.0
 
 dependency_overrides:
 
