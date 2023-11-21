@@ -10,10 +10,8 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AppointmentProvider extends ChangeNotifier {
   AppointmentProvider() {
-
     _appointmentFirestoreRepository = AppointmentFirestoreRepository();
   }
-
 
   AppointmentFirestoreRepository? _appointmentFirestoreRepository;
 
@@ -46,13 +44,14 @@ class AppointmentProvider extends ChangeNotifier {
       setDataToAppointmentModel();
       final String? result = await _appointmentFirestoreRepository!.addAppointmentToFirestore(_appointment);
       return result;
+    } else {
+      return Language.mandatory_fields;
     }
-    return Language.mandatory_fields;
   }
 
   Future<String?> fetchAppointments() async {
     final dynamic result = await _appointmentFirestoreRepository!.fetchAppointments();
-    if(result is List<Appointment>) {
+    if (result is List<Appointment>) {
       _appointments = result;
     } else {
       print(result.toString());
@@ -122,8 +121,5 @@ class AppointmentProvider extends ChangeNotifier {
     appointmentFinished = false;
   }
 
-  MaskTextInputFormatter maskFormatterPhone =  MaskTextInputFormatter(
-      mask: '###-###/###',
-      type: MaskAutoCompletionType.lazy
-  );
+  MaskTextInputFormatter maskFormatterPhone = MaskTextInputFormatter(mask: '###-###/###', type: MaskAutoCompletionType.lazy);
 }

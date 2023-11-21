@@ -20,4 +20,9 @@ extension StringAdditions on String {
     // Assuming both dates have the same month, you can return the month name of the start date
     return startMonthName;
   }
+
+  int returnDatetimeFormattedForGrouping() {
+    return int.parse(split('.')[1]) ;
+  }
+
 }

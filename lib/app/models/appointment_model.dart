@@ -32,7 +32,7 @@ class Appointment {
       description: data['description'] as String,
       dateRange: data['date_range'] as String,
       size: data['size'] as String,
-      pictures: data['pictures'] != null ? data['pictures'] as List<String> : <String>[],
+      pictures: data['pictures'] != null ? data['pictures'] as List<dynamic> : <dynamic>[],
     );
   }
 
@@ -43,7 +43,7 @@ class Appointment {
   final String? description;
   final String? placement;
   final String? size;
-  final List<String> pictures;
+  final List<dynamic> pictures;
   final bool appointmentConfirmed;
   final bool appointmentFinished;
   final String dateRange;

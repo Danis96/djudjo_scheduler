@@ -6,6 +6,7 @@ import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
 import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../../theme/color_helper.dart';
@@ -116,8 +117,6 @@ class _HomepageState extends State<Homepage> {
         ClipPath(clipper: BackgroundWaveClipper(), child: Container(height: 60, color: Colors.black)),
         _buildHeadline(context),
         const SizedBox(height: 20),
-        _buildTitle(context),
-        const SizedBox(height: 20),
         Expanded(child: _listOfAppointments(context)),
       ],
     );
@@ -131,38 +130,48 @@ Widget _buildHeadline(BuildContext context) => Container(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(Language.home_headline,
-              style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 24, fontWeight: FontWeight.w700)),
+              style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 28, fontWeight: FontWeight.w700)),
           const Icon(Icons.calendar_month_sharp),
         ],
       ),
     );
 
-Widget _buildTitle(BuildContext context) {
-  return Padding(
+Widget _listOfAppointments(BuildContext context) {
+  return GroupedListView<Appointment, int>(
+    shrinkWrap: true,
     padding: const EdgeInsets.symmetric(horizontal: 24),
-    child: Text('Today',
-        style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 18, color: ColorHelper.black.color.withOpacity(0.5))),
+    elements: context.watch<AppointmentProvider>().appointments,
+    groupBy: (Appointment element) {
+      return element.suggestedDate.returnDatetimeFormattedForGrouping();
+    },
+    groupSeparatorBuilder: (int month) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.topLeft,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              month.returnMonthName(),
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 24),
+            ),
+            const Divider(),
+          ],
+        ),
+      );
+    },
+    itemBuilder: (BuildContext context, Appointment element) {
+      return AppointmentCard(
+        name: element.name,
+        day: element.suggestedDate.returnDateDayForHomeCard(),
+        month: element.suggestedDate.returnDateMonthForHomeCard(),
+        phone: element.phone,
+        time: element.suggestedTime.returnTimeForHomeCard(),
+        dotColor: element.hashCode.getRandomColor(),
+        finished: element.appointmentFinished,
+      );
+    },
+    floatingHeader: true,
+    order: GroupedListOrder.ASC, // optional
   );
 }
-
-Widget _listOfAppointments(BuildContext context) {
-  return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      shrinkWrap: true,
-      itemCount: context.watch<AppointmentProvider>().appointments.length,
-      itemBuilder: (BuildContext context, int index) {
-        final Appointment _singleAppointment = context.read<AppointmentProvider>().appointments[index];
-        return AppointmentCard(
-          name: _singleAppointment.name,
-          day: _singleAppointment.suggestedDate.returnDateDayForHomeCard(),
-          month: _singleAppointment.suggestedDate.returnDateMonthForHomeCard(),
-          phone: _singleAppointment.phone,
-          time: _singleAppointment.suggestedTime.returnTimeForHomeCard(),
-          dotColor: index.getRandomColor(),
-          finished: _singleAppointment.appointmentFinished,
-        );
-      });
-}
-
-/// todo
-/// add month/day separator check on pub dev
