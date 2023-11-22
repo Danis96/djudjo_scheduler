@@ -255,10 +255,18 @@ class NewAppointmentPage extends StatelessWidget {
       child: CustomSwitchWithTitleDescription(
         onChanged: (bool value) {
           context.read<AppointmentProvider>().setAppointmentFinished(value);
+          if (context.read<AppointmentProvider>().isSelectedDateInPast()) {
+            customSimpleDialog(
+              context,
+              buttonText: Language.common_ok,
+              title: Language.ana_past_date_issue,
+              content: Language.ana_past_content,
+            );
+          }
         },
         showIconAndTitle: false,
         removePadding: true,
-        switchBool: context.watch<AppointmentProvider>().appointmentFinished,
+        switchBool: context.watch<AppointmentProvider>().isSelectedDateInPast() || context.watch<AppointmentProvider>().appointmentFinished,
         switchActiveColor: ColorHelper.black.color,
         subTitle: Language.ana_manually_finished,
       ),
@@ -322,7 +330,6 @@ class NewAppointmentPage extends StatelessWidget {
               view: DateRangePickerView.month,
               navigationMode: DateRangePickerNavigationMode.snap,
               selectionMode: DateRangePickerSelectionMode.range,
-              enablePastDates: false,
               endRangeSelectionColor: ColorHelper.black.color,
               rangeSelectionColor: ColorHelper.towerBronze.color.withOpacity(0.5),
               selectionColor: ColorHelper.towerBronze.color,

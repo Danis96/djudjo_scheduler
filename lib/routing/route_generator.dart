@@ -9,6 +9,7 @@ import 'package:provider/single_child_widget.dart';
 
 import '../app/providers/splash_provider/splash_provider.dart';
 import '../app/utils/navigation_animations.dart';
+import '../app/view/appointment_details/appointment_details.dart';
 import '../app/view/login_page/login_page.dart';
 import '../app/view/splash_page/splash_page.dart';
 import '../routing/routes.dart';
@@ -27,13 +28,19 @@ mixin RouteGenerator {
       case Home:
         return SlideAnimationTween(
             widget: MultiProvider(
-          providers: <SingleChildWidget>[ChangeNotifierProvider<AppointmentProvider>(create: (_) => AppointmentProvider())],
+          providers: <SingleChildWidget>[
+            ChangeNotifierProvider<AppointmentProvider>(create: (_) => AppointmentProvider()),
+          ],
           child: BottomNavigationPage(),
         ));
       case NewAppointment:
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<AppointmentProvider>.value(
                 value: settings.arguments as AppointmentProvider, child: NewAppointmentPage()));
+      case AppointmentDetails:
+        return SlideAnimationTween(
+            widget: ChangeNotifierProvider<AppointmentProvider>.value(
+                value: settings.arguments as AppointmentProvider, child: AppointmentDetailsPage()));
 
       default:
         return _errorRoute();

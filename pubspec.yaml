@@ -43,6 +43,7 @@ dependencies:
     syncfusion_flutter_datepicker: ^23.2.4
     mask_text_input_formatter: ^2.6.0
     grouped_list: ^5.1.2
+    card_slider: ^1.0.5
 
 dependency_overrides:
 
@@ -142,12 +143,3 @@ flutter:
                 weight: 200
               - asset: fonts/Poppins/Poppins-ExtraLight.ttf
                 weight: 100
-
-
-    # For details regarding fonts from package dependencies,
-    # see https://flutter.dev/custom-fonts/#from-packages
-flutter_intl:
-    enabled: true
-    localizely:
-        ota_enabled: true
-        project_id: 1fb909e7-bf60-4756-a21a-f524c840a45f

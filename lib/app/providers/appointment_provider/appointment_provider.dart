@@ -39,6 +39,15 @@ class AppointmentProvider extends ChangeNotifier {
 
   Appointment get appointment => _appointment;
 
+  // details model
+  Appointment _appointmentDetails = Appointment();
+
+  Appointment get appointmentDetails => _appointmentDetails;
+
+  void setAppointmentDetails(Appointment value) {
+    _appointmentDetails = value;
+  }
+
   Future<String?> addAppointment() async {
     if (!areMandatoryFieldsEmpty()) {
       setDataToAppointmentModel();
@@ -53,10 +62,18 @@ class AppointmentProvider extends ChangeNotifier {
     final dynamic result = await _appointmentFirestoreRepository!.fetchAppointments();
     if (result is List<Appointment>) {
       _appointments = result;
+      sortAppointmentsByDate();
     } else {
       print(result.toString());
     }
     notifyListeners();
+  }
+
+  void sortAppointmentsByDate() {
+    _appointments.sort(
+      (Appointment a, Appointment b) =>
+          DateFormat('dd.MM.yyyy').parse(a.suggestedDate).compareTo(DateFormat('dd.MM.yyyy').parse(b.suggestedDate)),
+    );
   }
 
   void setDataToAppointmentModel() {
@@ -98,8 +115,30 @@ class AppointmentProvider extends ChangeNotifier {
     } else {
       dateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
     }
-
+    if (isSelectedDateInPast()) {
+      appointmentFinished = true;
+    }
     notifyListeners();
+  }
+
+  bool isSelectedDateInPast() {
+    final DateTime currentDate = DateTime.now();
+    String selectedFirst = '';
+    if (dateController.text.isNotEmpty) {
+      if (dateController.text.contains('-')) {
+        selectedFirst = dateController.text.split(' - ')[0];
+      } else {
+        selectedFirst = dateController.text;
+      }
+      final DateTime selectedDate = DateFormat('dd.MM.yyyy').parse(selectedFirst);
+      if (selectedDate.isBefore(currentDate)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
   bool areMandatoryFieldsEmpty() =>
@@ -119,6 +158,21 @@ class AppointmentProvider extends ChangeNotifier {
     sizeController.clear();
     placementController.clear();
     appointmentFinished = false;
+  }
+
+  final List<String> assetsForSlider = <String>[
+    'assets/ic_slide_1.png',
+    'assets/ic_slide_2.png',
+    'assets/ic_slide_3.png',
+    'assets/ic_slide_4.png',
+  ];
+
+  List<Widget> valuesWidget = <Widget>[];
+
+  void setValuesForSlider() {
+    for (int i = 0; i < assetsForSlider.length; i++) {
+      valuesWidget.add(Container(child: Image.asset(assetsForSlider[i])));
+    }
   }
 
   MaskTextInputFormatter maskFormatterPhone = MaskTextInputFormatter(mask: '###-###/###', type: MaskAutoCompletionType.lazy);

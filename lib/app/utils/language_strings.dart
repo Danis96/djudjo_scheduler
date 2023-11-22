@@ -53,9 +53,12 @@ class Language {
   static const String ana_button = 'Save Appointment';
   static const String ana_choose_date = 'Choose date';
   static const String ana_success_title = 'You have successfully added an appointment.';
-  static const String ana_manually_finished = 'Here you can manually switch your appointment status. Appointment status will automatically be Finished (ON) if the time you add is in the past.';
+  static const String ana_manually_finished = 'Here you can manually switch your appointment status.\nAppointment status will automatically be Finished (ON) if the time you add is in the past.';
   static const String ana_mandatory_title = 'Mandatory';
   static const String ana_optional_title = 'Optional';
+  static const String ana_past_date_issue = 'Past Date';
+  static const String ana_past_content = 'You cannot turn this switch OFF because selected date for appointment is in the past. So automatically Finished switch is ON.\n\nSelect date in the future to be able to turn it off.';
+
 
 
 

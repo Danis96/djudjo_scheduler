@@ -137,14 +137,14 @@ Widget _buildHeadline(BuildContext context) => Container(
     );
 
 Widget _listOfAppointments(BuildContext context) {
-  return GroupedListView<Appointment, int>(
+  return GroupedListView<Appointment, String>(
     shrinkWrap: true,
     padding: const EdgeInsets.symmetric(horizontal: 24),
     elements: context.watch<AppointmentProvider>().appointments,
     groupBy: (Appointment element) {
       return element.suggestedDate.returnDatetimeFormattedForGrouping();
     },
-    groupSeparatorBuilder: (int month) {
+    groupSeparatorBuilder: (String date) {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 15),
         alignment: Alignment.topLeft,
@@ -152,7 +152,7 @@ Widget _listOfAppointments(BuildContext context) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              month.returnMonthName(),
+              date.returnDateMonthForHomeSeparator(),
               style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 24),
             ),
             const Divider(),
@@ -162,6 +162,10 @@ Widget _listOfAppointments(BuildContext context) {
     },
     itemBuilder: (BuildContext context, Appointment element) {
       return AppointmentCard(
+        onCardPressed: () {
+          context.read<AppointmentProvider>().setAppointmentDetails(element);
+          Navigator.of(context).pushNamed(AppointmentDetails, arguments: context.read<AppointmentProvider>());
+        },
         name: element.name,
         day: element.suggestedDate.returnDateDayForHomeCard(),
         month: element.suggestedDate.returnDateMonthForHomeCard(),

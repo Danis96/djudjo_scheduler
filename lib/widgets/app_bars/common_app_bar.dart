@@ -1,6 +1,5 @@
+import 'package:djudjo_scheduler/theme/color_helper.dart';
 import 'package:flutter/material.dart';
-
-
 
 PreferredSizeWidget commonAppBar(
   BuildContext context, {
@@ -8,16 +7,23 @@ PreferredSizeWidget commonAppBar(
   Function? onLeadingTap,
   Color? leadingIconColor,
   Color? color,
+  Color? titleColor,
   bool hideLeading = false,
   Widget? action,
   Size? preferredSizeForBottom,
   Widget? bottomWidget,
+  String? title,
 }) {
   return AppBar(
     backgroundColor: color ?? Colors.transparent,
     elevation: 0,
-    bottom:
-        PreferredSize(preferredSize: preferredSizeForBottom ?? const Size(0, 0), child: bottomWidget ?? const SizedBox()),
+    title: title != null
+        ? Text(
+            title,
+            style: TextStyle(color: titleColor ?? ColorHelper.white.color, fontSize: 18),
+          )
+        : const SizedBox(),
+    bottom: PreferredSize(preferredSize: preferredSizeForBottom ?? const Size(0, 0), child: bottomWidget ?? const SizedBox()),
     actions: <Widget>[action ?? const SizedBox()],
     leading: hideLeading
         ? const SizedBox()
