@@ -28,12 +28,8 @@ class RegisterPage extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(
-        context,
-        color: ColorHelper.black.color,
-        hideLeading: true,
-        action: _buildTappableLogin(context),
-      );
+  PreferredSizeWidget _buildAppBar(BuildContext context) =>
+      commonAppBar(context, color: ColorHelper.black.color, hideLeading: true, action: _buildTappableLogin(context));
 
   Widget _buildBody(BuildContext context) {
     return ListView(shrinkWrap: true, children: <Widget>[

@@ -1,10 +1,13 @@
 import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
+import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
 import 'package:djudjo_scheduler/app/utils/int_extensions.dart';
 import 'package:djudjo_scheduler/app/utils/string_extensions.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
 import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
+import 'package:djudjo_scheduler/widgets/dialogs/simple_dialog.dart';
+import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +15,7 @@ import 'package:provider/provider.dart';
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 import '../../../widgets/drawer/custom_drawer.dart';
+import '../../providers/stupidity_provider/stupidity_provider.dart';
 import '../../utils/drawer_helper.dart';
 import '../../utils/language_strings.dart';
 
@@ -70,7 +74,17 @@ class _HomepageState extends State<Homepage> {
       backgroundColor: ColorHelper.white.color,
       actionIconColor: ColorHelper.white.color,
       logoutTitle: 'Logout',
-      onLogoutPress: () => print('Logout'),
+      onLogoutPress: () async {
+        customLoaderCircleWhite(context: context);
+        await context.read<LoginProvider>().logout().then((String? error) {
+          Navigator.of(context).pop();
+          if (error != null) {
+            customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(Login, (Route<dynamic> route) => false);
+          }
+        });
+      },
       onActionIconPress: () => Navigator.of(context).pop(),
       listItems: _drawerHelper.drawerListItems(context),
       labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: ColorHelper.towerNavy2.color),
@@ -141,9 +155,7 @@ Widget _listOfAppointments(BuildContext context) {
     shrinkWrap: true,
     padding: const EdgeInsets.symmetric(horizontal: 24),
     elements: context.watch<AppointmentProvider>().appointments,
-    groupBy: (Appointment element) {
-      return element.suggestedDate.returnDatetimeFormattedForGrouping();
-    },
+    groupBy: (Appointment element) => element.suggestedDate.returnDatetimeFormattedForGrouping(),
     groupSeparatorBuilder: (String date) {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 15),

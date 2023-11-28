@@ -18,7 +18,6 @@ void main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   FlavorConfig(flavor: Flavor.DEV, values: FlavorValues(appName: 'DjudjoInk'));
   WidgetsFlutterBinding.ensureInitialized();
-  // FlutterDownloader.initialize(debug: true);
   SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]).then((_) {
     setupLocator();
     runApp(MyApp());

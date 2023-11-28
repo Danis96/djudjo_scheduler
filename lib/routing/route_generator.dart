@@ -1,5 +1,6 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
+import 'package:djudjo_scheduler/app/providers/stupidity_provider/stupidity_provider.dart';
 import 'package:djudjo_scheduler/app/view/add_new_appointment/add_new_appointment.dart';
 import 'package:djudjo_scheduler/app/view/bottom_navigation_bar/bottom_navigation_page.dart';
 import 'package:djudjo_scheduler/app/view/register_page/register_page.dart';
@@ -30,6 +31,8 @@ mixin RouteGenerator {
             widget: MultiProvider(
           providers: <SingleChildWidget>[
             ChangeNotifierProvider<AppointmentProvider>(create: (_) => AppointmentProvider()),
+            ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
+            ChangeNotifierProvider<StupidityProvider>(create: (_) => StupidityProvider()),
           ],
           child: BottomNavigationPage(),
         ));

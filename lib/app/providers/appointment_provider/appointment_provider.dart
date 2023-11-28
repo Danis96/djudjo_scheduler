@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:djudjo_scheduler/app/models/appointment_model.dart';
+import 'package:djudjo_scheduler/app/providers/provider_utils/provider_constants.dart';
 import 'package:djudjo_scheduler/app/repositories/appointment_firestore_repository/appointment_firestore_repository.dart';
 import 'package:djudjo_scheduler/app/utils/language_strings.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,8 +27,11 @@ class AppointmentProvider extends ChangeNotifier {
   final TextEditingController imgController = TextEditingController();
 
   bool appointmentFinished = false;
+  bool isFavorite = false;
   TimeOfDay firstTime = const TimeOfDay(hour: 9, minute: 30);
   TimeOfDay lastTime = const TimeOfDay(hour: 23, minute: 30);
+  List<String> genders = <String>[ProviderConstants.MALE, ProviderConstants.FEMALE, ProviderConstants.OTHER];
+  String genderValue = 'M';
 
   DateRangePickerController dateRangePickerController = DateRangePickerController();
 
@@ -46,6 +50,17 @@ class AppointmentProvider extends ChangeNotifier {
 
   void setAppointmentDetails(Appointment value) {
     _appointmentDetails = value;
+  }
+
+  void setIsFavorite() {
+    isFavorite = !isFavorite;
+    print('is fav $isFavorite');
+    notifyListeners();
+  }
+
+  void setChosenGender(String value) {
+    genderValue = value;
+    notifyListeners();
   }
 
   Future<String?> addAppointment() async {
@@ -83,6 +98,8 @@ class AppointmentProvider extends ChangeNotifier {
       phone: phoneController.text,
       // this is true [appointmentConfirmed] because when admin creates appointment it is automatically confirmed
       appointmentConfirmed: true,
+      isFavorite: isFavorite,
+      gender: genderValue,
       id: emailController.text + '_id',
       appointmentFinished: appointmentFinished,
       description: descriptionController.text,
@@ -172,6 +189,17 @@ class AppointmentProvider extends ChangeNotifier {
   void setValuesForSlider() {
     for (int i = 0; i < assetsForSlider.length; i++) {
       valuesWidget.add(Container(child: Image.asset(assetsForSlider[i])));
+    }
+  }
+
+  String returnGenderImage() {
+    switch (genderValue) {
+      case 'M':
+        return 'assets/man.png';
+      case 'F':
+        return 'assets/woman.png';
+      default:
+        return 'assets/other.png';
     }
   }
 

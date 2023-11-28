@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 extension StringAdditions on String {
   String returnSplittedTime() {
@@ -37,5 +38,15 @@ extension StringAdditions on String {
       final String s = split('.')[2] + '-' + split('.')[1];
       return s;
     }
+  }
+
+  Future<void> makePhoneCall() async {
+    final Uri launchUri = Uri(scheme: 'tel', path: this);
+    await launchUrl(launchUri);
+  }
+
+  Future<void> emailTo() async {
+    final Uri launchUri = Uri(scheme: 'mailto', path: this);
+    await launchUrl(launchUri);
   }
 }

@@ -15,6 +15,8 @@ class Appointment {
     this.suggestedTime = '',
     this.appointmentConfirmed = false,
     this.appointmentFinished = false,
+    this.isFavorite,
+    this.gender = 'M',
   });
 
   factory Appointment.fromFirestore(DocumentSnapshot<dynamic> snapshot) {
@@ -25,6 +27,7 @@ class Appointment {
       phone: data['phone'] as String,
       appointmentFinished: data['appointment_finished'] as bool,
       appointmentConfirmed: data['appointment_confirmed'] as bool,
+      isFavorite: data['is_favorite'] as bool,
       suggestedTime: data['suggested_time'] as String,
       suggestedDate: data['suggested_date'] as String,
       placement: data['placement'] as String,
@@ -32,6 +35,7 @@ class Appointment {
       description: data['description'] as String,
       dateRange: data['date_range'] as String,
       size: data['size'] as String,
+      gender: data['gender'] as String,
       pictures: data['pictures'] != null ? data['pictures'] as List<dynamic> : <dynamic>[],
     );
   }
@@ -46,9 +50,11 @@ class Appointment {
   final List<dynamic> pictures;
   final bool appointmentConfirmed;
   final bool appointmentFinished;
+  final bool? isFavorite;
   final String dateRange;
   final String suggestedTime;
   final String suggestedDate;
+  final String gender;
 
   Map<String, dynamic> toFirestore() {
     return <String, dynamic>{
@@ -60,8 +66,10 @@ class Appointment {
       if (placement != null) 'placement': placement,
       if (size != null) 'size': size,
       'pictures': pictures,
+      'gender': gender,
       'date_range': dateRange,
       'appointment_confirmed': appointmentConfirmed,
+      'is_favorite': isFavorite,
       'appointment_finished': appointmentFinished,
       'suggested_date': suggestedDate,
       'suggested_time': suggestedTime,

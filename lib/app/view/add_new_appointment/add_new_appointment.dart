@@ -1,12 +1,15 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/utils/string_extensions.dart';
 import 'package:djudjo_scheduler/widgets/buttons/common_button.dart';
+import 'package:djudjo_scheduler/widgets/custom_picker/custom_picker.dart';
 import 'package:djudjo_scheduler/widgets/dialogs/simple_dialog.dart';
+import 'package:djudjo_scheduler/widgets/favorite_heart/favorite_heart.dart';
 import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
 import 'package:djudjo_scheduler/widgets/modal_sheet/custom_modal_sheet.dart';
 import 'package:djudjo_scheduler/widgets/switches/switch_with_title_description.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:group_radio_button/group_radio_button.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:time_range/time_range.dart';
@@ -29,6 +32,12 @@ class NewAppointmentPage extends StatelessWidget {
         icon: Icons.arrow_back_ios,
         leadingIconColor: ColorHelper.black.color,
         onLeadingTap: () => Navigator.of(context).pop(),
+        action: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: FavoriteHeart(
+              onTap: () => context.read<AppointmentProvider>().setIsFavorite(),
+              isSelected: context.watch<AppointmentProvider>().isFavorite),
+        ),
       );
 
   Widget _buildBody(BuildContext context) {
@@ -104,12 +113,36 @@ class NewAppointmentPage extends StatelessWidget {
         ),
         _buildDivider(context),
         const SizedBox(height: 10),
+        _buildGenderRadio(context),
+        const SizedBox(height: 10),
         _buildPlacementField(context),
         _buildSizeField(context),
         _buildDescriptionField(context),
         const SizedBox(height: 30),
         _buildUploadImg(context),
       ],
+    );
+  }
+
+  Widget _buildGenderRadio(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(Language.ana_gender_title, style: Theme.of(context).textTheme!.displaySmall,),
+          RadioGroup<String>.builder(
+            groupValue: context.watch<AppointmentProvider>().genderValue,
+            onChanged: (String? value) {
+              context.read<AppointmentProvider>().setChosenGender(value!);
+            },
+            items: context.read<AppointmentProvider>().genders,
+            itemBuilder: (String item) => RadioButtonBuilder<dynamic>(item),
+            fillColor: ColorHelper.towerBronze.color,
+            direction: Axis.horizontal,
+          ),
+        ],
+      ),
     );
   }
 
@@ -223,10 +256,9 @@ class NewAppointmentPage extends StatelessWidget {
   Widget _buildSizeField(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: CustomTextFormField(
-        controller: context.read<AppointmentProvider>().sizeController,
-        hintText: Language.ana_size_hint,
-        key: const Key('ana_size'),
+      child: CustomCmPicker(
+        heightController: context.read<AppointmentProvider>().sizeController,
+        hint: Language.ana_size_hint,
         onFieldSubmitted: (String? s) {
           FocusScope.of(context).nextFocus();
         },

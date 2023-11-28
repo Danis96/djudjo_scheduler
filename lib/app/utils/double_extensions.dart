@@ -1,3 +1,0 @@
-extension DoubleAddition on double {
-
-}

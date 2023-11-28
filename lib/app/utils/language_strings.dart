@@ -57,8 +57,15 @@ class Language {
   static const String ana_mandatory_title = 'Mandatory';
   static const String ana_optional_title = 'Optional';
   static const String ana_past_date_issue = 'Past Date';
+  static const String ana_gender_title = 'Choose gender';
   static const String ana_past_content = 'You cannot turn this switch OFF because selected date for appointment is in the past. So automatically Finished switch is ON.\n\nSelect date in the future to be able to turn it off.';
 
+
+  // Appointment details
+  static const String ad_tab_info = 'Info';
+  static const String ad_tab_img = 'Images';
+  static const String ad_info_headline = 'Appointment Details';
+  static const String ad_info_description = 'Description';
 
 
 

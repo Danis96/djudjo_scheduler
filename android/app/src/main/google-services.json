@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "171346661195",
-    "project_id": "djudjoink",
-    "storage_bucket": "djudjoink.appspot.com"
+    "project_number": "497858580033",
+    "project_id": "djudjoapp",
+    "storage_bucket": "djudjoapp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:171346661195:android:6538bfca2a35b6eb9a62ce",
+        "mobilesdk_app_id": "1:497858580033:android:dc9d38c375a98c1c4240c0",
         "android_client_info": {
           "package_name": "com.djudjo.scheduler"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "171346661195-7co4j74vsctk5plafp0r9m5sggppgi1h.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA4sozUOQnmdng_B45tcx6PhPm7XtJb6II"
+          "current_key": "AIzaSyB0CIkpaBbyPT0x1ekGqNi4x0KHFF-jsiE"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "171346661195-7co4j74vsctk5plafp0r9m5sggppgi1h.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
