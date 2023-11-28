@@ -246,9 +246,6 @@ class NewAppointmentPage extends StatelessWidget {
         controller: context.read<AppointmentProvider>().placementController,
         hintText: Language.ana_placement_hint,
         key: const Key('ana_placement'),
-        onFieldSubmitted: (String? s) {
-          FocusScope.of(context).nextFocus();
-        },
       ),
     );
   }

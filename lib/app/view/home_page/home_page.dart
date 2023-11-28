@@ -1,23 +1,19 @@
 import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
-import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
 import 'package:djudjo_scheduler/app/utils/int_extensions.dart';
 import 'package:djudjo_scheduler/app/utils/string_extensions.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
 import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
-import 'package:djudjo_scheduler/widgets/dialogs/simple_dialog.dart';
-import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:provider/provider.dart';
 
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
-import '../../../widgets/drawer/custom_drawer.dart';
 import '../../providers/stupidity_provider/stupidity_provider.dart';
-import '../../utils/drawer_helper.dart';
 import '../../utils/language_strings.dart';
+import 'home_page_drawer.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -37,13 +33,15 @@ class _HomepageState extends State<Homepage> {
 
   Future<void> _getInitialData(BuildContext context) async {
     await context.read<AppointmentProvider>().fetchAppointments();
+    await context.read<StupidityProvider>().fetchStupidities();
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: _buildDrawer(context),
+      drawer: buildDrawer(context),
       backgroundColor: ColorHelper.white.color,
       appBar: _buildAppBar(context),
       body: _buildBody(context),
@@ -56,79 +54,44 @@ class _HomepageState extends State<Homepage> {
         icon: Icons.menu_rounded,
         leadingIconColor: ColorHelper.white.color,
         onLeadingTap: () => _scaffoldKey.currentState!.openDrawer(),
-        action: IconButton(
-            onPressed: () => Navigator.of(context).pushNamed(NewAppointment, arguments: context.read<AppointmentProvider>()),
-            icon: const Icon(Icons.add)),
-      );
-
-  Widget _buildDrawer(BuildContext context) {
-    final DrawerHelper _drawerHelper = DrawerHelper();
-
-    return CustomDrawer(
-      widgetKey: const Key('home_page_drawer_key'),
-      actionKey: const Key('drawer_action_home_page_key'),
-      onDrawerItemPressed: (String value) {},
-      onDrawerOpened: (String value) {},
-      wrapWithMaterial: true,
-      headerHeight: 208,
-      backgroundColor: ColorHelper.white.color,
-      actionIconColor: ColorHelper.white.color,
-      logoutTitle: 'Logout',
-      onLogoutPress: () async {
-        customLoaderCircleWhite(context: context);
-        await context.read<LoginProvider>().logout().then((String? error) {
-          Navigator.of(context).pop();
-          if (error != null) {
-            customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
-          } else {
-            Navigator.of(context).pushNamedAndRemoveUntil(Login, (Route<dynamic> route) => false);
-          }
-        });
-      },
-      onActionIconPress: () => Navigator.of(context).pop(),
-      listItems: _drawerHelper.drawerListItems(context),
-      labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: ColorHelper.towerNavy2.color),
-      logoutStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: ColorHelper.towerNavy2.color, fontFamily: 'SourceSansPro'),
-      customHeader: Padding(
-        padding: const EdgeInsets.only(left: 15, bottom: 40),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Image.asset('assets/ic_logo.png', scale: 10),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Container(
-                    color: ColorHelper.white.color,
-                    padding: const EdgeInsets.all(10),
-                    child: const Icon(Icons.close),
-                  ),
-                ),
-                const SizedBox(width: 16),
-              ],
-            ),
-            const SizedBox(height: 5),
-            // todo get user data and show email
-            // Text(
-            //   userProfileProvider.user.email,
-            //   style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 12),
-            // )
-          ],
+        action: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Row(
+            children: <Widget>[
+              GestureDetector(
+                  onTap: () => print('See UnConfirmed list'),
+                  child: Stack(
+                    alignment: Alignment.topRight,
+                    children: <Widget>[
+                      const Icon(Icons.notifications),
+                      Container(
+                        width: 10,
+                        height: 10,
+                        decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                      ),
+                    ],
+                  )),
+            ],
+          ),
         ),
-      ),
-    );
-  }
+      );
 
   Widget _buildBody(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        ClipPath(clipper: BackgroundWaveClipper(), child: Container(height: 60, color: Colors.black)),
+        ClipPath(
+            clipper: BackgroundWaveClipper(),
+            child: Container(
+              height: 140,
+              width: double.infinity,
+              color: Colors.black,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+              child: Text(
+                context.read<StupidityProvider>().models.isNotEmpty ? context.read<StupidityProvider>().models.first.textValue! : '',
+                style: Theme.of(context).textTheme.displayLarge!.copyWith(color: ColorHelper.white.color, fontSize: 30),
+              ),
+            )),
         _buildHeadline(context),
         const SizedBox(height: 20),
         Expanded(child: _listOfAppointments(context)),
@@ -145,7 +108,10 @@ Widget _buildHeadline(BuildContext context) => Container(
         children: <Widget>[
           Text(Language.home_headline,
               style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 28, fontWeight: FontWeight.w700)),
-          const Icon(Icons.calendar_month_sharp),
+          GestureDetector(
+            onTap: () => Navigator.of(context).pushNamed(NewAppointment, arguments: context.read<AppointmentProvider>()),
+            child: const Icon(Icons.add, size: 30),
+          ),
         ],
       ),
     );
@@ -163,10 +129,7 @@ Widget _listOfAppointments(BuildContext context) {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              date.returnDateMonthForHomeSeparator(),
-              style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 24),
-            ),
+            Text(date.returnDateMonthForHomeSeparator(), style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 24)),
             const Divider(),
           ],
         ),

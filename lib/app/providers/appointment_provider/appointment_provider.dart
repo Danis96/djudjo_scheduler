@@ -50,6 +50,7 @@ class AppointmentProvider extends ChangeNotifier {
 
   void setAppointmentDetails(Appointment value) {
     _appointmentDetails = value;
+    notifyListeners();
   }
 
   void setIsFavorite() {
