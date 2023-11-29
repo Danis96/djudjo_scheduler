@@ -130,7 +130,10 @@ class NewAppointmentPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(Language.ana_gender_title, style: Theme.of(context).textTheme!.displaySmall,),
+          Text(
+            Language.ana_gender_title,
+            style: Theme.of(context).textTheme!.displaySmall,
+          ),
           RadioGroup<String>.builder(
             groupValue: context.watch<AppointmentProvider>().genderValue,
             onChanged: (String? value) {
@@ -325,16 +328,16 @@ class NewAppointmentPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 15),
       child: CommonButton(
         onPressed: () {
-          customLoaderCircleWhite(context: context);
-          context.read<AppointmentProvider>().addAppointment().then((String? error) {
-            Navigator.of(context).pop();
-            if (error != null) {
-              customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
-            } else {
-              context.read<AppointmentProvider>().clearControllers();
-              showSuccessModal(context);
-            }
-          });
+          // customLoaderCircleWhite(context: context);
+          // context.read<AppointmentProvider>().addAppointment().then((String? error) {
+          //   Navigator.of(context).pop();
+          //   if (error != null) {
+          //     customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
+          //   } else {
+          //     context.read<AppointmentProvider>().clearControllers();
+          showSuccessModal(context);
+          // }
+          // });
         },
         buttonTitle: Language.ana_button,
       ),
@@ -393,9 +396,18 @@ class NewAppointmentPage extends StatelessWidget {
         return ListenableProvider<AppointmentProvider>.value(
           value: context.read<AppointmentProvider>(),
           child: CustomModalSheet(
+            height: 400,
             title: Language.ana_success_title,
             onClosePressed: () => Navigator.of(context).pushNamed(Home),
-            bodyWidget: Container(child: Image.asset('assets/ic_logo.png')),
+            bodyWidget: Container(
+                child: Column(
+              children: <Widget>[
+                Image.asset('assets/success.png', height: 140),
+                const SizedBox(height: 30),
+                Text(Language.ana_success_subtitle,
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
+              ],
+            )),
             bottomWidget: CommonButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(Home);

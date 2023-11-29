@@ -36,8 +36,14 @@ class AppointmentProvider extends ChangeNotifier {
   DateRangePickerController dateRangePickerController = DateRangePickerController();
 
   List<Appointment> _appointments = <Appointment>[];
-
   List<Appointment> get appointments => _appointments;
+
+  // not confirmed appointments
+  List<Appointment> _appointmentsNotConfirmed = <Appointment>[];
+  List<Appointment> get appointmentsNotConfirmed => _appointmentsNotConfirmed;
+  // confirmed appointments
+  List<Appointment> _appointmentsConfirmed = <Appointment>[];
+  List<Appointment> get appointmentsConfirmed => _appointmentsConfirmed;
 
   Appointment _appointment = Appointment();
 
@@ -79,6 +85,7 @@ class AppointmentProvider extends ChangeNotifier {
     if (result is List<Appointment>) {
       _appointments = result;
       sortAppointmentsByDate();
+      sortNotConfirmedAppointments();
     } else {
       print(result.toString());
     }
@@ -88,8 +95,21 @@ class AppointmentProvider extends ChangeNotifier {
   void sortAppointmentsByDate() {
     _appointments.sort(
       (Appointment a, Appointment b) =>
-          DateFormat('dd.MM.yyyy').parse(a.suggestedDate).compareTo(DateFormat('dd.MM.yyyy').parse(b.suggestedDate)),
+          DateFormat('dd.MM.yyyy').parse(a.suggestedDate!).compareTo(DateFormat('dd.MM.yyyy').parse(b.suggestedDate!)),
     );
+  }
+
+
+  void sortNotConfirmedAppointments() {
+    if(_appointments.isNotEmpty) {
+      for(final Appointment a in _appointments) {
+        if(!a.appointmentConfirmed!) {
+          _appointmentsNotConfirmed.add(a);
+        } else {
+          _appointmentsConfirmed.add(a);
+        }
+      }
+    }
   }
 
   void setDataToAppointmentModel() {
@@ -202,6 +222,13 @@ class AppointmentProvider extends ChangeNotifier {
       default:
         return 'assets/other.png';
     }
+  }
+
+  bool showUnConfirmedList = false;
+
+  void setShowUnConfirmedList() {
+    showUnConfirmedList = !showUnConfirmedList;
+    notifyListeners();
   }
 
   MaskTextInputFormatter maskFormatterPhone = MaskTextInputFormatter(mask: '###-###/###', type: MaskAutoCompletionType.lazy);

@@ -54,31 +54,32 @@ class _HomepageState extends State<Homepage> {
         icon: Icons.menu_rounded,
         leadingIconColor: ColorHelper.white.color,
         onLeadingTap: () => _scaffoldKey.currentState!.openDrawer(),
-        action: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            children: <Widget>[
-              GestureDetector(
-                  onTap: () => print('See UnConfirmed list'),
-                  child: Stack(
-                    alignment: Alignment.topRight,
-                    children: <Widget>[
-                      const Icon(Icons.notifications),
-                      Container(
-                        width: 10,
-                        height: 10,
-                        decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
-                      ),
-                    ],
-                  )),
-            ],
-          ),
-        ),
+        action: _buildNotificationWidget(context),
+      );
+
+  Widget _buildNotificationWidget(BuildContext context) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 11),
+        child: GestureDetector(
+            onTap: () => Navigator.of(context).pushNamed(Notifications, arguments: context.read<AppointmentProvider>()),
+            child: Stack(
+              alignment: Alignment.topRight,
+              children: <Widget>[
+                const Icon(Icons.notifications),
+                if (context.watch<AppointmentProvider>().appointmentsNotConfirmed.isNotEmpty)
+                  Container(
+                    width: 10,
+                    height: 10,
+                    decoration: const BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                  )
+                else
+                  const SizedBox(),
+              ],
+            )),
       );
 
   Widget _buildBody(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         ClipPath(
             clipper: BackgroundWaveClipper(),
@@ -92,9 +93,12 @@ class _HomepageState extends State<Homepage> {
                 style: Theme.of(context).textTheme.displayLarge!.copyWith(color: ColorHelper.white.color, fontSize: 30),
               ),
             )),
-        _buildHeadline(context),
-        const SizedBox(height: 20),
-        Expanded(child: _listOfAppointments(context)),
+        if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty) _buildHeadline(context),
+        if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty) const SizedBox(height: 20),
+        if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty)
+          Expanded(child: _listOfAppointments(context))
+        else
+          Expanded(child: _buildEmptyState(context)),
       ],
     );
   }
@@ -120,8 +124,8 @@ Widget _listOfAppointments(BuildContext context) {
   return GroupedListView<Appointment, String>(
     shrinkWrap: true,
     padding: const EdgeInsets.symmetric(horizontal: 24),
-    elements: context.watch<AppointmentProvider>().appointments,
-    groupBy: (Appointment element) => element.suggestedDate.returnDatetimeFormattedForGrouping(),
+    elements: context.watch<AppointmentProvider>().appointmentsConfirmed,
+    groupBy: (Appointment element) => element.suggestedDate!.returnDatetimeFormattedForGrouping(),
     groupSeparatorBuilder: (String date) {
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 15),
@@ -141,16 +145,27 @@ Widget _listOfAppointments(BuildContext context) {
           context.read<AppointmentProvider>().setAppointmentDetails(element);
           Navigator.of(context).pushNamed(AppointmentDetails, arguments: context.read<AppointmentProvider>());
         },
-        name: element.name,
-        day: element.suggestedDate.returnDateDayForHomeCard(),
-        month: element.suggestedDate.returnDateMonthForHomeCard(),
-        phone: element.phone,
-        time: element.suggestedTime.returnTimeForHomeCard(),
+        name: element.name ?? '',
+        day: element.suggestedDate != null ? element.suggestedDate!.returnDateDayForHomeCard() : '',
+        month: element.suggestedDate != null ? element.suggestedDate!.returnDateMonthForHomeCard() : '',
+        phone: element.phone ?? '',
+        time: element.suggestedTime != null ? element.suggestedTime!.returnTimeForHomeCard() : '',
         dotColor: element.hashCode.getRandomColor(),
-        finished: element.appointmentFinished,
+        finished: element.appointmentFinished ?? false,
       );
     },
     floatingHeader: true,
     order: GroupedListOrder.ASC, // optional
+  );
+}
+
+Widget _buildEmptyState(BuildContext context) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: <Widget>[
+      Image.asset('assets/home_empty.png', height: 160),
+      const SizedBox(height: 15),
+      const Text(Language.home_empty),
+    ],
   );
 }

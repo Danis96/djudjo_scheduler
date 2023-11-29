@@ -1,4 +1,3 @@
-
 class Language {
   // common
   static const String common_ok = 'Ok';
@@ -14,7 +13,6 @@ class Language {
 
   // appointment provider
   static const String mandatory_fields = 'Need to fulfill all mandatory fields.';
-
 
   // login page
   static const String login_btn = 'Login';
@@ -36,6 +34,7 @@ class Language {
 
   // Home page
   static const String home_headline = 'Appointments';
+  static const String home_empty = 'You do not have any confirmed appointments.';
 
   // Add new appointment page
   static const String ana_headline = 'Add new appointment';
@@ -52,14 +51,16 @@ class Language {
   static const String ana_img = 'Upload image';
   static const String ana_button = 'Save Appointment';
   static const String ana_choose_date = 'Choose date';
-  static const String ana_success_title = 'You have successfully added an appointment.';
-  static const String ana_manually_finished = 'Here you can manually switch your appointment status.\nAppointment status will automatically be Finished (ON) if the time you add is in the past.';
+  static const String ana_success_subtitle = 'You have successfully added an appointment.';
+  static const String ana_success_title = 'Success!';
+  static const String ana_manually_finished =
+      'Here you can manually switch your appointment status.\nAppointment status will automatically be Finished (ON) if the time you add is in the past.';
   static const String ana_mandatory_title = 'Mandatory';
   static const String ana_optional_title = 'Optional';
   static const String ana_past_date_issue = 'Past Date';
   static const String ana_gender_title = 'Choose gender';
-  static const String ana_past_content = 'You cannot turn this switch OFF because selected date for appointment is in the past. So automatically Finished switch is ON.\n\nSelect date in the future to be able to turn it off.';
-
+  static const String ana_past_content =
+      'You cannot turn this switch OFF because selected date for appointment is in the past. So automatically Finished switch is ON.\n\nSelect date in the future to be able to turn it off.';
 
   // Appointment details
   static const String ad_tab_info = 'Info';
@@ -67,6 +68,11 @@ class Language {
   static const String ad_info_headline = 'Appointment Details';
   static const String ad_info_description = 'Description';
 
-
-
+  // Notificfations
+  static const String not_empty_state = 'Your notification box is empty.';
+  static const String not_app_bar_title = 'Notifications';
+  static const String not_headline_title = 'Unconfirmed appointments';
+  static const String not_headline_sub1 = 'You have ';
+  static const String not_headline_sub2 =
+      ' unconfirmed appointments that are waiting for your confirmation.Click on the icon to show appointments that needs to be confirmed.';
 }
