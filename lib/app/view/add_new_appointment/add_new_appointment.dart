@@ -328,16 +328,16 @@ class NewAppointmentPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 15),
       child: CommonButton(
         onPressed: () {
-          // customLoaderCircleWhite(context: context);
-          // context.read<AppointmentProvider>().addAppointment().then((String? error) {
-          //   Navigator.of(context).pop();
-          //   if (error != null) {
-          //     customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
-          //   } else {
-          //     context.read<AppointmentProvider>().clearControllers();
+          customLoaderCircleWhite(context: context);
+          context.read<AppointmentProvider>().addAppointment().then((String? error) {
+            Navigator.of(context).pop();
+            if (error != null) {
+              customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
+            } else {
+              context.read<AppointmentProvider>().clearControllers();
           showSuccessModal(context);
-          // }
-          // });
+          }
+          });
         },
         buttonTitle: Language.ana_button,
       ),

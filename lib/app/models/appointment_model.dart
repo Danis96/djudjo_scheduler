@@ -31,7 +31,7 @@ class Appointment {
       suggestedTime: data['suggested_time'] as String?,
       suggestedDate: data['suggested_date'] as String?,
       placement: data['placement'] as String?,
-      id: data['id'] as String?,
+      id: snapshot.id,
       description: data['description'] as String?,
       dateRange: data['date_range'] as String?,
       size: data['size'] as String?,

@@ -82,6 +82,7 @@ class AppointmentProvider extends ChangeNotifier {
 
   Future<String?> fetchAppointments() async {
     final dynamic result = await _appointmentFirestoreRepository!.fetchAppointments();
+    _appointments.clear();
     if (result is List<Appointment>) {
       _appointments = result;
       sortAppointmentsByDate();
@@ -92,6 +93,17 @@ class AppointmentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<String?> deleteAppointment(String id) async {
+    try {
+      await _appointmentFirestoreRepository!.deleteAppointmentFromFirestore(id);
+      await fetchAppointments();
+      return null;
+    } catch(e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
   void sortAppointmentsByDate() {
     _appointments.sort(
       (Appointment a, Appointment b) =>
@@ -99,8 +111,9 @@ class AppointmentProvider extends ChangeNotifier {
     );
   }
 
-
   void sortNotConfirmedAppointments() {
+    _appointmentsNotConfirmed.clear();
+    _appointmentsConfirmed.clear();
     if(_appointments.isNotEmpty) {
       for(final Appointment a in _appointments) {
         if(!a.appointmentConfirmed!) {

@@ -96,7 +96,7 @@ void _showInfoDialog(BuildContext context) {
             Image.asset('assets/info.png', height: 60),
             const Divider(),
             const SizedBox(height: 10),
-            const Text('You can delete request for appointment if you slide it to the left.'),
+            const Text(Language.not_info_content),
           ],
         ),
       ));
@@ -110,21 +110,21 @@ Widget _buildNotificationsList(BuildContext context) {
       itemBuilder: (BuildContext context, int index) {
         final Appointment app = context.read<AppointmentProvider>().appointmentsNotConfirmed[index];
         return Slidable(
-          key: const ValueKey<int>(0),
+          key: UniqueKey(),
           startActionPane: ActionPane(
             motion: const ScrollMotion(),
             dismissible: DismissiblePane(onDismissed: () {
-              print('OBRISI');
+              context.read<AppointmentProvider>().deleteAppointment(app.id!);
             }),
             children: <Widget>[
               SlidableAction(
                 onPressed: (BuildContext context) {
-                  print('OBRISI');
+                  context.read<AppointmentProvider>().deleteAppointment(app.id!);
                 },
                 backgroundColor: const Color(0xFFFE4A49),
                 foregroundColor: Colors.white,
                 icon: Icons.delete,
-                label: 'Delete',
+                label: Language.not_delete_slide,
               ),
             ],
           ),

@@ -72,6 +72,8 @@ class Language {
   static const String not_empty_state = 'Your notification box is empty.';
   static const String not_app_bar_title = 'Notifications';
   static const String not_headline_title = 'Unconfirmed appointments';
+  static const String not_delete_slide = 'Delete';
+  static const String not_info_content = 'You can delete request for appointment if you slide it to the left.';
   static const String not_headline_sub1 = 'You have ';
   static const String not_headline_sub2 =
       ' unconfirmed appointments that are waiting for your confirmation.Click on the icon to show appointments that needs to be confirmed.';
