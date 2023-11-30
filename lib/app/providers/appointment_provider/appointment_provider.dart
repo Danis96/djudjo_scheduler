@@ -3,6 +3,7 @@ import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 import 'package:djudjo_scheduler/app/providers/provider_utils/provider_constants.dart';
 import 'package:djudjo_scheduler/app/repositories/appointment_firestore_repository/appointment_firestore_repository.dart';
 import 'package:djudjo_scheduler/app/utils/language_strings.dart';
+import 'package:djudjo_scheduler/app/utils/string_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,7 @@ class AppointmentProvider extends ChangeNotifier {
 
   AppointmentFirestoreRepository? _appointmentFirestoreRepository;
 
+  // add new appointment controllers and variables
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -28,21 +30,38 @@ class AppointmentProvider extends ChangeNotifier {
 
   bool appointmentFinished = false;
   bool isFavorite = false;
+  bool isConfirmed = false;
   TimeOfDay firstTime = const TimeOfDay(hour: 9, minute: 30);
   TimeOfDay lastTime = const TimeOfDay(hour: 23, minute: 30);
   List<String> genders = <String>[ProviderConstants.MALE, ProviderConstants.FEMALE, ProviderConstants.OTHER];
   String genderValue = 'M';
 
+  // edit appointment controllers and variables
+  final TextEditingController eNameController = TextEditingController();
+  final TextEditingController ePhoneController = TextEditingController();
+  final TextEditingController eEmailController = TextEditingController();
+  final TextEditingController eTimeController = TextEditingController();
+  final TextEditingController eDateController = TextEditingController();
+  final TextEditingController ePlacementController = TextEditingController();
+  final TextEditingController eSizeController = TextEditingController();
+  final TextEditingController eDescriptionController = TextEditingController();
+  final TextEditingController eImgController = TextEditingController();
+
   DateRangePickerController dateRangePickerController = DateRangePickerController();
 
+  // all appointments
   List<Appointment> _appointments = <Appointment>[];
+
   List<Appointment> get appointments => _appointments;
 
   // not confirmed appointments
   List<Appointment> _appointmentsNotConfirmed = <Appointment>[];
+
   List<Appointment> get appointmentsNotConfirmed => _appointmentsNotConfirmed;
+
   // confirmed appointments
   List<Appointment> _appointmentsConfirmed = <Appointment>[];
+
   List<Appointment> get appointmentsConfirmed => _appointmentsConfirmed;
 
   Appointment _appointment = Appointment();
@@ -59,9 +78,35 @@ class AppointmentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setDataForEdit() {
+    eNameController.text = appointmentDetails.name ?? '';
+    eDateController.text = appointmentDetails.suggestedDate ?? '';
+    eDescriptionController.text = appointmentDetails.description ?? '';
+    eEmailController.text = appointmentDetails.email ?? '';
+    ePhoneController.text = appointmentDetails.phone ?? '';
+    ePlacementController.text = appointmentDetails.placement ?? '';
+    eSizeController.text = appointmentDetails.size ?? '';
+    eTimeController.text = appointmentDetails.suggestedTime ?? '';
+    isFavorite = appointmentDetails.isFavorite ?? false;
+    appointmentFinished = appointmentDetails.appointmentFinished ?? false;
+    genderValue = appointmentDetails.gender ?? '';
+    isConfirmed = appointmentDetails.appointmentConfirmed ?? false;
+    firstTime = TimeOfDay(
+        hour: appointmentDetails.suggestedTime!.returnTimeRangeHours(0),
+        minute: appointmentDetails.suggestedTime!.returnTimeRangeMinutes(0));
+    lastTime = TimeOfDay(
+        hour: appointmentDetails.suggestedTime!.returnTimeRangeHours(1),
+        minute: appointmentDetails.suggestedTime!.returnTimeRangeMinutes(1));
+    notifyListeners();
+  }
+
   void setIsFavorite() {
     isFavorite = !isFavorite;
-    print('is fav $isFavorite');
+    notifyListeners();
+  }
+
+  void setIsConfirmed() {
+    isConfirmed = !isConfirmed;
     notifyListeners();
   }
 
@@ -74,6 +119,17 @@ class AppointmentProvider extends ChangeNotifier {
     if (!areMandatoryFieldsEmpty()) {
       setDataToAppointmentModel();
       final String? result = await _appointmentFirestoreRepository!.addAppointmentToFirestore(_appointment);
+      return result;
+    } else {
+      return Language.mandatory_fields;
+    }
+  }
+
+  Future<String?> updateAppointment() async {
+    if (!areMandatoryFieldsEmptyEdit()) {
+      setDataToAppointmentModel(isEdit: true);
+      final String? result = await _appointmentFirestoreRepository!.updateAppointmentToFirestore(_appointment);
+      await fetchAppointments();
       return result;
     } else {
       return Language.mandatory_fields;
@@ -98,7 +154,7 @@ class AppointmentProvider extends ChangeNotifier {
       await _appointmentFirestoreRepository!.deleteAppointmentFromFirestore(id);
       await fetchAppointments();
       return null;
-    } catch(e) {
+    } catch (e) {
       print(e);
       return e.toString();
     }
@@ -114,9 +170,9 @@ class AppointmentProvider extends ChangeNotifier {
   void sortNotConfirmedAppointments() {
     _appointmentsNotConfirmed.clear();
     _appointmentsConfirmed.clear();
-    if(_appointments.isNotEmpty) {
-      for(final Appointment a in _appointments) {
-        if(!a.appointmentConfirmed!) {
+    if (_appointments.isNotEmpty) {
+      for (final Appointment a in _appointments) {
+        if (!a.appointmentConfirmed!) {
           _appointmentsNotConfirmed.add(a);
         } else {
           _appointmentsConfirmed.add(a);
@@ -125,23 +181,24 @@ class AppointmentProvider extends ChangeNotifier {
     }
   }
 
-  void setDataToAppointmentModel() {
+  void setDataToAppointmentModel({bool isEdit = false}) {
     _appointment = Appointment(
-      name: nameController.text,
-      email: emailController.text,
-      phone: phoneController.text,
-      // this is true [appointmentConfirmed] because when admin creates appointment it is automatically confirmed
-      appointmentConfirmed: true,
+      name: isEdit ? eNameController.text : nameController.text,
+      email: isEdit ? eEmailController.text : emailController.text,
+      phone: isEdit ? ePhoneController.text : phoneController.text,
+      id: _appointmentDetails.id,
+      // this is true [appointmentConfirmed] because when admin creates appointment it is automatically confirmed [isEdit = false
       isFavorite: isFavorite,
+      // ignore: avoid_bool_literals_in_conditional_expressions
+      appointmentConfirmed: isEdit ? isConfirmed : true,
       gender: genderValue,
-      id: emailController.text + '_id',
       appointmentFinished: appointmentFinished,
-      description: descriptionController.text,
-      size: sizeController.text,
-      placement: placementController.text,
-      suggestedDate: dateController.text,
-      suggestedTime: timeController.text,
-      dateRange: dateController.text + ' ' + timeController.text,
+      description: isEdit ? eDescriptionController.text : descriptionController.text,
+      size: isEdit ? eSizeController.text : sizeController.text,
+      placement: isEdit ? ePlacementController.text : placementController.text,
+      suggestedDate: isEdit ? eDateController.text : dateController.text,
+      suggestedTime: isEdit ? eTimeController.text : timeController.text,
+      dateRange: isEdit ? eDateController.text + ' ' + eTimeController.text : dateController.text + ' ' + timeController.text,
       // todo add img upload
     );
   }
@@ -172,6 +229,23 @@ class AppointmentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setFormattedDateRangeEdit(DateRangePickerSelectionChangedArgs args) {
+    if (args.value.endDate != null) {
+      if (args.value.startDate as DateTime == args.value.endDate as DateTime) {
+        eDateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
+      } else {
+        eDateController.text = '${DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime)} -'
+            ' ${DateFormat('dd.MM.yyyy').format(args.value.endDate as DateTime)}';
+      }
+    } else {
+      eDateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
+    }
+    if (isSelectedDateInPast()) {
+      appointmentFinished = true;
+    }
+    notifyListeners();
+  }
+
   bool isSelectedDateInPast() {
     final DateTime currentDate = DateTime.now();
     String selectedFirst = '';
@@ -192,12 +266,39 @@ class AppointmentProvider extends ChangeNotifier {
     }
   }
 
+  bool isSelectedDateInPastEdit() {
+    final DateTime currentDate = DateTime.now();
+    String selectedFirst = '';
+    if (eDateController.text.isNotEmpty) {
+      if (eDateController.text.contains('-')) {
+        selectedFirst = eDateController.text.split(' - ')[0];
+      } else {
+        selectedFirst = eDateController.text;
+      }
+      final DateTime selectedDate = DateFormat('dd.MM.yyyy').parse(selectedFirst);
+      if (selectedDate.isBefore(currentDate)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   bool areMandatoryFieldsEmpty() =>
       nameController.text.isEmpty &&
       emailController.text.isEmpty &&
       phoneController.text.isEmpty &&
       timeController.text.isEmpty &&
       dateController.text.isEmpty;
+
+  bool areMandatoryFieldsEmptyEdit() =>
+      eNameController.text.isEmpty &&
+      eEmailController.text.isEmpty &&
+      ePhoneController.text.isEmpty &&
+      eTimeController.text.isEmpty &&
+      eDateController.text.isEmpty;
 
   void clearControllers() {
     nameController.clear();
@@ -208,6 +309,18 @@ class AppointmentProvider extends ChangeNotifier {
     descriptionController.clear();
     sizeController.clear();
     placementController.clear();
+    appointmentFinished = false;
+  }
+
+  void clearControllersEdit() {
+    eNameController.clear();
+    eDateController.clear();
+    eTimeController.clear();
+    eEmailController.clear();
+    ePhoneController.clear();
+    eDescriptionController.clear();
+    eSizeController.clear();
+    ePlacementController.clear();
     appointmentFinished = false;
   }
 
@@ -234,6 +347,17 @@ class AppointmentProvider extends ChangeNotifier {
         return 'assets/woman.png';
       default:
         return 'assets/other.png';
+    }
+  }
+
+  String returnGenderValue() {
+    switch (genderValue) {
+      case 'M':
+        return 'Male';
+      case 'F':
+        return 'Female';
+      default:
+        return 'Other';
     }
   }
 

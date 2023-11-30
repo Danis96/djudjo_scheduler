@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 
+import '../../../routing/routes.dart';
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 
@@ -136,7 +137,10 @@ Widget _buildNotificationsList(BuildContext context) {
 Widget _buildNotificationItem(BuildContext context, Appointment appointment) {
   return GestureDetector(
     onTap: () {
-      print('Spremiti model i prebaciti na edit');
+      context.read<AppointmentProvider>().setAppointmentDetails(appointment);
+      context.read<AppointmentProvider>().clearControllersEdit();
+      context.read<AppointmentProvider>().setDataForEdit();
+      Navigator.of(context).pushNamed(EditAppointment, arguments: context.read<AppointmentProvider>());
     },
     child: Card(
       elevation: 0,

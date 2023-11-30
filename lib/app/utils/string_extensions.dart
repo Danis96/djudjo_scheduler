@@ -49,4 +49,8 @@ extension StringAdditions on String {
     final Uri launchUri = Uri(scheme: 'mailto', path: this);
     await launchUrl(launchUri);
   }
+
+  int returnTimeRangeHours(int i) => int.parse(split('-')[i].split(':')[0]);
+
+  int returnTimeRangeMinutes(int i) => int.parse(split('-')[i].split(':')[1]);
 }

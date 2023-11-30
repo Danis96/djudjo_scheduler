@@ -3,6 +3,7 @@ import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dar
 import 'package:djudjo_scheduler/app/providers/stupidity_provider/stupidity_provider.dart';
 import 'package:djudjo_scheduler/app/view/add_new_appointment/add_new_appointment.dart';
 import 'package:djudjo_scheduler/app/view/bottom_navigation_bar/bottom_navigation_page.dart';
+import 'package:djudjo_scheduler/app/view/edit_page/edit_page.dart';
 import 'package:djudjo_scheduler/app/view/notification_page/notification_page.dart';
 import 'package:djudjo_scheduler/app/view/register_page/register_page.dart';
 import 'package:flutter/material.dart';
@@ -45,10 +46,13 @@ mixin RouteGenerator {
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<AppointmentProvider>.value(
                 value: settings.arguments as AppointmentProvider, child: AppointmentDetailsPage()));
-        case Notifications:
+      case Notifications:
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<AppointmentProvider>.value(
                 value: settings.arguments as AppointmentProvider, child: NotificationPage()));
+      case EditAppointment:
+        return SlideAnimationTween(
+            widget: ChangeNotifierProvider<AppointmentProvider>.value(value: settings.arguments as AppointmentProvider, child: EditPage()));
 
       default:
         return _errorRoute();

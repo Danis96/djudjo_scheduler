@@ -2,6 +2,7 @@ import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_
 import 'package:djudjo_scheduler/app/utils/language_strings.dart';
 import 'package:djudjo_scheduler/app/view/appointment_details/appointment_image_slider.dart';
 import 'package:djudjo_scheduler/app/view/appointment_details/appointment_info.dart';
+import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/tab_bar/tab_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,6 @@ import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 
 class AppointmentDetailsPage extends StatefulWidget {
-
   @override
   State<AppointmentDetailsPage> createState() => _AppointmentDetailsPageState();
 }
@@ -46,12 +46,15 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
         preferredSizeForBottom: const Size(300, 50),
         action: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            children: <Widget>[
-              GestureDetector(onTap: () => print('Save as favorite'), child: const Icon(Icons.favorite_border, color: Colors.black)),
-              const SizedBox(width: 20),
-              GestureDetector(onTap: () => print('Open edit page'), child: const Icon(Icons.edit, color: Colors.black)),
-            ],
+          child: GestureDetector(
+            onTap: () {
+              context.read<AppointmentProvider>().clearControllersEdit();
+              context.read<AppointmentProvider>().setDataForEdit();
+              Navigator.of(context)
+                  .pushNamed(EditAppointment, arguments: context.read<AppointmentProvider>())
+                  .then((Object? value) => setState(() {}));
+            },
+            child: const Icon(Icons.edit, color: Colors.black),
           ),
         ),
       );

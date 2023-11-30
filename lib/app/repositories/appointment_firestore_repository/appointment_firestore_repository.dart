@@ -19,6 +19,15 @@ class AppointmentFirestoreRepository {
     }
   }
 
+  Future<String?> updateAppointmentToFirestore(Appointment appointment) async {
+    try {
+      await _appointmentsCollection!.doc(appointment.id).update(appointment.toFirestore());
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   Future<String?> deleteAppointmentFromFirestore(String id) async {
     try {
       await _appointmentsCollection!.doc(id).delete();

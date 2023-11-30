@@ -77,4 +77,9 @@ class Language {
   static const String not_headline_sub1 = 'You have ';
   static const String not_headline_sub2 =
       ' unconfirmed appointments that are waiting for your confirmation.Click on the icon to show appointments that needs to be confirmed.';
+
+  // Edit page
+  static const String ep_headline = 'Edit appointment';
+  static const String ep_success_headline = 'Success';
+  static const String ep_success_subtitle = 'You have successfully edit current appointment.';
 }

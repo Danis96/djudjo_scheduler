@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Appointment {
   Appointment({
-    this.id = '',
+    this.id,
     this.name = '',
     this.email = '',
     this.phone = '',
