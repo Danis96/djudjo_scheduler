@@ -15,6 +15,7 @@ import '../../../widgets/custom_picker/custom_picker.dart';
 import '../../../widgets/dialogs/simple_dialog.dart';
 import '../../../widgets/favorite_heart/favorite_heart.dart';
 import '../../../widgets/loaders/loader_app_dialog.dart';
+
 import '../../../widgets/modal_sheet/custom_modal_sheet.dart';
 import '../../../widgets/switches/switch_with_title_description.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
@@ -94,7 +95,7 @@ Widget _buildMandatoryFields(BuildContext context) {
     children: <Widget>[
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Text(Language.ana_mandatory_title, style: Theme.of(context).textTheme.displayMedium),
+        child: Text(Language.ep_mandatory_title, style: Theme.of(context).textTheme.displayMedium),
       ),
       _buildDivider(context),
       const SizedBox(height: 10),
@@ -114,7 +115,7 @@ Widget _buildOptionalFields(BuildContext context) {
     children: <Widget>[
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: Text(Language.ana_optional_title, style: Theme.of(context).textTheme.displayMedium),
+        child: Text(Language.ep_optional_title, style: Theme.of(context).textTheme.displayMedium),
       ),
       _buildDivider(context),
       const SizedBox(height: 10),
@@ -139,7 +140,7 @@ Widget _buildGenderRadio(BuildContext context) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          Language.ana_gender_title,
+          Language.ep_gender_title,
           style: Theme.of(context).textTheme.displaySmall,
         ),
         RadioGroup<String>.builder(
@@ -167,7 +168,7 @@ Widget _buildNameField(BuildContext context) {
     padding: const EdgeInsets.symmetric(horizontal: 24),
     child: CustomTextFormField(
       controller: context.read<AppointmentProvider>().eNameController,
-      hintText: Language.ana_name_hint,
+      hintText: Language.ep_name_hint,
       key: const Key('ana_name'),
       onFieldSubmitted: (String? s) {
         FocusScope.of(context).nextFocus();
@@ -181,7 +182,7 @@ Widget _buildPhoneField(BuildContext context) {
     padding: const EdgeInsets.symmetric(horizontal: 24),
     child: CustomTextFormField(
       controller: context.read<AppointmentProvider>().ePhoneController,
-      hintText: Language.ana_phone_hint,
+      hintText: Language.ep_phone_hint,
       inputFormatters: <TextInputFormatter>[context.read<AppointmentProvider>().maskFormatterPhone],
       keyboardType: TextInputType.phone,
       key: const Key('ana_phone'),
@@ -197,7 +198,7 @@ Widget _buildEmailField(BuildContext context) {
     padding: const EdgeInsets.symmetric(horizontal: 24),
     child: CustomTextFormField(
       controller: context.read<AppointmentProvider>().eEmailController,
-      hintText: Language.ana_email_hint,
+      hintText: Language.ep_email_hint,
       keyboardType: TextInputType.emailAddress,
       key: const Key('ana_email'),
       onFieldSubmitted: (String? s) {
@@ -211,8 +212,8 @@ final TextStyle _timeRangeStyle = TextStyle(fontSize: 18, color: ColorHelper.bla
 
 Widget _buildTimeField(BuildContext context) {
   return TimeRange(
-      fromTitle: Text(Language.ana_from_time, style: _timeRangeStyle),
-      toTitle: Text(Language.ana_to_time, style: _timeRangeStyle),
+      fromTitle: Text(Language.ep_from_time, style: _timeRangeStyle),
+      toTitle: Text(Language.ep_to_time, style: _timeRangeStyle),
       titlePadding: 24,
       textStyle: const TextStyle(fontWeight: FontWeight.normal, color: Colors.black87),
       activeTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
@@ -220,8 +221,8 @@ Widget _buildTimeField(BuildContext context) {
       backgroundColor: Colors.transparent,
       initialRange: TimeRangeResult(context.watch<AppointmentProvider>().firstTime, context.watch<AppointmentProvider>().lastTime),
       activeBackgroundColor: ColorHelper.towerBronze.color,
-      firstTime: context.watch<AppointmentProvider>().firstTime,
-      lastTime: context.watch<AppointmentProvider>().lastTime,
+      firstTime: const TimeOfDay(hour: 9, minute: 30),
+      lastTime: const TimeOfDay(hour: 23, minute: 30),
       timeStep: 10,
       timeBlock: 30,
       alwaysUse24HourFormat: true,
@@ -239,7 +240,7 @@ Widget _buildDateField(BuildContext context) {
     padding: const EdgeInsets.symmetric(horizontal: 24),
     child: CustomTextFormField(
       controller: context.read<AppointmentProvider>().eDateController,
-      hintText: Language.ana_date_hint,
+      hintText: Language.ep_date_hint,
       icon: const Icon(Icons.calendar_today_rounded),
       readOnly: true,
       onTap: () => showDateRangeModal(context),
@@ -256,7 +257,7 @@ Widget _buildPlacementField(BuildContext context) {
     padding: const EdgeInsets.symmetric(horizontal: 24),
     child: CustomTextFormField(
       controller: context.read<AppointmentProvider>().ePlacementController,
-      hintText: Language.ana_placement_hint,
+      hintText: Language.ep_placement_hint,
       key: const Key('ana_placement'),
     ),
   );
@@ -267,7 +268,7 @@ Widget _buildSizeField(BuildContext context) {
     padding: const EdgeInsets.symmetric(horizontal: 24),
     child: CustomCmPicker(
       heightController: context.read<AppointmentProvider>().eSizeController,
-      hint: Language.ana_size_hint,
+      hint: Language.ep_size_hint,
       onFieldSubmitted: (String? s) {
         FocusScope.of(context).nextFocus();
       },
@@ -280,7 +281,7 @@ Widget _buildDescriptionField(BuildContext context) {
     padding: const EdgeInsets.symmetric(horizontal: 24),
     child: CustomTextFormField(
       controller: context.read<AppointmentProvider>().eDescriptionController,
-      hintText: Language.ana_description_hint,
+      hintText: Language.ep_description_hint,
       type: TextFieldType.textAreaType,
       key: const Key('ana_description'),
       onFieldSubmitted: (String? s) {
@@ -300,8 +301,8 @@ Widget _buildIsFinishedSwitch(BuildContext context) {
           customSimpleDialog(
             context,
             buttonText: Language.common_ok,
-            title: Language.ana_past_date_issue,
-            content: Language.ana_past_content,
+            title: Language.ep_past_date_issue,
+            content: Language.ep_past_content,
           );
         }
       },
@@ -310,7 +311,7 @@ Widget _buildIsFinishedSwitch(BuildContext context) {
       switchBool:
           context.watch<AppointmentProvider>().isSelectedDateInPastEdit() || context.watch<AppointmentProvider>().appointmentFinished,
       switchActiveColor: ColorHelper.black.color,
-      subTitle: Language.ana_manually_finished,
+      subTitle: Language.ep_manually_finished,
     ),
   );
 }
@@ -326,7 +327,7 @@ Widget _buildUploadImg(BuildContext context) {
       child: Column(
         children: <Widget>[
           Image.asset('assets/ic_img_upload.png', height: 50),
-          const Text(Language.ana_img),
+          const Text(Language.ep_img),
         ],
       ),
     ),
@@ -338,16 +339,18 @@ Widget _buildConfirmWidget(BuildContext context) {
     padding: const EdgeInsets.symmetric(horizontal: 24),
     child: Row(
       children: <Widget>[
-        Expanded(
+        Container(
+          width: MediaQuery.of(context).size.width / 1.65,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Confirmation', style: Theme.of(context).textTheme.displayMedium),
+              Text(Language.ep_confirmation_title, style: Theme.of(context).textTheme.displayMedium),
               const SizedBox(height: 5),
-              const Text('You need to confirm appointment to see it on the homepage list.'),
+              const Text(Language.ep_confirmation_subtitle),
             ],
           ),
         ),
+        const SizedBox(width: 10),
         MSHCheckbox(
           size: 60,
           value: context.watch<AppointmentProvider>().isConfirmed,
@@ -378,7 +381,7 @@ Widget _buildBottomBar(BuildContext context) {
           }
         });
       },
-      buttonTitle: Language.ana_button,
+      buttonTitle: Language.ep_button,
     ),
   );
 }
@@ -386,17 +389,12 @@ Widget _buildBottomBar(BuildContext context) {
 void showDateRangeModal(BuildContext context) {
   showModalBottomSheet<dynamic>(
     context: context,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(16),
-      ),
-    ),
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))),
     builder: (BuildContext ctx) {
       return ListenableProvider<AppointmentProvider>.value(
         value: context.read<AppointmentProvider>(),
         child: CustomModalSheet(
-          title: Language.ana_choose_date,
+          title: Language.ep_choose_date,
           bodyWidget: SfDateRangePicker(
             view: DateRangePickerView.month,
             navigationMode: DateRangePickerNavigationMode.snap,
@@ -437,15 +435,51 @@ void showSuccessModal(BuildContext context) {
         child: CustomModalSheet(
           height: 400,
           title: Language.ep_success_headline,
-          onClosePressed: () => Navigator.of(context).pushNamed(Home),
+          onClosePressed: () => Navigator.of(context).pushNamedAndRemoveUntil(Home, (Route<dynamic> route) => false),
           bodyWidget: Container(
-              child: Column(
-            children: <Widget>[
-              Image.asset('assets/success.png', height: 140),
-              const SizedBox(height: 30),
-              Text(Language.ep_success_subtitle,
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
-            ],
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 10),
+                Text(Language.ep_success_subtitle,
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
+                const SizedBox(height: 10),
+                Text(Language.ep_click_contact,
+                    style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
+                const SizedBox(height: 40),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () {
+                        context.read<AppointmentProvider>().appointmentDetails.phone!.launchViber();
+                      },
+                      child: Image.asset('assets/viber.png', height: 50),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<AppointmentProvider>().appointmentDetails.phone!.makePhoneCall();
+                      },
+                      child: Image.asset('assets/call.png', height: 50),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<AppointmentProvider>().appointmentDetails.phone!.launchWP();
+                      },
+                      child: Image.asset('assets/whatsapp.png', height: 50),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<AppointmentProvider>().appointmentDetails.email!.emailTo();
+                      },
+                      child: Image.asset('assets/email_click.png', height: 50),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           )),
           bottomWidget: CommonButton(
             onPressed: () {

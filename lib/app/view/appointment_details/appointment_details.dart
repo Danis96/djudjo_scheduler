@@ -28,7 +28,7 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
 
   final List<TabBarModel> _tabBarItems = <TabBarModel>[
     const TabBarModel(title: Language.ad_tab_info),
-    const TabBarModel(title: Language.ad_tab_img),
+    const TabBarModel(title: Language.ad_tab_img)
   ];
 
   @override

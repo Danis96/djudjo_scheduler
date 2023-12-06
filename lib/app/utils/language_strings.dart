@@ -3,6 +3,13 @@ class Language {
   static const String common_ok = 'Ok';
   static const String common_error = 'Error';
 
+  // drawer
+  static const String dr_item_home = 'Home';
+  static const String dr_item_profile = 'Profile';
+  static const String dr_item_up = 'Unconfirmed appointments';
+  static const String dr_item_settings = 'Settings';
+
+
   // login provider
   static const String weak_password = 'The password provided is too weak.';
   static const String acc_exist = 'The account already exists for that email.';
@@ -67,6 +74,9 @@ class Language {
   static const String ad_tab_img = 'Images';
   static const String ad_info_headline = 'Appointment Details';
   static const String ad_info_description = 'Description';
+  static const String ad_info_placement = 'Placement';
+  static const String ad_info_finished = 'Appointment finished';
+  static const String ad_info_approved = 'Appointment approved';
 
   // Notificfations
   static const String not_empty_state = 'Your notification box is empty.';
@@ -82,4 +92,29 @@ class Language {
   static const String ep_headline = 'Edit appointment';
   static const String ep_success_headline = 'Success';
   static const String ep_success_subtitle = 'You have successfully edit current appointment.';
+  static const String ep_name_hint = 'Enter name';
+  static const String ep_phone_hint = 'Enter phone number';
+  static const String ep_email_hint = 'Enter email';
+  static const String ep_time_hint = 'Enter time range';
+  static const String ep_date_hint = 'Enter date';
+  static const String ep_placement_hint = 'Placement';
+  static const String ep_description_hint = 'Description';
+  static const String ep_size_hint = 'Size';
+  static const String ep_from_time = 'From';
+  static const String ep_to_time = 'To';
+  static const String ep_img = 'Upload image';
+  static const String ep_button = 'Save Appointment';
+  static const String ep_choose_date = 'Choose date';
+  static const String ep_click_contact = 'Click to contact your client via: ';
+  static const String ep_confirmation_title = 'Confirmation';
+  static const String ep_confirmation_subtitle = 'You need to confirm appointment to see it on the homepage list.';
+  static const String ep_manually_finished =
+      'Here you can manually switch your appointment status.\nAppointment status will automatically be Finished (ON) if the time you add is in the past.';
+  static const String ep_mandatory_title = 'Mandatory';
+  static const String ep_optional_title = 'Optional';
+  static const String ep_past_date_issue = 'Past Date';
+  static const String ep_gender_title = 'Choose gender';
+  static const String ep_past_content =
+      'You cannot turn this switch OFF because selected date for appointment is in the past. So automatically Finished switch is ON.\n\nSelect date in the future to be able to turn it off.';
+
 }

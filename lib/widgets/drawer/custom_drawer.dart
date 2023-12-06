@@ -75,7 +75,6 @@ class CustomDrawer extends StatelessWidget {
           children: <Widget>[
             Container(
               height: headerHeight,
-              margin: const EdgeInsets.only(top: 14),
               child: customHeader ??
                   Row(
                     mainAxisAlignment: headerMainAxisAlignment,
@@ -90,6 +89,7 @@ class CustomDrawer extends StatelessWidget {
                     ],
                   ),
             ),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView(
                   padding: EdgeInsets.zero,
@@ -118,6 +118,7 @@ class CustomDrawer extends StatelessWidget {
                     }, backgroundColor);
                   }).toList()),
             ),
+            const Divider(),
             if (logoutTitle != null)
               _buildLogout(
                   context: context,
@@ -132,7 +133,8 @@ class CustomDrawer extends StatelessWidget {
                   appVersion!,
                   style: appVersionStyle,
                 ),
-              )
+              ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

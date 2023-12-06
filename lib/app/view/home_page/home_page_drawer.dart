@@ -1,3 +1,4 @@
+import 'package:djudjo_scheduler/app/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,9 +20,8 @@ Widget buildDrawer(BuildContext context) {
     onDrawerItemPressed: (String value) {},
     onDrawerOpened: (String value) {},
     wrapWithMaterial: true,
-    headerHeight: 208,
-    backgroundColor: ColorHelper.black.color,
-    actionIconColor: ColorHelper.white.color,
+    headerHeight: 200,
+    backgroundColor: ColorHelper.white.color,
     logoutTitle: 'Logout',
     onLogoutPress: () async {
       customLoaderCircleWhite(context: context);
@@ -34,41 +34,9 @@ Widget buildDrawer(BuildContext context) {
         }
       });
     },
-    onActionIconPress: () => Navigator.of(context).pop(),
     listItems: _drawerHelper.drawerListItems(context),
-    labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: ColorHelper.towerNavy2.color),
-    logoutStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: ColorHelper.towerNavy2.color, fontFamily: 'SourceSansPro'),
-    customHeader: Padding(
-      padding: const EdgeInsets.only(left: 15, bottom: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Image.asset('assets/ic_logo.png', scale: 10),
-              const Spacer(),
-              GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
-                child: Container(
-                  color: ColorHelper.white.color,
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(Icons.close),
-                ),
-              ),
-              const SizedBox(width: 16),
-            ],
-          ),
-          const SizedBox(height: 5),
-          // todo get user data and show email
-          // Text(
-          //   userProfileProvider.user.email,
-          //   style: TextStyle(color: Colors.white.withOpacity(0.3), fontSize: 12),
-          // )
-        ],
-      ),
-    ),
+    labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: ColorHelper.black.color),
+    logoutStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: ColorHelper.black.color),
+    customHeader: Image.asset('assets/dr_back.png', width: double.infinity, fit: BoxFit.fill),
   );
 }

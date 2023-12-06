@@ -335,8 +335,8 @@ class NewAppointmentPage extends StatelessWidget {
               customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
             } else {
               context.read<AppointmentProvider>().clearControllers();
-          showSuccessModal(context);
-          }
+              showSuccessModal(context);
+            }
           });
         },
         buttonTitle: Language.ana_button,
@@ -402,7 +402,7 @@ class NewAppointmentPage extends StatelessWidget {
             bodyWidget: Container(
                 child: Column(
               children: <Widget>[
-                Image.asset('assets/success.png', height: 140),
+                Image.asset('assets/success.png', height: MediaQuery.of(context).size.height / 3),
                 const SizedBox(height: 30),
                 Text(Language.ana_success_subtitle,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
@@ -410,7 +410,7 @@ class NewAppointmentPage extends StatelessWidget {
             )),
             bottomWidget: CommonButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(Home);
+                // Navigator.of(context).pushNamed(Home);
               },
               buttonTitle: Language.common_ok,
             ),

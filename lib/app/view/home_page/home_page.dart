@@ -7,6 +7,7 @@ import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
 import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
 
 import '../../../theme/color_helper.dart';
@@ -24,6 +25,7 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey = GlobalKey<LiquidPullToRefreshState>();
 
   @override
   void initState() {
@@ -78,28 +80,35 @@ class _HomepageState extends State<Homepage> {
       );
 
   Widget _buildBody(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        ClipPath(
-            clipper: BackgroundWaveClipper(),
-            child: Container(
-              height: 140,
-              width: double.infinity,
-              color: Colors.black,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-              child: Text(
-                context.read<StupidityProvider>().models.isNotEmpty ? context.read<StupidityProvider>().models.first.textValue! : '',
-                style: Theme.of(context).textTheme.displayLarge!.copyWith(color: ColorHelper.white.color, fontSize: 30),
-              ),
-            )),
-        if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty) _buildHeadline(context),
-        if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty) const SizedBox(height: 20),
-        if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty)
-          Expanded(child: _listOfAppointments(context))
-        else
-          Expanded(child: _buildEmptyState(context)),
-      ],
+    return LiquidPullToRefresh(
+      backgroundColor: Colors.black,
+      color: ColorHelper.towerBronze.color,
+      height: 50,
+      showChildOpacityTransition: false,
+      onRefresh: () => _getInitialData(context),
+      child: ListView(
+        shrinkWrap: true,
+        children: <Widget>[
+          ClipPath(
+              clipper: BackgroundWaveClipper(),
+              child: Container(
+                height: 140,
+                width: double.infinity,
+                color: Colors.black,
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+                child: Text(
+                  context.read<StupidityProvider>().models.isNotEmpty ? context.read<StupidityProvider>().models.first.textValue! : '',
+                  style: Theme.of(context).textTheme.displayLarge!.copyWith(color: ColorHelper.white.color, fontSize: 30),
+                ),
+              )),
+          if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty) _buildHeadline(context),
+          if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty) const SizedBox(height: 20),
+          if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty)
+            _listOfAppointments(context)
+          else
+            _buildEmptyState(context),
+        ],
+      ), // scroll view
     );
   }
 }

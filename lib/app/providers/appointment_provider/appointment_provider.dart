@@ -64,6 +64,11 @@ class AppointmentProvider extends ChangeNotifier {
 
   List<Appointment> get appointmentsConfirmed => _appointmentsConfirmed;
 
+  // finished appointments
+  List<Appointment> _appointmentsFinished = <Appointment>[];
+
+  List<Appointment> get appointmentsFinished => _appointmentsFinished;
+
   Appointment _appointment = Appointment();
 
   Appointment get appointment => _appointment;
@@ -94,9 +99,6 @@ class AppointmentProvider extends ChangeNotifier {
     firstTime = TimeOfDay(
         hour: appointmentDetails.suggestedTime!.returnTimeRangeHours(0),
         minute: appointmentDetails.suggestedTime!.returnTimeRangeMinutes(0));
-    lastTime = TimeOfDay(
-        hour: appointmentDetails.suggestedTime!.returnTimeRangeHours(1),
-        minute: appointmentDetails.suggestedTime!.returnTimeRangeMinutes(1));
     notifyListeners();
   }
 
@@ -174,6 +176,8 @@ class AppointmentProvider extends ChangeNotifier {
       for (final Appointment a in _appointments) {
         if (!a.appointmentConfirmed!) {
           _appointmentsNotConfirmed.add(a);
+        } else if (a.appointmentFinished!) {
+          _appointmentsFinished.add(a);
         } else {
           _appointmentsConfirmed.add(a);
         }
@@ -187,7 +191,7 @@ class AppointmentProvider extends ChangeNotifier {
       email: isEdit ? eEmailController.text : emailController.text,
       phone: isEdit ? ePhoneController.text : phoneController.text,
       id: _appointmentDetails.id,
-      // this is true [appointmentConfirmed] because when admin creates appointment it is automatically confirmed [isEdit = false
+      // this is true [appointmentConfirmed] because when admin creates appointment it is automatically confirmed [isEdit = false]
       isFavorite: isFavorite,
       // ignore: avoid_bool_literals_in_conditional_expressions
       appointmentConfirmed: isEdit ? isConfirmed : true,
@@ -310,6 +314,8 @@ class AppointmentProvider extends ChangeNotifier {
     sizeController.clear();
     placementController.clear();
     appointmentFinished = false;
+    firstTime = const TimeOfDay(hour: 9, minute: 30);
+    lastTime = const TimeOfDay(hour: 23, minute: 30);
   }
 
   void clearControllersEdit() {
@@ -339,11 +345,13 @@ class AppointmentProvider extends ChangeNotifier {
     }
   }
 
-  String returnGenderImage() {
-    switch (genderValue) {
+  String returnGenderImage(String gender) {
+    switch (gender) {
       case 'M':
+      case 'Male':
         return 'assets/man.png';
       case 'F':
+      case 'Female':
         return 'assets/woman.png';
       default:
         return 'assets/other.png';
@@ -353,8 +361,10 @@ class AppointmentProvider extends ChangeNotifier {
   String returnGenderValue() {
     switch (genderValue) {
       case 'M':
+      case 'Male':
         return 'Male';
       case 'F':
+      case 'Female':
         return 'Female';
       default:
         return 'Other';

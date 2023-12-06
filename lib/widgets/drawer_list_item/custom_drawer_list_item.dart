@@ -1,3 +1,4 @@
+import 'package:djudjo_scheduler/theme/color_helper.dart';
 import 'package:flutter/material.dart';
 
 class DrawerListItem extends StatelessWidget {
@@ -34,7 +35,7 @@ class DrawerListItem extends StatelessWidget {
       margin: margin,
       child: Row(
         children: <Widget>[
-          if (iconData != null) Icon(iconData, color: Colors.red, size: 22) else const SizedBox(),
+          if (iconData != null) Icon(iconData, color: ColorHelper.black.color, size: 22) else const SizedBox(),
           Flexible(
             child: FittedBox(
               fit: BoxFit.fitWidth,

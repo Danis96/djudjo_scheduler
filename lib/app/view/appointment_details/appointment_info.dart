@@ -43,7 +43,9 @@ Widget _buildMandatoryInfoSegment(BuildContext context) {
         const SizedBox(height: 10),
         _buildDescription(context),
         const SizedBox(height: 20),
-        _buildInfoTile(context, context.watch<AppointmentProvider>().returnGenderImage(),
+        _buildInfoTile(
+            context,
+            context.watch<AppointmentProvider>().returnGenderImage(context.read<AppointmentProvider>().appointmentDetails.gender!),
             context.watch<AppointmentProvider>().appointmentDetails.name ?? ''),
         _buildInfoTile(context, 'assets/email.png', context.watch<AppointmentProvider>().appointmentDetails.email ?? '',
             onTap: () => context.read<AppointmentProvider>().appointmentDetails.email!.emailTo()),
@@ -64,13 +66,13 @@ Widget _buildOptionalInfoSegment(BuildContext context) {
       children: <Widget>[
         _buildInfoTile(context, 'assets/size.png', context.watch<AppointmentProvider>().appointmentDetails.size ?? '', title: 'Size'),
         _buildInfoTile(context, 'assets/tattoo.png', context.watch<AppointmentProvider>().appointmentDetails.placement ?? '',
-            title: 'Placement'),
+            title: Language.ad_info_placement),
         _buildInfoTile(
             context, 'assets/finished.png', context.watch<AppointmentProvider>().appointmentDetails.appointmentFinished.toString(),
-            title: 'Appointment finished'),
+            title: Language.ad_info_finished),
         _buildInfoTile(
             context, 'assets/check-green.png', context.watch<AppointmentProvider>().appointmentDetails.appointmentConfirmed.toString(),
-            title: 'Appointment approved'),
+            title: Language.ad_info_approved),
       ],
     ),
   );
