@@ -378,5 +378,7 @@ class AppointmentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+
   MaskTextInputFormatter maskFormatterPhone = MaskTextInputFormatter(mask: '###-###/###', type: MaskAutoCompletionType.lazy);
 }

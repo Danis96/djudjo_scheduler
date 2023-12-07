@@ -5,8 +5,9 @@ import '../view/home_page/home_page.dart';
 
 class BottomNavigationHelper {
   List<CustomBottomNavigationItem> bottomNavigationItems() => <CustomBottomNavigationItem>[
-        CustomBottomNavigationItem(title: 'Home', icon: Icons.home, page: const Homepage()),
         CustomBottomNavigationItem(title: 'Schedule', icon: Icons.format_list_bulleted_rounded, page: const Homepage()),
+        CustomBottomNavigationItem(title: 'Home', icon: Icons.home, page: const Homepage()),
+        CustomBottomNavigationItem(title: 'Profile', icon: Icons.person, page: const Homepage()),
       ];
 
   void selectNavigationItem(BuildContext context, int item) {

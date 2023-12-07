@@ -24,10 +24,10 @@ mixin RouteGenerator {
         return SlideAnimationTween(
             widget: Provider<SplashProvider>(create: (_) => SplashProvider(defaultRoute: Login), lazy: false, child: SplashPage()));
       case Login:
-        return SlideAnimationTween(widget: ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider(), child: LoginPage()));
+        return SlideAnimationTween(widget: ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider(), child: const LoginPage()));
       case Register:
         return SlideAnimationTween(
-            widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: RegisterPage()));
+            widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: const RegisterPage()));
       case Home:
         return SlideAnimationTween(
             widget: MultiProvider(
@@ -36,7 +36,7 @@ mixin RouteGenerator {
             ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
             ChangeNotifierProvider<StupidityProvider>(create: (_) => StupidityProvider()),
           ],
-          child: BottomNavigationPage(),
+          child: const BottomNavigationPage(initial: 1),
         ));
       case NewAppointment:
         return SlideAnimationTween(
@@ -49,7 +49,7 @@ mixin RouteGenerator {
       case Notifications:
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<AppointmentProvider>.value(
-                value: settings.arguments as AppointmentProvider, child: NotificationPage()));
+                value: settings.arguments as AppointmentProvider, child: const NotificationPage()));
       case EditAppointment:
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<AppointmentProvider>.value(value: settings.arguments as AppointmentProvider, child: EditPage()));

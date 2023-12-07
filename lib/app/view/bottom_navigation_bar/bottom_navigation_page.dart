@@ -1,3 +1,4 @@
+import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../../theme/color_helper.dart';
@@ -17,10 +18,12 @@ final GlobalKey bottomWidgetKey = GlobalKey<State<BottomNavigationBar>>();
 
 class _BottomNavigationPageState extends State<BottomNavigationPage> {
   final BottomNavigationHelper _navigationHelper = BottomNavigationHelper();
+  NotchBottomBarController notchBottomBarController = NotchBottomBarController();
 
   @override
   Widget build(BuildContext context) {
-    return CustomBottomNavigationPage(
+    return
+    CustomBottomNavigationPage(
       selectedItemColor: ColorHelper.black.color,
       unSelectedItemColor: ColorHelper.black.color.withOpacity(0.4),
       items: _navigationHelper.bottomNavigationItems(),

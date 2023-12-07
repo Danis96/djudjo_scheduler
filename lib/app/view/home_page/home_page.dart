@@ -96,10 +96,14 @@ class _HomepageState extends State<Homepage> {
                 width: double.infinity,
                 color: Colors.black,
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-                child: Text(
-                  context.read<StupidityProvider>().models.isNotEmpty ? context.read<StupidityProvider>().models.first.textValue! : '',
-                  style: Theme.of(context).textTheme.displayLarge!.copyWith(color: ColorHelper.white.color, fontSize: 30),
-                ),
+                child: context.watch<StupidityProvider>().stupidityOn
+                    ? Text(
+                        context.read<StupidityProvider>().models.isNotEmpty
+                            ? context.read<StupidityProvider>().models.first.textValue!
+                            : '',
+                        style: Theme.of(context).textTheme.displayLarge!.copyWith(color: ColorHelper.white.color, fontSize: 30),
+                      )
+                    : const SizedBox(),
               )),
           if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty) _buildHeadline(context),
           if (context.watch<AppointmentProvider>().appointmentsConfirmed.isNotEmpty) const SizedBox(height: 20),

@@ -1,7 +1,13 @@
+import 'package:djudjo_scheduler/app/providers/stupidity_provider/stupidity_provider.dart';
 import 'package:djudjo_scheduler/app/utils/list_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../app/providers/appointment_provider/appointment_provider.dart';
+import '../../app/utils/language_strings.dart';
+import '../../theme/color_helper.dart';
 import '../drawer_list_item/custom_drawer_list_item.dart';
+import '../switches/switch_with_title_description.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer(
@@ -118,6 +124,7 @@ class CustomDrawer extends StatelessWidget {
                     }, backgroundColor);
                   }).toList()),
             ),
+           _buildStupiditySwitch(context),
             const Divider(),
             if (logoutTitle != null)
               _buildLogout(
@@ -140,6 +147,22 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildStupiditySwitch(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 24),
+    child: CustomSwitchWithTitleDescription(
+      onChanged: (bool value) {
+        context.read<StupidityProvider>().setStupidity();
+      },
+      showIconAndTitle: false,
+      removePadding: true,
+      switchBool: context.watch<StupidityProvider>().stupidityOn,
+      switchActiveColor: ColorHelper.black.color,
+      subTitle: 'Turn headline text on',
+    ),
+  );
 }
 
 Widget _buildLogout(

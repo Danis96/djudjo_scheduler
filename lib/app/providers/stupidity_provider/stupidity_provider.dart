@@ -35,4 +35,11 @@ class StupidityProvider extends ChangeNotifier {
       return result.toString();
     }
   }
+
+  bool stupidityOn = true;
+
+  void setStupidity() {
+    stupidityOn = !stupidityOn;
+    notifyListeners();
+  }
 }
