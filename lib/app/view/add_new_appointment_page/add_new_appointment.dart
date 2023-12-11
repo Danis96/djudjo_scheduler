@@ -410,7 +410,7 @@ class NewAppointmentPage extends StatelessWidget {
             )),
             bottomWidget: CommonButton(
               onPressed: () {
-                // Navigator.of(context).pushNamed(Home);
+                Navigator.of(context).pushNamed(Home);
               },
               buttonTitle: Language.common_ok,
             ),

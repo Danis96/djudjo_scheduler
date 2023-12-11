@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../providers/appointment_provider/appointment_provider.dart';
 
+
 class AppointmentImageSliderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

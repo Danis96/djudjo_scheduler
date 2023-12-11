@@ -29,9 +29,18 @@ class LoginProvider extends ChangeNotifier {
   final TextEditingController registerPhoneController = TextEditingController();
   final TextEditingController registerNameController = TextEditingController();
 
+  //profile
+  final TextEditingController profileEmailController = TextEditingController();
+  final TextEditingController profilePhoneController = TextEditingController();
+  final TextEditingController profileNameController = TextEditingController();
+
   Admin _admin = Admin();
 
   Admin get admin => _admin;
+
+  List<Admin>? _admins = <Admin>[];
+
+  List<Admin> get admins => _admins!;
 
   Future<String?> registerUser() async {
     if (areFieldsCompletedRegister()) {
@@ -69,6 +78,62 @@ class LoginProvider extends ChangeNotifier {
     } catch (e) {
       return e.toString();
     }
+  }
+
+  Future<String?> fetchAdmins() async {
+    try {
+      _admins = await _adminFirestoreRepository!.fetchAdminsFromFirestore();
+      getCurrentUser();
+      notifyListeners();
+      return null;
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
+  Future<String?> updateCurrentAdmin() async {
+    try {
+      setProfileEditChanges();
+      await _adminFirestoreRepository!.updateAdminToFirestore(_admin);
+      return null;
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
+  void setProfileEditChanges() {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (_admins != null && _admins!.isNotEmpty) {
+      for (final Admin _a in _admins!) {
+        if (_a.email! == user!.email!) {
+          _admin = Admin(
+            phone: profilePhoneController.text,
+            email: profileEmailController.text,
+            name: profileNameController.text,
+            lastSignIn: _a.lastSignIn,
+            id: _a.id,
+            creationTime: _a.creationTime,
+          );
+        }
+      }
+    }
+  }
+
+  void getCurrentUser() {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (_admins != null && _admins!.isNotEmpty) {
+      for (final Admin _a in _admins!) {
+        if (_a.email! == user!.email!) {
+          _admin = _a;
+        }
+      }
+    }
+    profileEmailController.text = _admin.email ?? '';
+    profileNameController.text = _admin.name ?? '';
+    profilePhoneController.text = _admin.phone ?? '';
+    notifyListeners();
   }
 
   Future<void> _setLoggedUserToAdminModel(User user) async {

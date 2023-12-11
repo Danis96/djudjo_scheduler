@@ -129,7 +129,7 @@ class LoginPage extends StatelessWidget {
             if (error != null) {
               customSimpleDialog(context, buttonText: Language.common_ok, title: Language.common_error, content: error);
             } else {
-              Navigator.of(context).pushNamed(Home);
+              Navigator.of(context).pushNamedAndRemoveUntil(Home, (Route<dynamic> bool) => true);
             }
           });
         },

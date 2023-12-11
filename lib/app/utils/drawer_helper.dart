@@ -1,5 +1,7 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
+import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
 import 'package:djudjo_scheduler/app/utils/language_strings.dart';
+import 'package:djudjo_scheduler/routing/route_arguments.dart';
 import 'package:djudjo_scheduler/widgets/drawer_list_item/custom_drawer_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +19,9 @@ class DrawerHelper {
       ),
       DrawerListItem(
         title: Language.dr_item_profile,
-        routeName: Home,
+        routeName: Profile,
         iconData: Icons.person,
+        arguments: ProfilePageArguments(context.read<AppointmentProvider>(), context.read<LoginProvider>()),
         textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: ColorHelper.towerRed.color),
       ),
       DrawerListItem(

@@ -1,7 +1,7 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/utils/language_strings.dart';
-import 'package:djudjo_scheduler/app/view/appointment_details/appointment_image_slider.dart';
-import 'package:djudjo_scheduler/app/view/appointment_details/appointment_info.dart';
+import 'package:djudjo_scheduler/app/view/appointment_details_page/appointment_image_slider.dart';
+import 'package:djudjo_scheduler/app/view/appointment_details_page/appointment_info.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/tab_bar/tab_bar_widget.dart';
 import 'package:flutter/material.dart';

@@ -117,4 +117,13 @@ class Language {
   static const String ep_past_content =
       'You cannot turn this switch OFF because selected date for appointment is in the past. So automatically Finished switch is ON.\n\nSelect date in the future to be able to turn it off.';
 
+
+  // Profile page
+  static const String pp_app_bar = 'Profile';
+  static const String pp_headline = 'Tattoo artist';
+  static const String pp_email_hint = 'Enter email';
+  static const String pp_name_hint = 'Enter name';
+  static const String pp_phone_hint = 'Enter phone';
+  static const String pp_button = 'Save';
+
 }

@@ -10,10 +10,11 @@ class Admin {
     this.lastSignIn = '',
   });
 
-  factory Admin.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
-    final Map<String, dynamic>? data = snapshot.data();
+  factory Admin.fromFirestore(QueryDocumentSnapshot<dynamic> snapshot) {
+    final Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>;
     return Admin(
       name: data!['name'] as String,
+      id: snapshot.id,
       email: data['email'] as String,
       phone: data['phone'] as String,
       creationTime: data['creationTime'] as String,
@@ -33,7 +34,7 @@ class Admin {
 
   Map<String, dynamic> toFirestore() {
     return <String, dynamic>{
-      if (id != null) 'id': id,
+      if (id != null) 'uid': id,
       if (name != null) 'name': name,
       if (phone != null) 'phone': phone,
       if (email != null) 'email': email,

@@ -1,18 +1,20 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
 import 'package:djudjo_scheduler/app/providers/stupidity_provider/stupidity_provider.dart';
-import 'package:djudjo_scheduler/app/view/add_new_appointment/add_new_appointment.dart';
 import 'package:djudjo_scheduler/app/view/bottom_navigation_bar/bottom_navigation_page.dart';
 import 'package:djudjo_scheduler/app/view/edit_page/edit_page.dart';
 import 'package:djudjo_scheduler/app/view/notification_page/notification_page.dart';
+import 'package:djudjo_scheduler/app/view/profile_page/profile_page.dart';
 import 'package:djudjo_scheduler/app/view/register_page/register_page.dart';
+import 'package:djudjo_scheduler/routing/route_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../app/providers/splash_provider/splash_provider.dart';
 import '../app/utils/navigation_animations.dart';
-import '../app/view/appointment_details/appointment_details.dart';
+import '../app/view/add_new_appointment_page/add_new_appointment.dart';
+import '../app/view/appointment_details_page/appointment_details.dart';
 import '../app/view/login_page/login_page.dart';
 import '../app/view/splash_page/splash_page.dart';
 import '../routing/routes.dart';
@@ -53,6 +55,16 @@ mixin RouteGenerator {
       case EditAppointment:
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<AppointmentProvider>.value(value: settings.arguments as AppointmentProvider, child: EditPage()));
+      case Profile:
+        final ProfilePageArguments args = settings.arguments as ProfilePageArguments;
+        return SlideAnimationTween(
+            widget: MultiProvider(
+          providers: <SingleChildWidget>[
+            ChangeNotifierProvider<AppointmentProvider>.value(value: args.appointmentProvider),
+            ChangeNotifierProvider<LoginProvider>.value(value: args.loginProvider),
+          ],
+          child: ProfilePage(),
+        ));
 
       default:
         return _errorRoute();
