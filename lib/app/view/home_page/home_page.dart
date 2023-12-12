@@ -2,6 +2,7 @@ import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/int_extensions.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
+import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
 import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
@@ -26,7 +27,6 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<LiquidPullToRefreshState> _refreshIndicatorKey = GlobalKey<LiquidPullToRefreshState>();
 
   @override
   void initState() {
@@ -179,7 +179,7 @@ Widget _buildEmptyState(BuildContext context) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-      Image.asset('assets/home_empty.png', height: 160),
+      Image.asset(Assets.assetsHomeEmpty, height: 160),
       const SizedBox(height: 15),
       const Text(Language.home_empty),
     ],

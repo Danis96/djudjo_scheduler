@@ -1,5 +1,6 @@
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
 import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
+import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/buttons/common_button.dart';
 import 'package:djudjo_scheduler/widgets/dialogs/simple_dialog.dart';
@@ -113,7 +114,7 @@ class LoginPage extends StatelessWidget {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
       Text(Language.login_headline, style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 24)),
-      Image.asset('assets/ic_logo.png', width: 50),
+      Image.asset(Assets.assetsIcLogo, width: 50),
     ],
   );
 

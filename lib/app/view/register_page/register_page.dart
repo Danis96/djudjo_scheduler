@@ -1,4 +1,5 @@
 
+import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
 import 'package:flutter/material.dart';
@@ -131,7 +132,7 @@ class RegisterPage extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(Language.reg_headline, style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 24)),
-          Image.asset('assets/ic_logo.png', width: 50),
+          Image.asset(Assets.assetsIcLogo, width: 50),
         ],
       );
 

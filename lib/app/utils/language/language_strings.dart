@@ -130,6 +130,7 @@ class Language {
   static const String pp_name_hint = 'Enter name';
   static const String pp_phone_hint = 'Enter phone';
   static const String pp_button = 'Save';
+  static const String pp_success_subtitle = 'Successfully changed data';
 
   // Settings
   static const String s_app_bar = 'Settings';
@@ -153,5 +154,6 @@ class Language {
   static const String cp_new_hint = 'Enter new password';
   static const String cp_confirm_hint = 'Confirm new password';
   static const String cp_button = 'Save';
+  static const String cp_success_subtitle = 'Password is changed successfully';
 
 }

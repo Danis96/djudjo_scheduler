@@ -1,4 +1,5 @@
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
+import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -77,7 +78,7 @@ Widget _buildImgHeader(BuildContext context) {
           width: 70,
           height: 70,
           decoration: BoxDecoration(shape: BoxShape.circle, color: ColorHelper.monochromaticGray200.color),
-          child: Image.asset('assets/user.png'),
+          child: Image.asset(Assets.assetsUser),
         ),
       ),
       const SizedBox(width: 20),
@@ -156,7 +157,7 @@ Widget _buildBottomBar(BuildContext context) {
           if (error != null) {
             customSimpleDialog(context, buttonText: Language.common_ok, title: Language.common_error, content: error);
           } else {
-            showSuccessModal(context);
+            showSuccessModal(context, Language.pp_success_subtitle);
           }
         });
       },
@@ -165,18 +166,13 @@ Widget _buildBottomBar(BuildContext context) {
   );
 }
 
-void showSuccessModal(BuildContext context) {
+void showSuccessModal(BuildContext context, String subtitle) {
   showModalBottomSheet<dynamic>(
     context: context,
     isDismissible: false,
     enableDrag: false,
     backgroundColor: Colors.white,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(16),
-        topRight: Radius.circular(16),
-      ),
-    ),
+    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))),
     builder: (BuildContext ctx) {
       return CustomModalSheet(
           height: 400,
@@ -185,10 +181,9 @@ void showSuccessModal(BuildContext context) {
           bodyWidget: Container(
               child: Column(
             children: <Widget>[
-              Image.asset('assets/success.png', height: MediaQuery.of(context).size.height / 7),
+              Image.asset(Assets.assetsSuccess, height: MediaQuery.of(context).size.height / 7),
               const SizedBox(height: 30),
-              Text(Language.ana_success_subtitle,
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
+              Text(subtitle, style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
             ],
           )),
           bottomWidget: CommonButton(

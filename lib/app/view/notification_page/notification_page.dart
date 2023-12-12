@@ -1,6 +1,7 @@
 import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
+import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/widgets/dialogs/simple_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -94,7 +95,7 @@ void _showInfoDialog(BuildContext context) {
         height: 140,
         child: Column(
           children: <Widget>[
-            Image.asset('assets/info.png', height: 60),
+            Image.asset(Assets.assetsInfo, height: 60),
             const Divider(),
             const SizedBox(height: 10),
             const Text(Language.not_info_content),
@@ -155,7 +156,7 @@ Widget _buildNotificationItem(BuildContext context, Appointment appointment) {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset('assets/question_mark.png', height: 60),
+            Image.asset(Assets.assetsQuestionMark, height: 60),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -178,7 +179,7 @@ Widget _buildEmptyState(BuildContext context) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
-      Image.asset('assets/empty_not.png', width: 70),
+      Image.asset(Assets.assetsEmptyNot, width: 70),
       const SizedBox(height: 10),
       const Text(Language.not_empty_state),
     ],

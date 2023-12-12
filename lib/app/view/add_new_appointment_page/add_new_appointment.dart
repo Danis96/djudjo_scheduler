@@ -1,5 +1,6 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
+import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/widgets/buttons/common_button.dart';
 import 'package:djudjo_scheduler/widgets/custom_picker/custom_picker.dart';
 import 'package:djudjo_scheduler/widgets/dialogs/simple_dialog.dart';
@@ -315,7 +316,7 @@ class NewAppointmentPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: <Widget>[
-            Image.asset('assets/ic_img_upload.png', height: 50),
+            Image.asset(Assets.assetsIcImgUpload, height: 50),
             const Text(Language.ana_img),
           ],
         ),
@@ -402,7 +403,7 @@ class NewAppointmentPage extends StatelessWidget {
             bodyWidget: Container(
                 child: Column(
               children: <Widget>[
-                Image.asset('assets/success.png', height: MediaQuery.of(context).size.height / 3),
+                Image.asset(Assets.assetsSuccess, height: MediaQuery.of(context).size.height / 3),
                 const SizedBox(height: 30),
                 Text(Language.ana_success_subtitle,
                     style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),

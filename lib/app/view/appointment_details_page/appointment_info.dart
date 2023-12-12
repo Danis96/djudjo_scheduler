@@ -1,6 +1,7 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
+import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,12 +48,12 @@ Widget _buildMandatoryInfoSegment(BuildContext context) {
             context,
             context.watch<AppointmentProvider>().returnGenderImage(context.read<AppointmentProvider>().appointmentDetails.gender!),
             context.watch<AppointmentProvider>().appointmentDetails.name ?? ''),
-        _buildInfoTile(context, 'assets/email.png', context.watch<AppointmentProvider>().appointmentDetails.email ?? '',
+        _buildInfoTile(context, Assets.assetsEmail, context.watch<AppointmentProvider>().appointmentDetails.email ?? '',
             onTap: () => context.read<AppointmentProvider>().appointmentDetails.email!.emailTo()),
-        _buildInfoTile(context, 'assets/phone.png', context.watch<AppointmentProvider>().appointmentDetails.phone ?? '',
+        _buildInfoTile(context, Assets.assetsPhone, context.watch<AppointmentProvider>().appointmentDetails.phone ?? '',
             onTap: () => context.read<AppointmentProvider>().appointmentDetails.phone!.makePhoneCall()),
-        _buildInfoTile(context, 'assets/time.png', context.watch<AppointmentProvider>().appointmentDetails.suggestedTime ?? ''),
-        _buildInfoTile(context, 'assets/calendar.png', context.watch<AppointmentProvider>().appointmentDetails.suggestedDate ?? ''),
+        _buildInfoTile(context, Assets.assetsTime, context.watch<AppointmentProvider>().appointmentDetails.suggestedTime ?? ''),
+        _buildInfoTile(context, Assets.assetsCalendar, context.watch<AppointmentProvider>().appointmentDetails.suggestedDate ?? ''),
       ],
     ),
   );
@@ -64,14 +65,14 @@ Widget _buildOptionalInfoSegment(BuildContext context) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _buildInfoTile(context, 'assets/size.png', context.watch<AppointmentProvider>().appointmentDetails.size ?? '', title: 'Size'),
-        _buildInfoTile(context, 'assets/tattoo.png', context.watch<AppointmentProvider>().appointmentDetails.placement ?? '',
+        _buildInfoTile(context, Assets.assetsSize, context.watch<AppointmentProvider>().appointmentDetails.size ?? '', title: 'Size'),
+        _buildInfoTile(context, Assets.assetsTattoo, context.watch<AppointmentProvider>().appointmentDetails.placement ?? '',
             title: Language.ad_info_placement),
         _buildInfoTile(
-            context, 'assets/finished.png', context.watch<AppointmentProvider>().appointmentDetails.appointmentFinished.toString(),
+            context, Assets.assetsFinished, context.watch<AppointmentProvider>().appointmentDetails.appointmentFinished.toString(),
             title: Language.ad_info_finished),
         _buildInfoTile(
-            context, 'assets/check-green.png', context.watch<AppointmentProvider>().appointmentDetails.appointmentConfirmed.toString(),
+            context, Assets.assetsCheckGreen, context.watch<AppointmentProvider>().appointmentDetails.appointmentConfirmed.toString(),
             title: Language.ad_info_approved),
       ],
     ),

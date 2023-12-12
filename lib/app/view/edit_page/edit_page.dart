@@ -1,4 +1,5 @@
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
+import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_radio_button/group_radio_button.dart';
@@ -169,7 +170,7 @@ Widget _buildNameField(BuildContext context) {
     child: CustomTextFormField(
       controller: context.read<AppointmentProvider>().eNameController,
       hintText: Language.ep_name_hint,
-      key: const Key('ana_name'),
+      key: const Key('ep_name'),
       onFieldSubmitted: (String? s) {
         FocusScope.of(context).nextFocus();
       },
@@ -185,7 +186,7 @@ Widget _buildPhoneField(BuildContext context) {
       hintText: Language.ep_phone_hint,
       inputFormatters: <TextInputFormatter>[context.read<AppointmentProvider>().maskFormatterPhone],
       keyboardType: TextInputType.phone,
-      key: const Key('ana_phone'),
+      key: const Key('ep_phone'),
       onFieldSubmitted: (String? s) {
         FocusScope.of(context).nextFocus();
       },
@@ -200,7 +201,7 @@ Widget _buildEmailField(BuildContext context) {
       controller: context.read<AppointmentProvider>().eEmailController,
       hintText: Language.ep_email_hint,
       keyboardType: TextInputType.emailAddress,
-      key: const Key('ana_email'),
+      key: const Key('ep_email'),
       onFieldSubmitted: (String? s) {
         FocusScope.of(context).nextFocus();
       },
@@ -244,7 +245,7 @@ Widget _buildDateField(BuildContext context) {
       icon: const Icon(Icons.calendar_today_rounded),
       readOnly: true,
       onTap: () => showDateRangeModal(context),
-      key: const Key('ana_date'),
+      key: const Key('ep_date'),
       onFieldSubmitted: (String? s) {
         FocusScope.of(context).nextFocus();
       },
@@ -258,7 +259,7 @@ Widget _buildPlacementField(BuildContext context) {
     child: CustomTextFormField(
       controller: context.read<AppointmentProvider>().ePlacementController,
       hintText: Language.ep_placement_hint,
-      key: const Key('ana_placement'),
+      key: const Key('ep_placement'),
     ),
   );
 }
@@ -283,7 +284,7 @@ Widget _buildDescriptionField(BuildContext context) {
       controller: context.read<AppointmentProvider>().eDescriptionController,
       hintText: Language.ep_description_hint,
       type: TextFieldType.textAreaType,
-      key: const Key('ana_description'),
+      key: const Key('ep_description'),
       onFieldSubmitted: (String? s) {
         FocusScope.of(context).nextFocus();
       },
@@ -326,7 +327,7 @@ Widget _buildUploadImg(BuildContext context) {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         children: <Widget>[
-          Image.asset('assets/ic_img_upload.png', height: 50),
+          Image.asset(Assets.assetsIcImgUpload, height: 50),
           const Text(Language.ep_img),
         ],
       ),
@@ -451,32 +452,7 @@ void showSuccessModal(BuildContext context) {
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        context.read<AppointmentProvider>().appointmentDetails.phone!.launchViber();
-                      },
-                      child: Image.asset('assets/viber.png', height: 50),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        context.read<AppointmentProvider>().appointmentDetails.phone!.makePhoneCall();
-                      },
-                      child: Image.asset('assets/call.png', height: 50),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        context.read<AppointmentProvider>().appointmentDetails.phone!.launchWP();
-                      },
-                      child: Image.asset('assets/whatsapp.png', height: 50),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        context.read<AppointmentProvider>().appointmentDetails.email!.emailTo();
-                      },
-                      child: Image.asset('assets/email_click.png', height: 50),
-                    ),
-                  ],
+                  children: widgetList(context),
                 ),
               ],
             ),
@@ -492,3 +468,30 @@ void showSuccessModal(BuildContext context) {
     },
   );
 }
+
+List<Widget> widgetList(BuildContext context) => [
+      GestureDetector(
+        onTap: () {
+          context.read<AppointmentProvider>().appointmentDetails.phone!.launchViber();
+        },
+        child: Image.asset(Assets.assetsViber, height: 50),
+      ),
+      GestureDetector(
+        onTap: () {
+          context.read<AppointmentProvider>().appointmentDetails.phone!.makePhoneCall();
+        },
+        child: Image.asset(Assets.assetsCall, height: 50),
+      ),
+      GestureDetector(
+        onTap: () {
+          context.read<AppointmentProvider>().appointmentDetails.phone!.launchWP();
+        },
+        child: Image.asset(Assets.assetsWhatsapp, height: 50),
+      ),
+      GestureDetector(
+        onTap: () {
+          context.read<AppointmentProvider>().appointmentDetails.email!.emailTo();
+        },
+        child: Image.asset(Assets.assetsEmailClick, height: 50),
+      ),
+    ];

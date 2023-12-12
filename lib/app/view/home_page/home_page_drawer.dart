@@ -1,3 +1,4 @@
+import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,11 +23,11 @@ Widget buildDrawer(BuildContext context) {
     headerHeight: 200,
     backgroundColor: ColorHelper.white.color,
     logoutTitle: Language.hd_logout_title,
-    onLogoutPress: () async {
+    onLogoutPress: () {
       customSimpleDialog(
         context,
         buttonText: Language.hd_cancel,
-        buttonTwoText: 'Ok',
+        buttonTwoText: Language.common_ok,
         onButtonTwoPressed: () => _logout(context),
         onButtonPressed: () => Navigator.of(context).pop(),
         title: Language.hd_title,
@@ -36,7 +37,7 @@ Widget buildDrawer(BuildContext context) {
     listItems: _drawerHelper.drawerListItems(context),
     labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: ColorHelper.black.color),
     logoutStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: ColorHelper.black.color),
-    customHeader: Image.asset('assets/dr_back.png', width: double.infinity, fit: BoxFit.fill),
+    customHeader: Image.asset(Assets.assetsDrBack, width: double.infinity, fit: BoxFit.fill),
   );
 }
 

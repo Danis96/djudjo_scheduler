@@ -156,9 +156,9 @@ void showSuccessModal(BuildContext context) {
           bodyWidget: Container(
               child: Column(
             children: <Widget>[
-              Image.asset('assets/success.png', height: MediaQuery.of(context).size.height / 6),
+              Image.asset(Assets.assetsSuccess, height: MediaQuery.of(context).size.height / 6),
               const SizedBox(height: 30),
-              Text('Password is changed successfully',
+              Text(Language.cp_success_subtitle,
                   style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
             ],
           )),
