@@ -7,3 +7,5 @@ const String AppointmentDetails = '/appointment_details';
 const String Notifications = '/notifications';
 const String EditAppointment = '/edit_appointment';
 const String Profile = '/profile';
+const String Settings = '/settings';
+const String ChangePassword = '/change_password';

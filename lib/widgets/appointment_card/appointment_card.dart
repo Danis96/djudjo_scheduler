@@ -1,4 +1,4 @@
-import 'package:djudjo_scheduler/app/utils/constants.dart';
+import 'package:djudjo_scheduler/app/utils/constants/constants.dart';
 import 'package:djudjo_scheduler/theme/color_helper.dart';
 import 'package:flutter/material.dart';
 

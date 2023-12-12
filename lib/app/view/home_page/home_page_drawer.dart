@@ -7,8 +7,8 @@ import '../../../widgets/dialogs/simple_dialog.dart';
 import '../../../widgets/drawer/custom_drawer.dart';
 import '../../../widgets/loaders/loader_app_dialog.dart';
 import '../../providers/login_provider/login_provider.dart';
-import '../../utils/drawer_helper.dart';
-import '../../utils/language_strings.dart';
+import '../../utils/helpers/drawer_helper.dart';
+import '../../utils/language/language_strings.dart';
 
 Widget buildDrawer(BuildContext context) {
   final DrawerHelper _drawerHelper = DrawerHelper();

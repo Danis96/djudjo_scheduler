@@ -1,4 +1,4 @@
-import '../models/stupidity_model.dart';
+import '../../models/stupidity_model.dart';
 
 class StupidityHelper {
 

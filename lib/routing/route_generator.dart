@@ -6,6 +6,7 @@ import 'package:djudjo_scheduler/app/view/edit_page/edit_page.dart';
 import 'package:djudjo_scheduler/app/view/notification_page/notification_page.dart';
 import 'package:djudjo_scheduler/app/view/profile_page/profile_page.dart';
 import 'package:djudjo_scheduler/app/view/register_page/register_page.dart';
+import 'package:djudjo_scheduler/app/view/settings_page/settings_page.dart';
 import 'package:djudjo_scheduler/routing/route_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -64,6 +65,16 @@ mixin RouteGenerator {
             ChangeNotifierProvider<LoginProvider>.value(value: args.loginProvider),
           ],
           child: const ProfilePage(),
+        ));
+        case Settings:
+        final SettingsPageArguments args = settings.arguments as SettingsPageArguments;
+        return SlideAnimationTween(
+            widget: MultiProvider(
+          providers: <SingleChildWidget>[
+            ChangeNotifierProvider<AppointmentProvider>.value(value: args.appointmentProvider),
+            ChangeNotifierProvider<LoginProvider>.value(value: args.loginProvider),
+          ],
+          child: const SettingsPage(),
         ));
 
       default:

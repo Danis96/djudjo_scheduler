@@ -9,7 +9,7 @@ import '../../../widgets/dialogs/simple_dialog.dart';
 import '../../../widgets/loaders/loader_app_dialog.dart';
 import '../../../widgets/modal_sheet/custom_modal_sheet.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
-import '../../utils/language_strings.dart';
+import '../../utils/language/language_strings.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key, this.isFromBottom = false});

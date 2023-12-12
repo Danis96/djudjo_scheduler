@@ -1,8 +1,8 @@
 import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 import 'package:djudjo_scheduler/app/providers/provider_utils/provider_constants.dart';
 import 'package:djudjo_scheduler/app/repositories/appointment_firestore_repository/appointment_firestore_repository.dart';
-import 'package:djudjo_scheduler/app/utils/language_strings.dart';
-import 'package:djudjo_scheduler/app/utils/string_extensions.dart';
+import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
+import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';

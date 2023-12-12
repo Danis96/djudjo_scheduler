@@ -1,5 +1,5 @@
 import 'package:djudjo_scheduler/app/providers/stupidity_provider/stupidity_provider.dart';
-import 'package:djudjo_scheduler/app/utils/list_extensions.dart';
+import 'package:djudjo_scheduler/app/utils/extensions/list_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

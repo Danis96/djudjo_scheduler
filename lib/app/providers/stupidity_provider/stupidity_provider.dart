@@ -1,6 +1,6 @@
 import 'package:djudjo_scheduler/app/models/stupidity_model.dart';
 import 'package:djudjo_scheduler/app/repositories/stupidity_firestore_repository/stupidity_firestore_repository.dart';
-import 'package:djudjo_scheduler/app/utils/stupidity_helper.dart';
+import 'package:djudjo_scheduler/app/utils/helpers/stupidity_helper.dart';
 import 'package:flutter/cupertino.dart';
 
 class StupidityProvider extends ChangeNotifier {

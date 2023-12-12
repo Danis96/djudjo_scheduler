@@ -1,4 +1,4 @@
-import 'package:djudjo_scheduler/app/utils/string_extensions.dart';
+import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_radio_button/group_radio_button.dart';
@@ -20,7 +20,7 @@ import '../../../widgets/modal_sheet/custom_modal_sheet.dart';
 import '../../../widgets/switches/switch_with_title_description.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../providers/appointment_provider/appointment_provider.dart';
-import '../../utils/language_strings.dart';
+import '../../utils/language/language_strings.dart';
 
 class EditPage extends StatelessWidget {
   @override

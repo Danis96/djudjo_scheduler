@@ -7,3 +7,10 @@ class ProfilePageArguments {
   final AppointmentProvider appointmentProvider;
   final LoginProvider loginProvider;
 }
+
+class SettingsPageArguments {
+  SettingsPageArguments(this.appointmentProvider, this.loginProvider);
+
+  final AppointmentProvider appointmentProvider;
+  final LoginProvider loginProvider;
+}

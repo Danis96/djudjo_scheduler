@@ -1,7 +1,7 @@
 import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
-import 'package:djudjo_scheduler/app/utils/int_extensions.dart';
-import 'package:djudjo_scheduler/app/utils/string_extensions.dart';
+import 'package:djudjo_scheduler/app/utils/extensions/int_extensions.dart';
+import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
 import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 import '../../providers/stupidity_provider/stupidity_provider.dart';
-import '../../utils/language_strings.dart';
+import '../../utils/language/language_strings.dart';
 import 'home_page_drawer.dart';
 
 class Homepage extends StatefulWidget {

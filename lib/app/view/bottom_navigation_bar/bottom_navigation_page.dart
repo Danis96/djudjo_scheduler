@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../theme/color_helper.dart';
 import '../../../widgets/bottom_navigation_bar/custom_bottom_navigation_bar.dart';
-import '../../utils/bottom_navigation_helper.dart';
+import '../../utils/helpers/bottom_navigation_helper.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({this.initial = 0});

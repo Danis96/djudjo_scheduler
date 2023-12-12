@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:djudjo_scheduler/app/models/user_model.dart';
 import 'package:djudjo_scheduler/app/repositories/admin_firestore_repository/admin_firestore_repository.dart';
-import 'package:djudjo_scheduler/app/utils/language_strings.dart';
+import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

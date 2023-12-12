@@ -1,5 +1,5 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
-import 'package:djudjo_scheduler/app/utils/string_extensions.dart';
+import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
 import 'package:djudjo_scheduler/widgets/buttons/common_button.dart';
 import 'package:djudjo_scheduler/widgets/custom_picker/custom_picker.dart';
 import 'package:djudjo_scheduler/widgets/dialogs/simple_dialog.dart';
@@ -18,7 +18,7 @@ import '../../../routing/routes.dart';
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
-import '../../utils/language_strings.dart';
+import '../../utils/language/language_strings.dart';
 
 class NewAppointmentPage extends StatelessWidget {
   @override

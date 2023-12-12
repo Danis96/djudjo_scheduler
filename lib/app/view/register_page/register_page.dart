@@ -11,7 +11,7 @@ import '../../../widgets/dialogs/simple_dialog.dart';
 import '../../../widgets/tappable_texts/custom_tappable_text.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../providers/login_provider/login_provider.dart';
-import '../../utils/language_strings.dart';
+import '../../utils/language/language_strings.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage();
