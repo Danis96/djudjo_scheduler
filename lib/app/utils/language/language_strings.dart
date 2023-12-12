@@ -9,7 +9,6 @@ class Language {
   static const String dr_item_up = 'Unconfirmed appointments';
   static const String dr_item_settings = 'Settings';
 
-
   // login provider
   static const String weak_password = 'The password provided is too weak.';
   static const String acc_exist = 'The account already exists for that email.';
@@ -17,6 +16,7 @@ class Language {
   static const String user_not_found = 'No user found for that email.';
   static const String wrong_password = 'Wrong password provided for that user.';
   static const String invalid_cred = 'Invalid login credentials';
+  static const String confirm_pass = 'New password does not match Confirm password.';
 
   // appointment provider
   static const String mandatory_fields = 'Need to fulfill all mandatory fields.';
@@ -48,7 +48,6 @@ class Language {
   static const String hd_content = 'Are you sure you want to sign out of DjudjoInk?';
   static const String hd_cancel = 'Cancel';
   static const String hd_logout_title = 'Logout';
-
 
   // Add new appointment page
   static const String ana_headline = 'Add new appointment';
@@ -124,7 +123,6 @@ class Language {
   static const String ep_past_content =
       'You cannot turn this switch OFF because selected date for appointment is in the past. So automatically Finished switch is ON.\n\nSelect date in the future to be able to turn it off.';
 
-
   // Profile page
   static const String pp_app_bar = 'Profile';
   static const String pp_headline = 'Tattoo artist';
@@ -132,5 +130,28 @@ class Language {
   static const String pp_name_hint = 'Enter name';
   static const String pp_phone_hint = 'Enter phone';
   static const String pp_button = 'Save';
+
+  // Settings
+  static const String s_app_bar = 'Settings';
+  static const String s_headline = 'Personalize Your Mobile Settings for a DjudjoInk Experience';
+  static const String s_general = 'General';
+  static const String s_feedback = 'Feedback';
+  static const String s_goodbye = 'Goodbye';
+
+  // settings helper
+  static const String sh_profile = 'Profile';
+  static const String sh_bug = 'Report a bug';
+  static const String sh_feedback = 'Send feedback';
+  static const String sh_logout = 'Logout';
+  static const String sh_delete = 'Delete account';
+  static const String sh_change = 'Change Password';
+
+  // Change password
+  static const String cp_app_bar = 'Change password';
+  static const String cp_headline = 'Update Your Password for Enhanced Mobile Protection';
+  static const String cp_old_hint = 'Enter old password';
+  static const String cp_new_hint = 'Enter new password';
+  static const String cp_confirm_hint = 'Confirm new password';
+  static const String cp_button = 'Save';
 
 }

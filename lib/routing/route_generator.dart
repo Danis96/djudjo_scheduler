@@ -2,6 +2,7 @@ import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
 import 'package:djudjo_scheduler/app/providers/stupidity_provider/stupidity_provider.dart';
 import 'package:djudjo_scheduler/app/view/bottom_navigation_bar/bottom_navigation_page.dart';
+import 'package:djudjo_scheduler/app/view/change_password_page/change_password_page.dart';
 import 'package:djudjo_scheduler/app/view/edit_page/edit_page.dart';
 import 'package:djudjo_scheduler/app/view/notification_page/notification_page.dart';
 import 'package:djudjo_scheduler/app/view/profile_page/profile_page.dart';
@@ -76,7 +77,9 @@ mixin RouteGenerator {
           ],
           child: const SettingsPage(),
         ));
-
+      case ChangePassword:
+        return SlideAnimationTween(
+            widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: ChangePasswordPage()));
       default:
         return _errorRoute();
     }

@@ -5,6 +5,7 @@ import 'package:djudjo_scheduler/app/repositories/admin_firestore_repository/adm
 import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../storage_manager/storage_prefs_manager.dart';
 
@@ -15,7 +16,6 @@ class LoginProvider extends ChangeNotifier {
   }
 
   FirebaseAuth? firebase;
-
   AdminFirestoreRepository? _adminFirestoreRepository;
 
   //login
@@ -33,6 +33,11 @@ class LoginProvider extends ChangeNotifier {
   final TextEditingController profileEmailController = TextEditingController();
   final TextEditingController profilePhoneController = TextEditingController();
   final TextEditingController profileNameController = TextEditingController();
+
+  //change password
+  final TextEditingController cpOldController = TextEditingController();
+  final TextEditingController cpNewController = TextEditingController();
+  final TextEditingController cpConfirmController = TextEditingController();
 
   Admin _admin = Admin();
 
@@ -98,6 +103,30 @@ class LoginProvider extends ChangeNotifier {
       setProfileEditChanges();
       await _adminFirestoreRepository!.updateAdminToFirestore(_admin);
       return null;
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
+  Future<String?> reAuthenticateAdminAndChangePassword() async {
+    try {
+      if (areChangePasswordFieldsEmpty()) {
+        if (areChangePasswordNewConfirmMatch()) {
+          final User? _user = FirebaseAuth.instance.currentUser;
+          final AuthCredential _authCredential = EmailAuthProvider.credential(email: _user!.email!, password: cpOldController.text);
+          await _user.reauthenticateWithCredential(_authCredential);
+          await _user.updatePassword(cpConfirmController.text);
+          notifyListeners();
+          return null;
+        } else {
+          return Language.confirm_pass;
+        }
+      } else {
+        return Language.all_fields;
+      }
+    } on FirebaseAuthException catch (e) {
+      return e.message;
     } catch (e) {
       print(e);
       return e.toString();
@@ -184,11 +213,28 @@ class LoginProvider extends ChangeNotifier {
         profilePhoneController.text != _admin.phone ||
         profileEmailController.text != _admin.email) {
       changesOccurred = true;
-      print('TRUE CHANGES');
     } else {
       changesOccurred = false;
-      print('FALSE CHANGES');
     }
     notifyListeners();
+  }
+
+  String appVersion = '';
+
+  Future<void> fetchAppVersion() async {
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    appVersion = packageInfo.version;
+    notifyListeners();
+  }
+
+  bool areChangePasswordNewConfirmMatch() => cpConfirmController.text == cpNewController.text;
+
+  bool areChangePasswordFieldsEmpty() =>
+      cpConfirmController.text.isNotEmpty && cpNewController.text.isNotEmpty && cpOldController.text.isNotEmpty;
+
+  void clearChangePasswordControllers() {
+    cpConfirmController.clear();
+    cpOldController.clear();
+    cpNewController.clear();
   }
 }

@@ -20,7 +20,7 @@ PreferredSizeWidget commonAppBar(
     title: title != null
         ? Text(
             title,
-            style: TextStyle(color: titleColor ?? ColorHelper.white.color, fontSize: 18),
+            style: TextStyle(color: titleColor ?? ColorHelper.white.color, fontSize: 20),
           )
         : const SizedBox(),
     bottom: PreferredSize(preferredSize: preferredSizeForBottom ?? const Size(0, 0), child: bottomWidget ?? const SizedBox()),
