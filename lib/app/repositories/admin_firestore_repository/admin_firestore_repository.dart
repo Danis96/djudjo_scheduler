@@ -22,7 +22,7 @@ class AdminFirestoreRepository {
   }
 
   Future<List<Admin>?> fetchAdminsFromFirestore() async {
-    List<Admin> _model = <Admin>[];
+    final List<Admin> _model = <Admin>[];
     try {
       await _adminsCollection!.get().then((QuerySnapshot<dynamic> value) {
          for(final QueryDocumentSnapshot<dynamic> doc in value.docs) {

@@ -6,7 +6,6 @@ import 'package:djudjo_scheduler/widgets/dialogs/simple_dialog.dart';
 import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
 import 'package:djudjo_scheduler/widgets/tappable_texts/custom_tappable_text.dart';
 import 'package:djudjo_scheduler/widgets/text_fields/custom_text_form_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:provider/provider.dart';

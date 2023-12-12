@@ -132,7 +132,7 @@ class NewAppointmentPage extends StatelessWidget {
         children: <Widget>[
           Text(
             Language.ana_gender_title,
-            style: Theme.of(context).textTheme!.displaySmall,
+            style: Theme.of(context).textTheme.displaySmall,
           ),
           RadioGroup<String>.builder(
             groupValue: context.watch<AppointmentProvider>().genderValue,

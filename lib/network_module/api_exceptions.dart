@@ -29,10 +29,8 @@ class BadRequestValidationException implements Exception {
           .forEach((String key, dynamic value) {
         // ignore: always_specify_types
         final List<String> lErrors = (value as List).cast<String>();
-        if (lErrors != null) {
-          parsedErrors[key] = lErrors;
-        }
-      });
+        parsedErrors[key] = lErrors;
+            });
 
       print(parsedErrors);
 

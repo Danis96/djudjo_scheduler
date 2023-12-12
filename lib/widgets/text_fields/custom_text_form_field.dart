@@ -52,6 +52,7 @@ class CustomTextFormField extends StatefulWidget {
     ),
     this.obscureIcon,
     this.disableObscureIcon,
+    this.initialValue,
   }) : super(key: key);
 
   final String? label;
@@ -79,6 +80,7 @@ class CustomTextFormField extends StatefulWidget {
   final TextStyle errorStyle;
   final TextStyle labelStyle;
   final String? helperText;
+  final String? initialValue;
   final double? height;
   final bool disableHeight;
   final TextStyle? hintStyle;
@@ -156,6 +158,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           disableHeight: widget.disableHeight,
           obscureIcon: widget.obscureIcon,
           disableObscureIcon: widget.disableObscureIcon,
+          initialValue: widget.initialValue,
         ),
       ],
     );
@@ -198,6 +201,7 @@ Widget _buildTextFormField(
     TextStyle? labelStyle,
     Color? inputColor,
     String? helperText,
+    String? initialValue,
     double? height,
     bool? disableHeight,
     TextStyle? hintStyle,
@@ -239,6 +243,7 @@ Widget _buildTextFormField(
               return null;
             }
           },
+      initialValue: initialValue,
       obscuringCharacter: obscureStarChar ? '*' : '•',
       obscureText: isPasswordType() ? obscure : obscureRegular,
       decoration: InputDecoration(
@@ -270,7 +275,7 @@ Widget _buildTextFormField(
         filled: filled,
         errorStyle: errorStyle,
         labelStyle: labelStyle,
-        errorText: errorMessage != null ? errorMessage : null,
+        errorText: errorMessage,
         errorMaxLines: 2,
         errorBorder: errorBorder,
         enabledBorder: enabledBorder,

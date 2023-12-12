@@ -78,6 +78,7 @@ class LoginProvider extends ChangeNotifier {
     } catch (e) {
       return e.toString();
     }
+    return null;
   }
 
   Future<String?> fetchAdmins() async {
@@ -175,4 +176,19 @@ class LoginProvider extends ChangeNotifier {
       registerConfirmPasswordController.text.isNotEmpty &&
       registerPasswordController.text.isNotEmpty &&
       (registerConfirmPasswordController.text == registerPasswordController.text);
+
+  bool changesOccurred = false;
+
+  void setChangesOccurred() {
+    if (profileNameController.text != _admin.name ||
+        profilePhoneController.text != _admin.phone ||
+        profileEmailController.text != _admin.email) {
+      changesOccurred = true;
+      print('TRUE CHANGES');
+    } else {
+      changesOccurred = false;
+      print('FALSE CHANGES');
+    }
+    notifyListeners();
+  }
 }

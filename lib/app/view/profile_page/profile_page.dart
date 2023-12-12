@@ -111,6 +111,7 @@ Widget _buildEmailField(BuildContext context) {
     hintText: Language.pp_email_hint,
     key: const Key('pp_email_hint'),
     keyboardType: TextInputType.emailAddress,
+    onChange: () => context.read<LoginProvider>().setChangesOccurred(),
     onFieldSubmitted: (String? s) {
       FocusScope.of(context).nextFocus();
     },
@@ -121,6 +122,7 @@ Widget _buildNameField(BuildContext context) {
   return CustomTextFormField(
     controller: context.read<LoginProvider>().profileNameController,
     hintText: Language.pp_name_hint,
+    onChange: () => context.read<LoginProvider>().setChangesOccurred(),
     key: const Key('pp_name_hint'),
     onFieldSubmitted: (String? s) {
       FocusScope.of(context).nextFocus();
@@ -133,6 +135,7 @@ Widget _buildPhoneField(BuildContext context) {
     controller: context.read<LoginProvider>().profilePhoneController,
     hintText: Language.pp_phone_hint,
     key: const Key('pp_phone_hint'),
+    onChange: () => context.read<LoginProvider>().setChangesOccurred(),
     keyboardType: TextInputType.phone,
     onFieldSubmitted: (String? s) {
       FocusScope.of(context).nextFocus();
@@ -144,6 +147,7 @@ Widget _buildBottomBar(BuildContext context) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
     child: CommonButton(
+      disabled: !context.watch<LoginProvider>().changesOccurred,
       onPressed: () {
         customLoaderCircleWhite(context: context);
         context.read<LoginProvider>().updateCurrentAdmin().then((String? error) {

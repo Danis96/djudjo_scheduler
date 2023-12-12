@@ -1,7 +1,5 @@
 import 'package:djudjo_scheduler/app/repositories/navigation_repo.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 
 import '../routing/route_generator.dart';
 import '../routing/routes.dart';

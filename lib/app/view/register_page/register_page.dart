@@ -1,9 +1,7 @@
-import 'dart:ui';
 
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:provider/provider.dart';
 
 import '../../../theme/color_helper.dart';
@@ -16,7 +14,7 @@ import '../../providers/login_provider/login_provider.dart';
 import '../../utils/language_strings.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({Key? key});
+  const RegisterPage();
 
   @override
   Widget build(BuildContext context) {

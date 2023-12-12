@@ -13,8 +13,8 @@ class SlideAnimationTween extends PageRouteBuilder<dynamic> {
               Animation<double> secAnimation,
               Widget child) {
             const Offset begin = Offset(1.0, 0.0);
-            final Offset end = Offset.zero;
-            final Cubic curve = Curves.ease;
+            const Offset end = Offset.zero;
+            const Cubic curve = Curves.ease;
             final Animatable<Offset> tween =
                 Tween<Offset>(begin: begin, end: end)
                     .chain(CurveTween(curve: curve));

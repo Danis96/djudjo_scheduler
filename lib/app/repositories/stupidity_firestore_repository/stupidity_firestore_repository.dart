@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:djudjo_scheduler/app/models/stupidity_model.dart';
 
-import '../../models/user_model.dart';
 
 class StupidityFirestoreRepository {
   StupidityFirestoreRepository() {
@@ -24,7 +23,7 @@ class StupidityFirestoreRepository {
   }
 
   Future<dynamic> fetchStupidity() async {
-    List<StupidityModel> _model = <StupidityModel>[];
+    final List<StupidityModel> _model = <StupidityModel>[];
     try {
       await _stupidityCollection!.get().then((QuerySnapshot<dynamic> value) {
         for(final DocumentSnapshot<dynamic> doc in value.docs) {

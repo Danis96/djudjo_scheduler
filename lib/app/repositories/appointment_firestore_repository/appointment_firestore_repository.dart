@@ -38,7 +38,7 @@ class AppointmentFirestoreRepository {
   }
 
   Future<dynamic> fetchAppointments() async {
-    List<Appointment> _appointments = <Appointment>[];
+    final List<Appointment> _appointments = <Appointment>[];
     try {
       await _appointmentsCollection!.get().then((QuerySnapshot<dynamic> value) {
         for (final DocumentSnapshot<dynamic> doc in value.docs) {

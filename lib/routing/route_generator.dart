@@ -63,7 +63,7 @@ mixin RouteGenerator {
             ChangeNotifierProvider<AppointmentProvider>.value(value: args.appointmentProvider),
             ChangeNotifierProvider<LoginProvider>.value(value: args.loginProvider),
           ],
-          child: ProfilePage(),
+          child: const ProfilePage(),
         ));
 
       default:

@@ -53,17 +53,17 @@ class AppointmentProvider extends ChangeNotifier {
   List<Appointment> get appointments => _appointments;
 
   // not confirmed appointments
-  List<Appointment> _appointmentsNotConfirmed = <Appointment>[];
+  final List<Appointment> _appointmentsNotConfirmed = <Appointment>[];
 
   List<Appointment> get appointmentsNotConfirmed => _appointmentsNotConfirmed;
 
   // confirmed appointments
-  List<Appointment> _appointmentsConfirmed = <Appointment>[];
+  final List<Appointment> _appointmentsConfirmed = <Appointment>[];
 
   List<Appointment> get appointmentsConfirmed => _appointmentsConfirmed;
 
   // finished appointments
-  List<Appointment> _appointmentsFinished = <Appointment>[];
+  final List<Appointment> _appointmentsFinished = <Appointment>[];
 
   List<Appointment> get appointmentsFinished => _appointmentsFinished;
 
@@ -147,6 +147,7 @@ class AppointmentProvider extends ChangeNotifier {
       print(result.toString());
     }
     notifyListeners();
+    return null;
   }
 
   Future<String?> deleteAppointment(String id) async {
