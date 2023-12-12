@@ -7,6 +7,8 @@ import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
+import 'dialog_helper.dart';
+
 class SettingsItemModel {
   SettingsItemModel({this.title = '', this.icon = '', this.route, this.hideIconArrow = false, this.arguments, this.function});
 
@@ -34,6 +36,8 @@ List<SettingsItemModel> settingsItemsFeedback(BuildContext context) => <Settings
     ];
 
 List<SettingsItemModel> settingsItemsOther(BuildContext context) => <SettingsItemModel>[
-      SettingsItemModel(title: Language.sh_logout, icon: Assets.assetsLogout, hideIconArrow: true),
-      SettingsItemModel(title: Language.sh_delete, icon: Assets.assetsDelete, hideIconArrow: true),
+      SettingsItemModel(
+          title: Language.sh_logout, icon: Assets.assetsLogout, hideIconArrow: true, function: () => showLogoutDialog(context)),
+      SettingsItemModel(
+          title: Language.sh_delete, icon: Assets.assetsDelete, hideIconArrow: true, function: () => showDeleteDialog(context)),
     ];

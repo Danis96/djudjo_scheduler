@@ -146,6 +146,9 @@ class Language {
   static const String sh_logout = 'Logout';
   static const String sh_delete = 'Delete account';
   static const String sh_change = 'Change Password';
+  static const String sh_delete_title = 'Are you sure?';
+  static const String sh_delete_subtitle = 'Are you sure you want to delete data from DjudjoInk?';
+  static const String sh_delete_cancel = 'Cancel';
 
   // Change password
   static const String cp_app_bar = 'Change password';

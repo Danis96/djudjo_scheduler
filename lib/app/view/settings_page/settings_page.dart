@@ -155,6 +155,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Text('v.${context.watch<LoginProvider>().appVersion}');
   }
 
+
   void _executeFunctionOrNavigate(List<SettingsItemModel> list, int x, BuildContext context) {
     if (list[x].route != null && list[x].route!.isNotEmpty) {
       if (list[x].arguments != null) {

@@ -177,9 +177,20 @@ class LoginProvider extends ChangeNotifier {
     );
   }
 
-  Future<String?> logout() async {
+  Future<String?> logoutFromFirebase() async {
     try {
       await firebase!.signOut();
+      await storagePrefs.deleteAll();
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String?> deleteUserAdmin() async {
+    try {
+      final User? _user = FirebaseAuth.instance.currentUser;
+      await _user!.delete();
       await storagePrefs.deleteAll();
       return null;
     } catch (e) {
