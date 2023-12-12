@@ -28,7 +28,8 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _getInitialData() async {
-    await context.read<LoginProvider>().fetchAdmins();
+    customFutureBuilderLoader(context: context);
+    await context.read<LoginProvider>().fetchAdmins().then((value) => Navigator.of(context).pop());
   }
 
   @override

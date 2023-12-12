@@ -43,3 +43,25 @@ Future<void> customLoaderCircleWhite({@required BuildContext? context}) {
     elevation: 0,
   );
 }
+
+
+Widget customFutureBuilderLoader({
+  @required BuildContext? context,
+}) {
+  Future<void>.delayed(
+      Duration.zero,
+          () => showMyDialog(
+        msg: '',
+        action: const SizedBox(),
+        context: context,
+        barrier: false,
+        title: '',
+        mainWidget: const SpinKitCircle(
+          size: 80.0,
+          color: Colors.white,
+        ),
+        color: Colors.transparent,
+        elevation: 0,
+      ));
+  return Container();
+}

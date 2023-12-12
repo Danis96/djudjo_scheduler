@@ -21,21 +21,33 @@ Widget buildDrawer(BuildContext context) {
     wrapWithMaterial: true,
     headerHeight: 200,
     backgroundColor: ColorHelper.white.color,
-    logoutTitle: 'Logout',
+    logoutTitle: Language.hd_logout_title,
     onLogoutPress: () async {
-      customLoaderCircleWhite(context: context);
-      await context.read<LoginProvider>().logout().then((String? error) {
-        Navigator.of(context).pop();
-        if (error != null) {
-          customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
-        } else {
-          Navigator.of(context).pushNamedAndRemoveUntil(Login, (Route<dynamic> route) => false);
-        }
-      });
+      customSimpleDialog(
+        context,
+        buttonText: Language.hd_cancel,
+        buttonTwoText: 'Ok',
+        onButtonTwoPressed: () => _logout(context),
+        onButtonPressed: () => Navigator.of(context).pop(),
+        title: Language.hd_title,
+        content: Language.hd_content,
+      );
     },
     listItems: _drawerHelper.drawerListItems(context),
     labelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: ColorHelper.black.color),
     logoutStyle: TextStyle(fontSize: 17, fontWeight: FontWeight.w400, color: ColorHelper.black.color),
     customHeader: Image.asset('assets/dr_back.png', width: double.infinity, fit: BoxFit.fill),
   );
+}
+
+Future<void> _logout(BuildContext context) async {
+  customLoaderCircleWhite(context: context);
+  await context.read<LoginProvider>().logout().then((String? error) {
+    Navigator.of(context).pop();
+    if (error != null) {
+      customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
+    } else {
+      Navigator.of(context).pushNamedAndRemoveUntil(Login, (Route<dynamic> route) => false);
+    }
+  });
 }

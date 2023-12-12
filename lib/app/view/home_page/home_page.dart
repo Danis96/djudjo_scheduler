@@ -5,6 +5,7 @@ import 'package:djudjo_scheduler/app/utils/string_extensions.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
 import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
+import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -29,14 +30,16 @@ class _HomepageState extends State<Homepage> {
 
   @override
   void initState() {
-    _getInitialData(context);
+    _getInitialData();
     super.initState();
   }
 
-  Future<void> _getInitialData(BuildContext context) async {
+  Future<void> _getInitialData() async {
+    customFutureBuilderLoader(context: context);
     await context.read<AppointmentProvider>().fetchAppointments();
     await context.read<StupidityProvider>().fetchStupidities();
     setState(() {});
+    Navigator.of(context).pop();
   }
 
   @override
@@ -85,7 +88,7 @@ class _HomepageState extends State<Homepage> {
       color: ColorHelper.towerBronze.color,
       height: 50,
       showChildOpacityTransition: false,
-      onRefresh: () => _getInitialData(context),
+      onRefresh: () => _getInitialData(),
       child: ListView(
         shrinkWrap: true,
         children: <Widget>[

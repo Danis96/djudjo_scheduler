@@ -43,6 +43,13 @@ class Language {
   static const String home_headline = 'Appointments';
   static const String home_empty = 'You do not have any confirmed appointments.';
 
+  // Home page drawer
+  static const String hd_title = 'Sign out';
+  static const String hd_content = 'Are you sure you want to sign out of DjudjoInk?';
+  static const String hd_cancel = 'Cancel';
+  static const String hd_logout_title = 'Logout';
+
+
   // Add new appointment page
   static const String ana_headline = 'Add new appointment';
   static const String ana_name_hint = 'Enter name';
