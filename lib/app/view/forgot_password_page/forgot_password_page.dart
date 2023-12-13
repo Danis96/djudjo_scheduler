@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
+import 'package:djudjo_scheduler/widgets/snackbar/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,18 +9,17 @@ import '../../../widgets/app_bars/common_app_bar.dart';
 import '../../../widgets/buttons/common_button.dart';
 import '../../../widgets/dialogs/simple_dialog.dart';
 import '../../../widgets/loaders/loader_app_dialog.dart';
-import '../../../widgets/modal_sheet/custom_modal_sheet.dart';
-import '../../../widgets/snackbar/custom_snackbar.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../providers/login_provider/login_provider.dart';
 import '../../utils/language/language_strings.dart';
 
-class ChangePasswordPage extends StatelessWidget {
-  const ChangePasswordPage({super.key});
+class ForgotPasswordPage extends StatelessWidget {
+  const ForgotPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: _buildAppBar(context),
       body: _buildBody(context),
       bottomNavigationBar: _buildBottomBar(context),
@@ -29,7 +29,7 @@ class ChangePasswordPage extends StatelessWidget {
   PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(
         context,
         color: ColorHelper.white.color,
-        title: Language.cp_app_bar,
+        title: Language.fp_app_bar,
         titleColor: Colors.black,
         icon: Icons.arrow_back_ios,
         leadingIconColor: ColorHelper.black.color,
@@ -57,57 +57,26 @@ class ChangePasswordPage extends StatelessWidget {
         Container(
           width: MediaQuery.of(context).size.width / 1.7,
           child: Text(
-            Language.cp_headline,
+            Language.fp_headline,
             style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 18, fontWeight: FontWeight.w500),
           ),
         ),
-        Image.asset(Assets.assetsPassword, scale: 8)
+        Image.asset(Assets.assetsForgot, scale: 8)
       ],
     );
   }
 }
 
 Widget _buildForm(BuildContext context) {
-  return Form(
-      child: Column(
-    children: <Widget>[
-      _buildOldPasswordField(context),
-      _buildNewPasswordField(context),
-      _buildConfirmNewPasswordField(context),
-    ],
-  ));
+  return Form(child: Column(children: <Widget>[_buildEmailField(context)]));
 }
 
-Widget _buildOldPasswordField(BuildContext context) {
+Widget _buildEmailField(BuildContext context) {
   return CustomTextFormField(
-    controller: context.read<LoginProvider>().cpOldController,
-    hintText: Language.cp_old_hint,
-    key: const Key('cp_pass_hint'),
-    type: TextFieldType.passwordType,
-    onFieldSubmitted: (String? s) {
-      FocusScope.of(context).nextFocus();
-    },
-  );
-}
-
-Widget _buildNewPasswordField(BuildContext context) {
-  return CustomTextFormField(
-    controller: context.read<LoginProvider>().cpNewController,
-    hintText: Language.cp_new_hint,
-    key: const Key('cp_pass_new_hint'),
-    type: TextFieldType.passwordType,
-    onFieldSubmitted: (String? s) {
-      FocusScope.of(context).nextFocus();
-    },
-  );
-}
-
-Widget _buildConfirmNewPasswordField(BuildContext context) {
-  return CustomTextFormField(
-    controller: context.read<LoginProvider>().cpConfirmController,
-    hintText: Language.cp_confirm_hint,
-    type: TextFieldType.passwordType,
-    key: const Key('cp_pass_new_confirm_hint'),
+    controller: context.read<LoginProvider>().fpEmailController,
+    hintText: Language.fp_email_hint,
+    key: const Key('fp_email_hint'),
+    keyboardType: TextInputType.emailAddress,
     onFieldSubmitted: (String? s) {
       FocusScope.of(context).nextFocus();
     },
@@ -118,26 +87,26 @@ Widget _buildBottomBar(BuildContext context) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 15),
     child: CommonButton(
-      disabled: !context.watch<LoginProvider>().areChangePasswordFieldsEmpty(),
+      disabled: !context.watch<LoginProvider>().isForgotEmailFieldEmpty(),
       onPressed: () {
         customLoaderCircleWhite(context: context);
-        context.read<LoginProvider>().reAuthenticateAdminAndChangePassword().then((String? error) {
+        context.read<LoginProvider>().forgotPasswordFirebaseAuth().then((String? error) {
           Navigator.of(context).pop();
           if (error != null) {
             customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
           } else {
-            context.read<LoginProvider>().clearChangePasswordControllers();
+            context.read<LoginProvider>().clearForgotPasswordControllers();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(customSnackBar(
                 snackBarTitle: Language.ana_success_title,
-                snackBarMessage: Language.cp_success_subtitle,
+                snackBarMessage: Language.fp_email_sent_success,
                 snackBarContentType: ContentType.success,
               ));
           }
         });
       },
-      buttonTitle: Language.cp_button,
+      buttonTitle: Language.fp_button,
     ),
   );
 }

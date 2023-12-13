@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import '../../../widgets/favorite_heart/favorite_heart.dart';
 import '../../../widgets/loaders/loader_app_dialog.dart';
 
 import '../../../widgets/modal_sheet/custom_modal_sheet.dart';
+import '../../../widgets/snackbar/custom_snackbar.dart';
 import '../../../widgets/switches/switch_with_title_description.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../providers/appointment_provider/appointment_provider.dart';
@@ -299,12 +301,13 @@ Widget _buildIsFinishedSwitch(BuildContext context) {
       onChanged: (bool value) {
         context.read<AppointmentProvider>().setAppointmentFinished(value);
         if (context.read<AppointmentProvider>().isSelectedDateInPastEdit()) {
-          customSimpleDialog(
-            context,
-            buttonText: Language.common_ok,
-            title: Language.ep_past_date_issue,
-            content: Language.ep_past_content,
-          );
+          ScaffoldMessenger.of(context)
+            ..hideCurrentSnackBar()
+            ..showSnackBar(customSnackBar(
+              snackBarTitle: Language.ep_past_date_issue,
+              snackBarMessage: Language.ep_past_content,
+              snackBarContentType: ContentType.warning,
+            ));
         }
       },
       showIconAndTitle: false,

@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
@@ -18,6 +19,7 @@ import 'package:time_range/time_range.dart';
 import '../../../routing/routes.dart';
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
+import '../../../widgets/snackbar/custom_snackbar.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../utils/language/language_strings.dart';
 
@@ -289,12 +291,13 @@ class NewAppointmentPage extends StatelessWidget {
         onChanged: (bool value) {
           context.read<AppointmentProvider>().setAppointmentFinished(value);
           if (context.read<AppointmentProvider>().isSelectedDateInPast()) {
-            customSimpleDialog(
-              context,
-              buttonText: Language.common_ok,
-              title: Language.ana_past_date_issue,
-              content: Language.ana_past_content,
-            );
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(customSnackBar(
+                snackBarTitle: Language.ana_past_date_issue,
+                snackBarMessage: Language.ana_past_content,
+                snackBarContentType: ContentType.warning,
+              ));
           }
         },
         showIconAndTitle: false,
@@ -336,7 +339,13 @@ class NewAppointmentPage extends StatelessWidget {
               customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
             } else {
               context.read<AppointmentProvider>().clearControllers();
-              showSuccessModal(context);
+              ScaffoldMessenger.of(context)
+                ..hideCurrentSnackBar()
+                ..showSnackBar(customSnackBar(
+                  snackBarTitle: Language.ana_success_title,
+                  snackBarMessage: Language.ana_success_subtitle,
+                  snackBarContentType: ContentType.success,
+                ));
             }
           });
         },
@@ -375,46 +384,6 @@ class NewAppointmentPage extends StatelessWidget {
               controller: context.read<AppointmentProvider>().dateRangePickerController,
             ),
             bottomWidget: const SizedBox(),
-          ),
-        );
-      },
-    );
-  }
-
-  void showSuccessModal(BuildContext context) {
-    showModalBottomSheet<dynamic>(
-      context: context,
-      isDismissible: false,
-      enableDrag: false,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
-      ),
-      builder: (BuildContext ctx) {
-        return ListenableProvider<AppointmentProvider>.value(
-          value: context.read<AppointmentProvider>(),
-          child: CustomModalSheet(
-            height: 400,
-            title: Language.ana_success_title,
-            onClosePressed: () => Navigator.of(context).pushNamed(Home),
-            bodyWidget: Container(
-                child: Column(
-              children: <Widget>[
-                Image.asset(Assets.assetsSuccess, height: MediaQuery.of(context).size.height / 3),
-                const SizedBox(height: 30),
-                Text(Language.ana_success_subtitle,
-                    style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
-              ],
-            )),
-            bottomWidget: CommonButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(Home);
-              },
-              buttonTitle: Language.common_ok,
-            ),
           ),
         );
       },

@@ -39,6 +39,9 @@ class LoginProvider extends ChangeNotifier {
   final TextEditingController cpNewController = TextEditingController();
   final TextEditingController cpConfirmController = TextEditingController();
 
+  //forgot password
+  final TextEditingController fpEmailController = TextEditingController();
+
   Admin _admin = Admin();
 
   Admin get admin => _admin;
@@ -122,6 +125,23 @@ class LoginProvider extends ChangeNotifier {
         } else {
           return Language.confirm_pass;
         }
+      } else {
+        return Language.all_fields;
+      }
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    } catch (e) {
+      print(e);
+      return e.toString();
+    }
+  }
+
+  Future<String?> forgotPasswordFirebaseAuth() async {
+    try {
+      if (isForgotEmailFieldEmpty()) {
+        await FirebaseAuth.instance.sendPasswordResetEmail(email: fpEmailController.text);
+        notifyListeners();
+        return null;
       } else {
         return Language.all_fields;
       }
@@ -243,9 +263,15 @@ class LoginProvider extends ChangeNotifier {
   bool areChangePasswordFieldsEmpty() =>
       cpConfirmController.text.isNotEmpty && cpNewController.text.isNotEmpty && cpOldController.text.isNotEmpty;
 
+  bool isForgotEmailFieldEmpty() => fpEmailController.text.isNotEmpty;
+
   void clearChangePasswordControllers() {
     cpConfirmController.clear();
     cpOldController.clear();
     cpNewController.clear();
+  }
+
+  void clearForgotPasswordControllers() {
+    fpEmailController.clear();
   }
 }

@@ -20,6 +20,7 @@ class SettingsItemModel {
   final Function? function;
 }
 
+
 List<SettingsItemModel> settingsItemsGeneral(BuildContext context) => <SettingsItemModel>[
       SettingsItemModel(
           title: Language.sh_profile,

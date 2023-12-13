@@ -1,3 +1,4 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import '../../../widgets/buttons/common_button.dart';
 import '../../../widgets/dialogs/simple_dialog.dart';
 import '../../../widgets/loaders/loader_app_dialog.dart';
 import '../../../widgets/modal_sheet/custom_modal_sheet.dart';
+import '../../../widgets/snackbar/custom_snackbar.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../utils/language/language_strings.dart';
 
@@ -157,41 +159,17 @@ Widget _buildBottomBar(BuildContext context) {
           if (error != null) {
             customSimpleDialog(context, buttonText: Language.common_ok, title: Language.common_error, content: error);
           } else {
-            showSuccessModal(context, Language.pp_success_subtitle);
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(customSnackBar(
+                snackBarTitle: Language.ana_success_title,
+                snackBarMessage: Language.pp_success_subtitle,
+                snackBarContentType: ContentType.success,
+              ));
           }
         });
       },
       buttonTitle: Language.pp_button,
     ),
-  );
-}
-
-void showSuccessModal(BuildContext context, String subtitle) {
-  showModalBottomSheet<dynamic>(
-    context: context,
-    isDismissible: false,
-    enableDrag: false,
-    backgroundColor: Colors.white,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))),
-    builder: (BuildContext ctx) {
-      return CustomModalSheet(
-          height: 400,
-          title: Language.ana_success_title,
-          onClosePressed: () => Navigator.of(context).pop(),
-          bodyWidget: Container(
-              child: Column(
-            children: <Widget>[
-              Image.asset(Assets.assetsSuccess, height: MediaQuery.of(context).size.height / 7),
-              const SizedBox(height: 30),
-              Text(subtitle, style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
-            ],
-          )),
-          bottomWidget: CommonButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            buttonTitle: Language.common_ok,
-          ));
-    },
   );
 }

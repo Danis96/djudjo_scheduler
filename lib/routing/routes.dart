@@ -9,3 +9,4 @@ const String EditAppointment = '/edit_appointment';
 const String Profile = '/profile';
 const String Settings = '/settings';
 const String ChangePassword = '/change_password';
+const String ForgotPassword = '/forgot_password';

@@ -24,6 +24,8 @@ class Language {
   // login page
   static const String login_btn = 'Login';
   static const String login_tappable = 'Login';
+  static const String forgot_tappable_link = 'Forgot';
+  static const String forgot_tappable_text = 'Did you forgot your password? Forgot';
   static const String login_headline = 'Welcome back';
   static const String email_hint = 'Enter email';
   static const String password_hint = 'Enter password';
@@ -158,5 +160,12 @@ class Language {
   static const String cp_confirm_hint = 'Confirm new password';
   static const String cp_button = 'Save';
   static const String cp_success_subtitle = 'Password is changed successfully';
+
+  // Forgot password
+  static const String fp_button = 'Send';
+  static const String fp_app_bar = 'Forgot password';
+  static const String fp_email_hint = 'Enter email';
+  static const String fp_email_sent_success = 'Check your email.We sent the forgot password link.';
+  static const String fp_headline = 'Regain Access with Ease: Reset Your Password and Reclaim Your Account';
 
 }

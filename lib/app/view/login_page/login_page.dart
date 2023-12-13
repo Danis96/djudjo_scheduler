@@ -27,7 +27,24 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(context, color: ColorHelper.black.color, hideLeading: true);
+  PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(
+        context,
+        color: ColorHelper.black.color,
+        hideLeading: true,
+    action:  _buildTappableRegister(context),
+      );
+
+  Widget _buildTappableRegister(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child: CustomTappableText(
+        text: Language.reg_tappable_link,
+        links: Language.reg_tappable_link,
+        linkStyle: const TextStyle(decoration: TextDecoration.none, color: Colors.white, fontSize: 17),
+        onPressed: (int i) => Navigator.of(context).pushNamed(Register),
+      ),
+    );
+  }
 
   Widget _buildBody(BuildContext context) {
     return ListView(
@@ -68,7 +85,7 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 20),
             _buildEmailField(context),
             _buildPasswordField(context),
-            _buildTappableRegister(context),
+            _buildTappableForgotPassword(context),
           ],
         ),
       ),
@@ -98,25 +115,25 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTappableRegister(BuildContext context) {
+  Widget _buildTappableForgotPassword(BuildContext context) {
     return CustomTappableText(
-      text: Language.reg_tappable_text,
-      links: Language.reg_tappable_link,
+      text: Language.forgot_tappable_text,
+      links: Language.forgot_tappable_link,
       linkStyle: const TextStyle(decoration: TextDecoration.underline, fontSize: 16),
       onPressed: (int i) {
-        Navigator.of(context).pushNamed(Register, arguments: context.read<LoginProvider>());
+        Navigator.of(context).pushNamed(ForgotPassword, arguments: context.read<LoginProvider>());
       },
     );
   }
 
   Widget _buildHeadline(BuildContext context) => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      Text(Language.login_headline, style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 24)),
-      Image.asset(Assets.assetsIcLogo, width: 50),
-    ],
-  );
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(Language.login_headline, style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 24)),
+          Image.asset(Assets.assetsIcLogo, width: 50),
+        ],
+      );
 
   Widget _buildBottomBar(BuildContext context) {
     return Container(

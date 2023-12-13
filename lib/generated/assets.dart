@@ -14,6 +14,7 @@ class Assets {
   static const String assetsEmptyNot = 'assets/empty_not.png';
   static const String assetsFeedback = 'assets/feedback.png';
   static const String assetsFinished = 'assets/finished.png';
+  static const String assetsForgot = 'assets/forgot.png';
   static const String assetsHomeEmpty = 'assets/home_empty.png';
   static const String assetsIcImgUpload = 'assets/ic_img_upload.png';
   static const String assetsIcLogo = 'assets/ic_logo.png';
