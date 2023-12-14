@@ -10,3 +10,4 @@ const String Profile = '/profile';
 const String Settings = '/settings';
 const String ChangePassword = '/change_password';
 const String ForgotPassword = '/forgot_password';
+const String History = '/history_page';

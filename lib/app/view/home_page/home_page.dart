@@ -34,12 +34,16 @@ class _HomepageState extends State<Homepage> {
     super.initState();
   }
 
-  Future<void> _getInitialData() async {
-    customFutureBuilderLoader(context: context);
+  Future<void> _getInitialData({bool isFromPull = false}) async {
+    if (!isFromPull) {
+      customFutureBuilderLoader(context: context);
+    }
     await context.read<AppointmentProvider>().fetchAppointments();
     await context.read<StupidityProvider>().fetchStupidities();
     setState(() {});
-    Navigator.of(context).pop();
+    if (!isFromPull) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -88,7 +92,7 @@ class _HomepageState extends State<Homepage> {
       color: ColorHelper.towerBronze.color,
       height: 50,
       showChildOpacityTransition: false,
-      onRefresh: () => _getInitialData(),
+      onRefresh: () => _getInitialData(isFromPull: true),
       child: ListView(
         shrinkWrap: true,
         children: <Widget>[
@@ -118,70 +122,76 @@ class _HomepageState extends State<Homepage> {
       ), // scroll view
     );
   }
-}
 
-Widget _buildHeadline(BuildContext context) => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(Language.home_headline,
-              style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 28, fontWeight: FontWeight.w700)),
-          GestureDetector(
-            onTap: () => Navigator.of(context).pushNamed(NewAppointment, arguments: context.read<AppointmentProvider>()),
-            child: const Icon(Icons.add, size: 30),
-          ),
-        ],
-      ),
-    );
-
-Widget _listOfAppointments(BuildContext context) {
-  return GroupedListView<Appointment, String>(
-    shrinkWrap: true,
-    padding: const EdgeInsets.symmetric(horizontal: 24),
-    elements: context.watch<AppointmentProvider>().appointmentsConfirmed,
-    groupBy: (Appointment element) => element.suggestedDate!.returnDatetimeFormattedForGrouping(),
-    groupSeparatorBuilder: (String date) {
-      return Container(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        alignment: Alignment.topLeft,
-        child: Column(
+  Widget _buildHeadline(BuildContext context) => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(date.returnDateMonthForHomeSeparator(), style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 24)),
-            const Divider(),
+            Text(Language.home_headline,
+                style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 28, fontWeight: FontWeight.w700)),
+            GestureDetector(
+              onTap: () => Navigator.of(context)
+                  .pushNamed(NewAppointment, arguments: context.read<AppointmentProvider>())
+                  .then((Object? value) => _getInitialData()),
+              child: const Icon(Icons.add, size: 30),
+            ),
           ],
         ),
       );
-    },
-    itemBuilder: (BuildContext context, Appointment element) {
-      return AppointmentCard(
-        onCardPressed: () {
-          context.read<AppointmentProvider>().setAppointmentDetails(element);
-          Navigator.of(context).pushNamed(AppointmentDetails, arguments: context.read<AppointmentProvider>());
-        },
-        name: element.name ?? '',
-        day: element.suggestedDate != null ? element.suggestedDate!.returnDateDayForHomeCard() : '',
-        month: element.suggestedDate != null ? element.suggestedDate!.returnDateMonthForHomeCard() : '',
-        phone: element.phone ?? '',
-        time: element.suggestedTime != null ? element.suggestedTime!.returnTimeForHomeCard() : '',
-        dotColor: element.hashCode.getRandomColor(),
-        finished: element.appointmentFinished ?? false,
-      );
-    },
-    floatingHeader: true,
-    order: GroupedListOrder.ASC, // optional
-  );
-}
 
-Widget _buildEmptyState(BuildContext context) {
-  return Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: <Widget>[
-      Image.asset(Assets.assetsHomeEmpty, height: 160),
-      const SizedBox(height: 15),
-      const Text(Language.home_empty),
-    ],
-  );
+  Widget _listOfAppointments(BuildContext context) {
+    return GroupedListView<Appointment, String>(
+      shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      elements: context.watch<AppointmentProvider>().appointmentsConfirmed,
+      groupBy: (Appointment element) => element.suggestedDate!.returnDatetimeFormattedForGrouping(),
+      groupSeparatorBuilder: (String date) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 15),
+          alignment: Alignment.topLeft,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(date.returnDateMonthForHomeSeparator(), style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 24)),
+              const Divider(),
+            ],
+          ),
+        );
+      },
+      itemBuilder: (BuildContext context, Appointment element) {
+        return AppointmentCard(
+          onCardPressed: () {
+            context.read<AppointmentProvider>().setAppointmentDetails(element);
+            Navigator.of(context).pushNamed(AppointmentDetails, arguments: context.read<AppointmentProvider>());
+          },
+          name: element.name ?? '',
+          day: element.suggestedDate != null ? element.suggestedDate!.returnDateDayForHomeCard() : '',
+          month: element.suggestedDate != null ? element.suggestedDate!.returnDateMonthForHomeCard() : '',
+          phone: element.phone ?? '',
+          time: element.allDay != null && element.allDay!
+              ? Language.home_all_day
+              : element.suggestedTime != null
+                  ? element.suggestedTime!.returnTimeForHomeCard()
+                  : '',
+          dotColor: element.hashCode.getRandomColor(),
+          finished: element.appointmentFinished ?? false,
+        );
+      },
+      floatingHeader: true,
+      order: GroupedListOrder.ASC, // optional
+    );
+  }
+
+  Widget _buildEmptyState(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Image.asset(Assets.assetsHomeEmpty, height: 160),
+        const SizedBox(height: 15),
+        const Text(Language.home_empty),
+      ],
+    );
+  }
 }

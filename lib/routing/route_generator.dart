@@ -5,6 +5,7 @@ import 'package:djudjo_scheduler/app/view/bottom_navigation_bar/bottom_navigatio
 import 'package:djudjo_scheduler/app/view/change_password_page/change_password_page.dart';
 import 'package:djudjo_scheduler/app/view/edit_page/edit_page.dart';
 import 'package:djudjo_scheduler/app/view/forgot_password_page/forgot_password_page.dart';
+import 'package:djudjo_scheduler/app/view/history_page/history_page.dart';
 import 'package:djudjo_scheduler/app/view/notification_page/notification_page.dart';
 import 'package:djudjo_scheduler/app/view/profile_page/profile_page.dart';
 import 'package:djudjo_scheduler/app/view/register_page/register_page.dart';
@@ -84,6 +85,10 @@ mixin RouteGenerator {
       case ForgotPassword:
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: ForgotPasswordPage()));
+      case History:
+        return SlideAnimationTween(
+            widget:
+                ChangeNotifierProvider<AppointmentProvider>.value(value: settings.arguments as AppointmentProvider, child: HistoryPage()));
       default:
         return _errorRoute();
     }

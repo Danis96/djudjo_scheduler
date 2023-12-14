@@ -125,6 +125,7 @@ Widget _buildOptionalFields(BuildContext context) {
       _buildGenderRadio(context),
       const SizedBox(height: 10),
       _buildPlacementField(context),
+      _buildAllergiesField(context),
       _buildSizeField(context),
       _buildDescriptionField(context),
       const SizedBox(height: 30),
@@ -262,6 +263,20 @@ Widget _buildPlacementField(BuildContext context) {
       controller: context.read<AppointmentProvider>().ePlacementController,
       hintText: Language.ep_placement_hint,
       key: const Key('ep_placement'),
+      onFieldSubmitted: (String? s) {
+        FocusScope.of(context).nextFocus();
+      },
+    ),
+  );
+}
+
+Widget _buildAllergiesField(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 24),
+    child: CustomTextFormField(
+      controller: context.read<AppointmentProvider>().eAllergiesController,
+      hintText: Language.ep_allergies_hint,
+      key: const Key('ep_allergies'),
     ),
   );
 }
@@ -344,7 +359,7 @@ Widget _buildConfirmWidget(BuildContext context) {
     child: Row(
       children: <Widget>[
         Container(
-          width: MediaQuery.of(context).size.width / 1.65,
+          width: MediaQuery.of(context).size.width / 1.45,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[

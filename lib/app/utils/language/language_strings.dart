@@ -7,6 +7,7 @@ class Language {
   static const String dr_item_home = 'Home';
   static const String dr_item_profile = 'Profile';
   static const String dr_item_up = 'Unconfirmed appointments';
+  static const String dr_item_history = 'History';
   static const String dr_item_settings = 'Settings';
 
   // login provider
@@ -43,6 +44,7 @@ class Language {
 
   // Home page
   static const String home_headline = 'Appointments';
+  static const String home_all_day = 'All day';
   static const String home_empty = 'You do not have any confirmed appointments.';
 
   // Home page drawer
@@ -59,6 +61,7 @@ class Language {
   static const String ana_time_hint = 'Enter time range';
   static const String ana_date_hint = 'Enter date';
   static const String ana_placement_hint = 'Placement';
+  static const String ana_allergies_hint = 'Allergies';
   static const String ana_description_hint = 'Description';
   static const String ana_size_hint = 'Size';
   static const String ana_from_time = 'From';
@@ -68,6 +71,7 @@ class Language {
   static const String ana_choose_date = 'Choose date';
   static const String ana_success_subtitle = 'You have successfully added an appointment.';
   static const String ana_success_title = 'Success!';
+  static const String ana_all_day = 'Check here if your appointment duration will be all day.';
   static const String ana_manually_finished =
       'Here you can manually switch your appointment status.\nAppointment status will automatically be Finished (ON) if the time you add is in the past.';
   static const String ana_mandatory_title = 'Mandatory';
@@ -83,6 +87,8 @@ class Language {
   static const String ad_info_headline = 'Appointment Details';
   static const String ad_info_description = 'Description';
   static const String ad_info_placement = 'Placement';
+  static const String ad_info_size = 'Size';
+  static const String ad_info_allergies = 'Allergies';
   static const String ad_info_finished = 'Appointment finished';
   static const String ad_info_approved = 'Appointment approved';
 
@@ -106,6 +112,7 @@ class Language {
   static const String ep_time_hint = 'Enter time range';
   static const String ep_date_hint = 'Enter date';
   static const String ep_placement_hint = 'Placement';
+  static const String ep_allergies_hint = 'Allergies';
   static const String ep_description_hint = 'Description';
   static const String ep_size_hint = 'Size';
   static const String ep_from_time = 'From';
@@ -167,5 +174,10 @@ class Language {
   static const String fp_email_hint = 'Enter email';
   static const String fp_email_sent_success = 'Check your email.We sent the forgot password link.';
   static const String fp_headline = 'Regain Access with Ease: Reset Your Password and Reclaim Your Account';
+
+  // History page
+  static const String hp_app_bar = 'History';
+  static const String hp_headline_info = 'Explore Your Appointment History for a Comprehensive Overview';
+
 
 }

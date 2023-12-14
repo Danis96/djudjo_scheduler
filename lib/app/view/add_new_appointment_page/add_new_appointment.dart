@@ -99,8 +99,9 @@ class NewAppointmentPage extends StatelessWidget {
         _buildNameField(context),
         _buildPhoneField(context),
         _buildEmailField(context),
-        _buildTimeField(context),
-        const SizedBox(height: 30),
+        _buildAllDaySwitch(context),
+        if (!context.watch<AppointmentProvider>().allDay) _buildTimeField(context),
+        if (!context.watch<AppointmentProvider>().allDay) const SizedBox(height: 30),
         _buildDateField(context),
       ],
     );
@@ -119,6 +120,7 @@ class NewAppointmentPage extends StatelessWidget {
         _buildGenderRadio(context),
         const SizedBox(height: 10),
         _buildPlacementField(context),
+        _buildAllergiesField(context),
         _buildSizeField(context),
         _buildDescriptionField(context),
         const SizedBox(height: 30),
@@ -252,6 +254,20 @@ class NewAppointmentPage extends StatelessWidget {
         controller: context.read<AppointmentProvider>().placementController,
         hintText: Language.ana_placement_hint,
         key: const Key('ana_placement'),
+        onFieldSubmitted: (String? s) {
+          FocusScope.of(context).nextFocus();
+        },
+      ),
+    );
+  }
+
+  Widget _buildAllergiesField(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: CustomTextFormField(
+        controller: context.read<AppointmentProvider>().allergiesController,
+        hintText: Language.ana_allergies_hint,
+        key: const Key('ana_allergies'),
       ),
     );
   }
@@ -305,6 +321,22 @@ class NewAppointmentPage extends StatelessWidget {
         switchBool: context.watch<AppointmentProvider>().isSelectedDateInPast() || context.watch<AppointmentProvider>().appointmentFinished,
         switchActiveColor: ColorHelper.black.color,
         subTitle: Language.ana_manually_finished,
+      ),
+    );
+  }
+
+  Widget _buildAllDaySwitch(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: CustomSwitchWithTitleDescription(
+        onChanged: (bool value) {
+          context.read<AppointmentProvider>().setAllDay(value);
+        },
+        showIconAndTitle: false,
+        removePadding: true,
+        switchBool: context.watch<AppointmentProvider>().allDay,
+        switchActiveColor: ColorHelper.black.color,
+        subTitle: Language.ana_all_day,
       ),
     );
   }

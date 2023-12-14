@@ -1,8 +1,8 @@
 import 'package:djudjo_scheduler/app/models/appointment_model.dart';
 import 'package:djudjo_scheduler/app/providers/provider_utils/provider_constants.dart';
 import 'package:djudjo_scheduler/app/repositories/appointment_firestore_repository/appointment_firestore_repository.dart';
-import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
+import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -22,6 +22,7 @@ class AppointmentProvider extends ChangeNotifier {
   final TextEditingController timeController = TextEditingController();
   final TextEditingController dateController = TextEditingController();
   final TextEditingController placementController = TextEditingController();
+  final TextEditingController allergiesController = TextEditingController();
   final TextEditingController sizeController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController imgController = TextEditingController();
@@ -29,6 +30,7 @@ class AppointmentProvider extends ChangeNotifier {
   bool appointmentFinished = false;
   bool isFavorite = false;
   bool isConfirmed = false;
+  bool allDay = false;
   TimeOfDay firstTime = const TimeOfDay(hour: 9, minute: 30);
   TimeOfDay lastTime = const TimeOfDay(hour: 23, minute: 30);
   List<String> genders = <String>[ProviderConstants.MALE, ProviderConstants.FEMALE, ProviderConstants.OTHER];
@@ -41,6 +43,7 @@ class AppointmentProvider extends ChangeNotifier {
   final TextEditingController eTimeController = TextEditingController();
   final TextEditingController eDateController = TextEditingController();
   final TextEditingController ePlacementController = TextEditingController();
+  final TextEditingController eAllergiesController = TextEditingController();
   final TextEditingController eSizeController = TextEditingController();
   final TextEditingController eDescriptionController = TextEditingController();
   final TextEditingController eImgController = TextEditingController();
@@ -88,12 +91,14 @@ class AppointmentProvider extends ChangeNotifier {
     eEmailController.text = appointmentDetails.email ?? '';
     ePhoneController.text = appointmentDetails.phone ?? '';
     ePlacementController.text = appointmentDetails.placement ?? '';
+    eAllergiesController.text = appointmentDetails.allergies ?? '';
     eSizeController.text = appointmentDetails.size ?? '';
     eTimeController.text = appointmentDetails.suggestedTime ?? '';
     isFavorite = appointmentDetails.isFavorite ?? false;
     appointmentFinished = appointmentDetails.appointmentFinished ?? false;
     genderValue = appointmentDetails.gender ?? '';
     isConfirmed = appointmentDetails.appointmentConfirmed ?? false;
+    allDay = appointmentDetails.allDay ?? false;
     firstTime = TimeOfDay(
         hour: appointmentDetails.suggestedTime!.returnTimeRangeHours(0),
         minute: appointmentDetails.suggestedTime!.returnTimeRangeMinutes(0));
@@ -102,6 +107,11 @@ class AppointmentProvider extends ChangeNotifier {
 
   void setIsFavorite() {
     isFavorite = !isFavorite;
+    notifyListeners();
+  }
+
+  void setAllDay(bool value) {
+    allDay = value;
     notifyListeners();
   }
 
@@ -171,6 +181,7 @@ class AppointmentProvider extends ChangeNotifier {
   void sortNotConfirmedAppointments() {
     _appointmentsNotConfirmed.clear();
     _appointmentsConfirmed.clear();
+    _appointmentsFinished.clear();
     if (_appointments.isNotEmpty) {
       for (final Appointment a in _appointments) {
         if (!a.appointmentConfirmed!) {
@@ -192,6 +203,7 @@ class AppointmentProvider extends ChangeNotifier {
       id: _appointmentDetails.id,
       // this is true [appointmentConfirmed] because when admin creates appointment it is automatically confirmed [isEdit = false]
       isFavorite: isFavorite,
+      allDay: allDay,
       // ignore: avoid_bool_literals_in_conditional_expressions
       appointmentConfirmed: isEdit ? isConfirmed : true,
       gender: genderValue,
@@ -199,8 +211,15 @@ class AppointmentProvider extends ChangeNotifier {
       description: isEdit ? eDescriptionController.text : descriptionController.text,
       size: isEdit ? eSizeController.text : sizeController.text,
       placement: isEdit ? ePlacementController.text : placementController.text,
+      allergies: isEdit ? eAllergiesController.text : allergiesController.text,
       suggestedDate: isEdit ? eDateController.text : dateController.text,
-      suggestedTime: isEdit ? eTimeController.text : timeController.text,
+      suggestedTime: isEdit
+          ? allDay
+              ? ProviderConstants.ALL_DAY_TIME
+              : eTimeController.text
+          : allDay
+              ? ProviderConstants.ALL_DAY_TIME
+              : timeController.text,
       dateRange: isEdit ? eDateController.text + ' ' + eTimeController.text : dateController.text + ' ' + timeController.text,
       // todo add img upload
     );
@@ -312,7 +331,9 @@ class AppointmentProvider extends ChangeNotifier {
     descriptionController.clear();
     sizeController.clear();
     placementController.clear();
+    allergiesController.clear();
     appointmentFinished = false;
+    allDay = false;
     firstTime = const TimeOfDay(hour: 9, minute: 30);
     lastTime = const TimeOfDay(hour: 23, minute: 30);
   }
@@ -326,7 +347,9 @@ class AppointmentProvider extends ChangeNotifier {
     eDescriptionController.clear();
     eSizeController.clear();
     ePlacementController.clear();
+    eAllergiesController.clear();
     appointmentFinished = false;
+    allDay = false;
   }
 
   final List<String> assetsForSlider = <String>[
@@ -376,8 +399,6 @@ class AppointmentProvider extends ChangeNotifier {
     showUnConfirmedList = !showUnConfirmedList;
     notifyListeners();
   }
-
-
 
   MaskTextInputFormatter maskFormatterPhone = MaskTextInputFormatter(mask: '+387 ###-###/###', type: MaskAutoCompletionType.lazy);
 }

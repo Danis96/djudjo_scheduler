@@ -47,15 +47,19 @@ class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
         preferredSizeForBottom: const Size(300, 50),
         action: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: GestureDetector(
-            onTap: () {
-              context.read<AppointmentProvider>().clearControllersEdit();
-              context.read<AppointmentProvider>().setDataForEdit();
-              Navigator.of(context)
-                  .pushNamed(EditAppointment, arguments: context.read<AppointmentProvider>())
-                  .then((Object? value) => setState(() {}));
-            },
-            child: const Icon(Icons.edit, color: Colors.black),
+          child: Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  context.read<AppointmentProvider>().clearControllersEdit();
+                  context.read<AppointmentProvider>().setDataForEdit();
+                  Navigator.of(context)
+                      .pushNamed(EditAppointment, arguments: context.read<AppointmentProvider>())
+                      .then((Object? value) => setState(() {}));
+                },
+                child: const Icon(Icons.edit, color: Colors.black),
+              ),
+            ],
           ),
         ),
       );

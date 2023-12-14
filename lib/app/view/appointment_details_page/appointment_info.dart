@@ -1,11 +1,14 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
+import 'package:djudjo_scheduler/app/utils/helpers/dialog_helper.dart';
 import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
+import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../theme/color_helper.dart';
+import '../../../widgets/dialogs/simple_dialog.dart';
 
 class AppointmentInfoPage extends StatelessWidget {
   @override
@@ -19,11 +22,37 @@ class AppointmentInfoPage extends StatelessWidget {
           const Padding(padding: EdgeInsets.symmetric(horizontal: 24), child: Divider()),
           const SizedBox(height: 20),
           _buildOptionalInfoSegment(context),
-          const SizedBox(height: 50),
+          const SizedBox(height: 30),
+          _buildDeleteIcon(context),
+          const SizedBox(height: 30),
         ],
       ),
     );
   }
+}
+
+Widget _buildDeleteIcon(BuildContext context) {
+  return GestureDetector(
+    onTap: () {
+      customSimpleDialog(
+        context,
+        buttonText: Language.sh_delete_cancel,
+        buttonTwoText: Language.common_ok,
+        onButtonTwoPressed: () => context
+            .read<AppointmentProvider>()
+            .deleteAppointment(context.read<AppointmentProvider>().appointmentDetails.id!)
+            .then((String? value) => Navigator.pushNamedAndRemoveUntil(context, Home, (Route<dynamic> route) => false)),
+        onButtonPressed: () => Navigator.of(context).pop(),
+        title: Language.sh_delete_title,
+        content: Language.sh_delete_subtitle,
+      );
+    },
+    child: Icon(
+      Icons.delete,
+      color: ColorHelper.towerRed.color,
+      size: 35,
+    ),
+  );
 }
 
 Widget _buildHeadline(BuildContext context) {
@@ -52,7 +81,13 @@ Widget _buildMandatoryInfoSegment(BuildContext context) {
             onTap: () => context.read<AppointmentProvider>().appointmentDetails.email!.emailTo()),
         _buildInfoTile(context, Assets.assetsPhone, context.watch<AppointmentProvider>().appointmentDetails.phone ?? '',
             onTap: () => context.read<AppointmentProvider>().appointmentDetails.phone!.makePhoneCall()),
-        _buildInfoTile(context, Assets.assetsTime, context.watch<AppointmentProvider>().appointmentDetails.suggestedTime ?? ''),
+        _buildInfoTile(
+            context,
+            Assets.assetsTime,
+            context.watch<AppointmentProvider>().appointmentDetails.allDay != null &&
+                    context.watch<AppointmentProvider>().appointmentDetails.allDay!
+                ? Language.home_all_day
+                : context.watch<AppointmentProvider>().appointmentDetails.suggestedTime ?? ''),
         _buildInfoTile(context, Assets.assetsCalendar, context.watch<AppointmentProvider>().appointmentDetails.suggestedDate ?? ''),
       ],
     ),
@@ -65,9 +100,12 @@ Widget _buildOptionalInfoSegment(BuildContext context) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _buildInfoTile(context, Assets.assetsSize, context.watch<AppointmentProvider>().appointmentDetails.size ?? '', title: 'Size'),
+        _buildInfoTile(context, Assets.assetsSize, context.watch<AppointmentProvider>().appointmentDetails.size ?? '',
+            title: Language.ad_info_size),
         _buildInfoTile(context, Assets.assetsTattoo, context.watch<AppointmentProvider>().appointmentDetails.placement ?? '',
             title: Language.ad_info_placement),
+        _buildInfoTile(context, Assets.assetsAllergies, context.watch<AppointmentProvider>().appointmentDetails.allergies ?? ' - ',
+            title: Language.ad_info_allergies),
         _buildInfoTile(
             context, Assets.assetsFinished, context.watch<AppointmentProvider>().appointmentDetails.appointmentFinished.toString(),
             title: Language.ad_info_finished),

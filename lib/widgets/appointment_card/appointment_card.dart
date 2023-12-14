@@ -116,3 +116,4 @@ Widget _styledText(BuildContext context, String text, {double fontSize = 14, int
         ),
   );
 }
+
