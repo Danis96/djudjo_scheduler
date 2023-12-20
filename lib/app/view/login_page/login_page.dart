@@ -31,7 +31,7 @@ class LoginPage extends StatelessWidget {
         context,
         color: ColorHelper.black.color,
         hideLeading: true,
-    action:  _buildTappableRegister(context),
+        action: _buildTappableRegister(context),
       );
 
   Widget _buildTappableRegister(BuildContext context) {
@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
         text: Language.reg_tappable_link,
         links: Language.reg_tappable_link,
         linkStyle: const TextStyle(decoration: TextDecoration.none, color: Colors.white, fontSize: 17),
-        onPressed: (int i) => Navigator.of(context).pushNamed(Register),
+        onPressed: (int i) => Navigator.of(context).pushNamed(Register, arguments: context.read<LoginProvider>()),
       ),
     );
   }
