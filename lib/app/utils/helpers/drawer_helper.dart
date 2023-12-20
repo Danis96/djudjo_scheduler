@@ -25,6 +25,13 @@ class DrawerHelper {
         textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: ColorHelper.towerRed.color),
       ),
       DrawerListItem(
+        title: Language.dr_item_favorite,
+        routeName: Favorites,
+        arguments: context.read<AppointmentProvider>(),
+        iconData: Icons.favorite_border,
+        textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: ColorHelper.towerRed.color),
+      ),
+      DrawerListItem(
         title: Language.dr_item_history,
         routeName: History,
         arguments: context.read<AppointmentProvider>(),

@@ -70,6 +70,11 @@ class AppointmentProvider extends ChangeNotifier {
 
   List<Appointment> get appointmentsFinished => _appointmentsFinished;
 
+  // favorite appointments
+  final List<Appointment> _appointmentsFavorites = <Appointment>[];
+
+  List<Appointment> get appointmentsFavorites => _appointmentsFavorites;
+
   Appointment _appointment = Appointment();
 
   Appointment get appointment => _appointment;
@@ -187,8 +192,14 @@ class AppointmentProvider extends ChangeNotifier {
         if (!a.appointmentConfirmed!) {
           _appointmentsNotConfirmed.add(a);
         } else if (a.appointmentFinished!) {
+          if (a.isFavorite!) {
+            _appointmentsFavorites.add(a);
+          }
           _appointmentsFinished.add(a);
         } else {
+          if (a.isFavorite!) {
+            _appointmentsFavorites.add(a);
+          }
           _appointmentsConfirmed.add(a);
         }
       }

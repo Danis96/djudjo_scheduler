@@ -4,6 +4,7 @@ import 'package:djudjo_scheduler/app/providers/stupidity_provider/stupidity_prov
 import 'package:djudjo_scheduler/app/view/bottom_navigation_bar/bottom_navigation_page.dart';
 import 'package:djudjo_scheduler/app/view/change_password_page/change_password_page.dart';
 import 'package:djudjo_scheduler/app/view/edit_page/edit_page.dart';
+import 'package:djudjo_scheduler/app/view/favorites_page/favorites_page.dart';
 import 'package:djudjo_scheduler/app/view/forgot_password_page/forgot_password_page.dart';
 import 'package:djudjo_scheduler/app/view/history_page/history_page.dart';
 import 'package:djudjo_scheduler/app/view/notification_page/notification_page.dart';
@@ -89,6 +90,10 @@ mixin RouteGenerator {
         return SlideAnimationTween(
             widget:
                 ChangeNotifierProvider<AppointmentProvider>.value(value: settings.arguments as AppointmentProvider, child: HistoryPage()));
+      case Favorites:
+        return SlideAnimationTween(
+            widget: ChangeNotifierProvider<AppointmentProvider>.value(
+                value: settings.arguments as AppointmentProvider, child: FavoritesPage()));
       default:
         return _errorRoute();
     }

@@ -9,6 +9,7 @@ class Language {
   static const String dr_item_up = 'Unconfirmed appointments';
   static const String dr_item_history = 'History';
   static const String dr_item_settings = 'Settings';
+  static const String dr_item_favorite = 'Favorites';
 
   // login provider
   static const String weak_password = 'The password provided is too weak.';
@@ -25,8 +26,8 @@ class Language {
   // login page
   static const String login_btn = 'Login';
   static const String login_tappable = 'Login';
-  static const String forgot_tappable_link = 'Forgot';
-  static const String forgot_tappable_text = 'Did you forgot your password? Forgot';
+  static const String forgot_tappable_link = 'Forgot password';
+  static const String forgot_tappable_text = 'Did you forgot your password? Forgot password';
   static const String login_headline = 'Welcome back';
   static const String email_hint = 'Enter email';
   static const String password_hint = 'Enter password';
@@ -171,13 +172,22 @@ class Language {
   // Forgot password
   static const String fp_button = 'Send';
   static const String fp_app_bar = 'Forgot password';
+  static const String fp_resend_text = 'Resend mail';
+  static const String fp_resend_link = 'Resend mail';
   static const String fp_email_hint = 'Enter email';
   static const String fp_email_sent_success = 'Check your email.We sent the forgot password link.';
   static const String fp_headline = 'Regain Access with Ease: Reset Your Password and Reclaim Your Account';
 
   // History page
   static const String hp_app_bar = 'History';
+  static const String hp_empty = 'You do not have any finished appointments.';
   static const String hp_headline_info = 'Explore Your Appointment History for a Comprehensive Overview';
 
+  // History page
+  static const String fav_app_bar = 'Favorites';
+  static const String fav_empty = 'You do not have any favorites appointments.';
+  static const String fav_headline_info = 'Manage and Track Preferred Appointments with Ease';
+
+  //
 
 }

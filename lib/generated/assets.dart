@@ -13,6 +13,7 @@ class Assets {
   static const String assetsEmail = 'assets/email.png';
   static const String assetsEmailClick = 'assets/email_click.png';
   static const String assetsEmptyNot = 'assets/empty_not.png';
+  static const String assetsFav = 'assets/fav.png';
   static const String assetsFeedback = 'assets/feedback.png';
   static const String assetsFinished = 'assets/finished.png';
   static const String assetsForgot = 'assets/forgot.png';

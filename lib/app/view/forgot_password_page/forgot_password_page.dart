@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/widgets/snackbar/custom_snackbar.dart';
+import 'package:djudjo_scheduler/widgets/tappable_texts/custom_tappable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

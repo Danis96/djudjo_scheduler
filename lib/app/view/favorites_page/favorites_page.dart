@@ -1,11 +1,11 @@
 import 'package:djudjo_scheduler/app/utils/extensions/int_extensions.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
-import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:provider/provider.dart';
 
+import '../../../generated/assets.dart';
 import '../../../routing/routes.dart';
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
@@ -14,23 +14,26 @@ import '../../models/appointment_model.dart';
 import '../../providers/appointment_provider/appointment_provider.dart';
 import '../../utils/language/language_strings.dart';
 
-class HistoryPage extends StatelessWidget {
-  const HistoryPage({this.isFromBottom = false});
-
-  final bool isFromBottom;
+class FavoritesPage extends StatelessWidget {
+  const FavoritesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar(context, isFromBottom), body: _buildBody(context));
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: _buildBody(context),
+    );
   }
 }
 
-PreferredSizeWidget _buildAppBar(BuildContext context, bool isFromBottom) => commonAppBar(
+PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(
       context,
       color: ColorHelper.white.color,
-      titleColor: Colors.black,
-      icon: isFromBottom ? null : Icons.arrow_back_ios,
-      title: 'History',
+      icon: Icons.arrow_back_ios,
+      title: Language.fav_app_bar,
+      titleColor: ColorHelper.black.color,
+      leadingIconColor: ColorHelper.black.color,
+      onLeadingTap: () => Navigator.of(context).pop(),
     );
 
 Widget _buildBody(BuildContext context) {
@@ -48,7 +51,7 @@ Widget _buildBody(BuildContext context) {
         _buildHeadline(context),
         const Divider(),
         const SizedBox(height: 20),
-        if (context.watch<AppointmentProvider>().appointmentsFinished.isNotEmpty)
+        if (context.watch<AppointmentProvider>().appointmentsFavorites.isNotEmpty)
           _listOfAppointments(context)
         else
           _buildEmptyState(context),
@@ -66,12 +69,12 @@ Widget _buildHeadline(BuildContext context) {
       Container(
         width: MediaQuery.of(context).size.width * 0.6,
         child: Text(
-          Language.hp_headline_info,
+          Language.fav_headline_info,
           style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 18, fontWeight: FontWeight.w500),
         ),
       ),
       Image.asset(
-        Assets.assetsHistory,
+        Assets.assetsFav,
         scale: 7,
       ),
     ],
@@ -81,7 +84,7 @@ Widget _buildHeadline(BuildContext context) {
 Widget _listOfAppointments(BuildContext context) {
   return GroupedListView<Appointment, String>(
     shrinkWrap: true,
-    elements: context.watch<AppointmentProvider>().appointmentsFinished,
+    elements: context.watch<AppointmentProvider>().appointmentsFavorites,
     reverse: true,
     groupBy: (Appointment element) => element.suggestedDate!.returnDatetimeFormattedForGrouping(),
     groupSeparatorBuilder: (String date) {
@@ -112,8 +115,7 @@ Widget _listOfAppointments(BuildContext context) {
         finished: element.appointmentFinished ?? false,
       );
     },
-    floatingHeader: true,
-    order: GroupedListOrder.ASC, // optional
+    floatingHeader: true, // optional
   );
 }
 
@@ -123,7 +125,7 @@ Widget _buildEmptyState(BuildContext context) {
     children: <Widget>[
       Image.asset(Assets.assetsHomeEmpty, height: 160),
       const SizedBox(height: 15),
-      const Text(Language.hp_empty),
+      const Text(Language.fav_empty),
     ],
   );
 }
