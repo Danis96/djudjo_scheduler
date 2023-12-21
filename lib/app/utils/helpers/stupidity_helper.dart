@@ -1,8 +1,8 @@
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+
 import '../../models/stupidity_model.dart';
 
 class StupidityHelper {
-
-
   List<StupidityModel> stupidList = <StupidityModel>[
     StupidityModel(textValue: 'Dje si siso'),
     StupidityModel(textValue: 'Kuri ti virac'),
@@ -16,5 +16,6 @@ class StupidityHelper {
     StupidityModel(textValue: 'oca mi'),
   ];
 
+  MaskTextInputFormatter maskFormatterPhone = MaskTextInputFormatter(mask: '+387 ###-###/###', type: MaskAutoCompletionType.lazy);
 
 }

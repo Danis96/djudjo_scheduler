@@ -1,8 +1,8 @@
-
 import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../../theme/color_helper.dart';
@@ -12,6 +12,7 @@ import '../../../widgets/dialogs/simple_dialog.dart';
 import '../../../widgets/tappable_texts/custom_tappable_text.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../providers/login_provider/login_provider.dart';
+import '../../utils/helpers/stupidity_helper.dart';
 import '../../utils/language/language_strings.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -31,9 +32,7 @@ class RegisterPage extends StatelessWidget {
       commonAppBar(context, color: ColorHelper.black.color, hideLeading: true, action: _buildTappableLogin(context));
 
   Widget _buildBody(BuildContext context) {
-    return ListView(shrinkWrap: true, children: <Widget>[
-      _buildForm(context),
-    ]);
+    return ListView(shrinkWrap: true, children: <Widget>[_buildForm(context)]);
   }
 
   Widget _buildTappableLogin(BuildContext context) {
@@ -95,6 +94,7 @@ class RegisterPage extends StatelessWidget {
   Widget _buildPhoneField(BuildContext context) {
     return CustomTextFormField(
       controller: context.read<LoginProvider>().registerPhoneController,
+      inputFormatters: <TextInputFormatter>[StupidityHelper().maskFormatterPhone],
       hintText: Language.reg_phone_hint,
       key: const Key('reg_phone'),
       keyboardType: TextInputType.phone,
@@ -148,7 +148,7 @@ class RegisterPage extends StatelessWidget {
             if (error != null) {
               customSimpleDialog(context, buttonText: Language.common_ok, title: Language.common_error, content: error);
             } else {
-              Navigator.of(context).pushNamed(Login);
+              Navigator.of(context).pushNamedAndRemoveUntil(Login, arguments: true, (Route<dynamic> route) => false);
             }
           });
         },

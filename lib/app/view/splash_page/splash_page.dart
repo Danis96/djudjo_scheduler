@@ -3,12 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../theme/color_helper.dart';
 
-class SplashPage extends StatefulWidget {
-  @override
-  _SplashPageState createState() => _SplashPageState();
-}
-
-class _SplashPageState extends State<SplashPage> {
+class SplashPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(

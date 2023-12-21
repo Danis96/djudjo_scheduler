@@ -57,7 +57,7 @@ class LoginProvider extends ChangeNotifier {
             .createUserWithEmailAndPassword(email: registerEmailController.text, password: registerConfirmPasswordController.text);
         await _setLoggedUserToAdminModel(user.user!);
         await _adminFirestoreRepository!.addAdminToFirestore(_admin);
-        await _setUserDataToStorage(_admin);
+        await storagePrefs.seEmailToShared(user.user!.email ?? '');
       } on FirebaseAuthException catch (e) {
         return e.message;
       } catch (e) {
@@ -201,6 +201,7 @@ class LoginProvider extends ChangeNotifier {
     try {
       await firebase!.signOut();
       await storagePrefs.deleteAll();
+
       return null;
     } catch (e) {
       return e.toString();

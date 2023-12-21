@@ -187,6 +187,7 @@ class AppointmentProvider extends ChangeNotifier {
     _appointmentsNotConfirmed.clear();
     _appointmentsConfirmed.clear();
     _appointmentsFinished.clear();
+    _appointmentsFavorites.clear();
     if (_appointments.isNotEmpty) {
       for (final Appointment a in _appointments) {
         if (!a.appointmentConfirmed!) {
@@ -410,6 +411,4 @@ class AppointmentProvider extends ChangeNotifier {
     showUnConfirmedList = !showUnConfirmedList;
     notifyListeners();
   }
-
-  MaskTextInputFormatter maskFormatterPhone = MaskTextInputFormatter(mask: '+387 ###-###/###', type: MaskAutoCompletionType.lazy);
 }

@@ -35,6 +35,8 @@ class StoragePrefsManager {
 
   Future<void> deleteAll() async {
     await _storage_instance.deleteAll();
+    await _storage_instance.delete(key: USER_DATA_KEY);
+    await _shared_pref_instance.clear();
   }
 
   Future<void> deleteForKey(String key) async {
@@ -42,17 +44,12 @@ class StoragePrefsManager {
   }
 
 
-  Future<void> setConsents(String value) async {
-    //final SharedPreferences prefs = await SharedPreferences.getInstance();
-    _shared_pref_instance.setString('consents', value);
-    // await _storage_instance.write(key: 'consents', value: value);
+  Future<void> seEmailToShared(String value) async {
+    _shared_pref_instance.setString('email', value);
   }
 
-  Future<String?> readConsents() async {
-    //final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return _shared_pref_instance.getString('consents');
-    // final String? _c = await _storage_instance.read(key: 'consents');
-    // return _c;
+  Future<String?> readEmailFromShared() async {
+    return _shared_pref_instance.getString('email');
   }
   
 }

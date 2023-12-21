@@ -26,7 +26,7 @@ class SplashProvider {
     if (logged) {
       _navigationService.navigateAndRemove(Home);
     } else {
-      _navigationService.navigateAndRemove(defaultRoute);
+      _navigationService.navigateAndRemove(defaultRoute, arguments: false);
     }
   }
 

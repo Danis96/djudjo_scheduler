@@ -31,7 +31,9 @@ mixin RouteGenerator {
         return SlideAnimationTween(
             widget: Provider<SplashProvider>(create: (_) => SplashProvider(defaultRoute: Login), lazy: false, child: SplashPage()));
       case Login:
-        return SlideAnimationTween(widget: ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider(), child: const LoginPage()));
+        return SlideAnimationTween(
+            widget: ChangeNotifierProvider<LoginProvider>(
+                create: (_) => LoginProvider(), child: LoginPage(isFromRegister: settings.arguments as bool)));
       case Register:
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: const RegisterPage()));

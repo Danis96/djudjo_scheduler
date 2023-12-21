@@ -1,6 +1,7 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
+import 'package:djudjo_scheduler/app/utils/helpers/stupidity_helper.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/widgets/buttons/common_button.dart';
 import 'package:djudjo_scheduler/widgets/custom_picker/custom_picker.dart';
@@ -16,7 +17,6 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:time_range/time_range.dart';
 
-import '../../../routing/routes.dart';
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 import '../../../widgets/snackbar/custom_snackbar.dart';
@@ -179,7 +179,7 @@ class NewAppointmentPage extends StatelessWidget {
       child: CustomTextFormField(
         controller: context.read<AppointmentProvider>().phoneController,
         hintText: Language.ana_phone_hint,
-        inputFormatters: <TextInputFormatter>[context.read<AppointmentProvider>().maskFormatterPhone],
+        inputFormatters: <TextInputFormatter>[StupidityHelper().maskFormatterPhone],
         keyboardType: TextInputType.phone,
         key: const Key('ana_phone'),
         onFieldSubmitted: (String? s) {

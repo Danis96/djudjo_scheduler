@@ -1,4 +1,5 @@
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
+import 'package:djudjo_scheduler/app/providers/storage_manager/storage_prefs_manager.dart';
 import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
@@ -14,8 +15,28 @@ import 'package:provider/provider.dart';
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage();
+class LoginPage extends StatefulWidget {
+  const LoginPage({this.isFromRegister = false});
+
+  final bool isFromRegister;
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+
+  @override
+  void initState() {
+    _getInitialData(context);
+    super.initState();
+  }
+
+  Future<void> _getInitialData(BuildContext context) async {
+    if(widget.isFromRegister) {
+      context.read<LoginProvider>().loginEmailController.text = (await storagePrefs.readEmailFromShared()) ?? '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
