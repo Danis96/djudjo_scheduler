@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 import 'app/MyApp.dart';
 import 'app/locator.dart';
-import 'app/providers/storage_manager/storage_prefs_manager.dart';
+import 'app/utils/storage_manager/storage_prefs_manager.dart';
 import 'config/flavor_config.dart';
 
 void main() async {
@@ -16,7 +16,7 @@ void main() async {
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  FlavorConfig(flavor: Flavor.DEV, values: FlavorValues(appName: 'DjudjoInk'));
+  FlavorConfig(flavor: Flavor.DEV, values: FlavorValues(appName: AppName.APP_NAME));
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(<DeviceOrientation>[DeviceOrientation.portraitUp]).then((_) {
     setupLocator();
@@ -32,7 +32,7 @@ Future<void> firebaseInitialize() async {
       messagingSenderId: FirebaseConstants.MESSAGING_SENDER_ID,
       projectId: FirebaseConstants.PROJECT_ID,
     ),
-  ).then((FirebaseApp value) => print('Firebase Initialize'));
+  ).then((FirebaseApp value) => print('Firebase Initialize ${DateTime.now().toString().split(' ')[0]}'));
 }
 
 // A new function callback when a crash occurs.

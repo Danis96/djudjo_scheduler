@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../locator.dart';
 import '../../repositories/navigation_repo.dart';
-import '../storage_manager/storage_prefs_manager.dart';
+import '../../utils/storage_manager/storage_prefs_manager.dart';
 
 class SplashProvider {
   SplashProvider({this.defaultRoute = '/login'}) {

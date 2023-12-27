@@ -7,6 +7,7 @@ import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
 import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
 import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -62,7 +63,8 @@ class _HomepageState extends State<Homepage> {
         color: ColorHelper.black.color,
         icon: Icons.menu_rounded,
         leadingIconColor: ColorHelper.white.color,
-        onLeadingTap: () => _scaffoldKey.currentState!.openDrawer(),
+        // onLeadingTap: () => _scaffoldKey.currentState!.openDrawer(),
+        onLeadingTap: () => FirebaseCrashlytics.instance.crash(),
         action: _buildNotificationWidget(context),
       );
 

@@ -1,5 +1,4 @@
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
-import 'package:djudjo_scheduler/app/providers/storage_manager/storage_prefs_manager.dart';
 import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
@@ -14,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
+import '../../utils/storage_manager/storage_prefs_manager.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({this.isFromRegister = false});

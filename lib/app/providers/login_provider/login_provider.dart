@@ -7,7 +7,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../storage_manager/storage_prefs_manager.dart';
+import '../../utils/storage_manager/storage_prefs_manager.dart';
+
 
 class LoginProvider extends ChangeNotifier {
   LoginProvider() {
@@ -236,7 +237,7 @@ class LoginProvider extends ChangeNotifier {
   bool areRegPasswordIdentical() =>
       registerConfirmPasswordController.text.isNotEmpty &&
       registerPasswordController.text.isNotEmpty &&
-      (registerConfirmPasswordController.text == registerPasswordController.text);
+      registerConfirmPasswordController.text == registerPasswordController.text;
 
   bool changesOccurred = false;
 

@@ -132,6 +132,8 @@ doc/api/
 .pub/
 build/
 lib/generated_plugin_registrant.dart
+lib/app/utils/constants/constants.dart
+lib/app/providers/provider_utils/provider_constants.dart
 
 # Android related
 **/android/**/gradle-wrapper.jar
