@@ -5,7 +5,6 @@ import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
 import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AppointmentProvider extends ChangeNotifier {
@@ -233,7 +232,6 @@ class AppointmentProvider extends ChangeNotifier {
               ? ProviderConstants.ALL_DAY_TIME
               : timeController.text,
       dateRange: isEdit ? eDateController.text + ' ' + eTimeController.text : dateController.text + ' ' + timeController.text,
-      // todo add img upload
     );
   }
 

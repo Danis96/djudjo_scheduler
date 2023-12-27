@@ -19,7 +19,6 @@ class StoragePrefsManager {
   static const String FIRST_RUN = 'firstRun';
 
   Future<void> setValue(String key, String value) async {
-    const IOSOptions options = IOSOptions(accessibility: KeychainAccessibility.first_unlock);
     await storageInstance.write(key: key, value: value);
     print('Set value for $key');
   }

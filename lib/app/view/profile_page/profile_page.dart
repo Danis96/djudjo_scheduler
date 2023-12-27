@@ -9,7 +9,6 @@ import '../../../widgets/app_bars/common_app_bar.dart';
 import '../../../widgets/buttons/common_button.dart';
 import '../../../widgets/dialogs/simple_dialog.dart';
 import '../../../widgets/loaders/loader_app_dialog.dart';
-import '../../../widgets/modal_sheet/custom_modal_sheet.dart';
 import '../../../widgets/snackbar/custom_snackbar.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../utils/language/language_strings.dart';
@@ -32,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> _getInitialData() async {
     customFutureBuilderLoader(context: context);
-    await context.read<LoginProvider>().fetchAdmins().then((value) => Navigator.of(context).pop());
+    await context.read<LoginProvider>().fetchAdmins().then((String? value) => Navigator.of(context).pop());
   }
 
   @override

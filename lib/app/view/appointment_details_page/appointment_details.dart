@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
-import '../../../widgets/loaders/loader_app_dialog.dart';
 
 class AppointmentDetailsPage extends StatefulWidget {
   @override

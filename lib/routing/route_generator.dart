@@ -84,18 +84,18 @@ mixin RouteGenerator {
         ));
       case ChangePassword:
         return SlideAnimationTween(
-            widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: ChangePasswordPage()));
+            widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: const ChangePasswordPage()));
       case ForgotPassword:
         return SlideAnimationTween(
-            widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: ForgotPasswordPage()));
+            widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: const ForgotPasswordPage()));
       case History:
         return SlideAnimationTween(
             widget:
-                ChangeNotifierProvider<AppointmentProvider>.value(value: settings.arguments as AppointmentProvider, child: HistoryPage()));
+                ChangeNotifierProvider<AppointmentProvider>.value(value: settings.arguments as AppointmentProvider, child: const HistoryPage()));
       case Favorites:
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<AppointmentProvider>.value(
-                value: settings.arguments as AppointmentProvider, child: FavoritesPage()));
+                value: settings.arguments as AppointmentProvider, child: const FavoritesPage()));
       default:
         return _errorRoute();
     }

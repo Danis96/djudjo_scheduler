@@ -1,7 +1,6 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
-import 'package:djudjo_scheduler/app/utils/helpers/dialog_helper.dart';
-import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
+import 'package:djudjo_scheduler/app/utils/language/language_strings.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:flutter/material.dart';
