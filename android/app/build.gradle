@@ -72,7 +72,6 @@ android {
             versionNameSuffix "-qa"
         }
         prod {
-//            applicationId "nz.co.tower.gocarma"
             applicationIdSuffix ""
             signingConfig signingConfigs.release
         }
@@ -95,7 +94,7 @@ android {
             minifyEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.sign
+            signingConfig null
         }
         debug {
             minifyEnabled false
