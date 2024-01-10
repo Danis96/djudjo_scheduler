@@ -29,20 +29,11 @@ jobs: #here we specify the jobs - We could have multiple jobs
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build android apk and appBundle
+      - name: Build android apk
         run: flutter build apk --flavor dev -t lib/main_dev.dart --release --no-tree-shake-icons
 
       - name: Sign Android App APK
         run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_KEY_PASSWORD }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-dev-release.apk build/app/outputs/flutter-apk/app-dev-release.apk djudjo
-
-      - name: Sign Android App Bundle
-        run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_KEY_PASSWORD }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/bundle/release/app-release-signed.aab build/app/outputs/bundle/release/*.aab djudjo
-
-      - name: Publish Android aab
-        uses: actions/upload-artifact@v1
-        with:
-          name: release-aab-signed
-          path: build/app/outputs/bundle/release/app-release-signed.aab
 
       - name: Publish Android APK
         uses: actions/upload-artifact@v1
@@ -55,3 +46,12 @@ jobs: #here we specify the jobs - We could have multiple jobs
       #        env:
       #          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
       #        run: echo "$GOOGLE_SERVICES_JSON" > android/app/google-services.json
+
+      #      - name: Sign Android App Bundle
+      #        run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_KEY_PASSWORD }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/bundle/release/app-release-signed.aab build/app/outputs/bundle/release/*.aab djudjo
+
+      #      - name: Publish Android aab
+      #        uses: actions/upload-artifact@v1
+      #        with:
+      #          name: release-aab-signed
+      #          path: build/app/outputs/bundle/release/app-release-signed.aab
