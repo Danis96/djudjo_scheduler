@@ -67,7 +67,8 @@ android {
         dev {
             applicationIdSuffix ""
             versionNameSuffix ""
-            signingConfig signingConfigs.sign
+            // todo commented for android build ci cd github actions
+//            signingConfig signingConfigs.sign
         }
         qa {
             applicationIdSuffix ".qa"
@@ -75,7 +76,8 @@ android {
         }
         prod {
             applicationIdSuffix ""
-            signingConfig signingConfigs.release
+            // todo commented for android build ci cd github actions
+//            signingConfig signingConfigs.release
         }
     }
 
@@ -101,7 +103,9 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.sign
+            // todo set null for android build ci cd github actions
+//            signingConfig signingConfigs.sign
+            signingConfig null
             shrinkResources false
         }
     }
