@@ -138,8 +138,6 @@ dependencies {
     implementation "androidx.multidex:multidex:2.0.1"
     implementation "io.objectbox:objectbox-android:3.5.1"
     annotationProcessor "io.objectbox:objectbox-processor:3.5.1"
-
-
 }
 
 
