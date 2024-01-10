@@ -1,6 +1,6 @@
-# Tower
+# Djujo Ink
 
-Flutter mobile implementation for Tower project.
+Flutter mobile implementation for Djujo Ink project.
 
 ## Development environment
 
@@ -16,14 +16,10 @@ When building project to Android device you will need have application signed. E
 
 Add to your environment variables following variables:
 
-- Dev target - TOWER_KEYSTORE, TOWER_KEYSTORE_PASSWORD, TOWER_ALIAS, TOWER_ALIAS_PASSWORD
-- Prod target - TOWER_KEYSTORE_PROD, TOWER_KEYSTORE_PASSWORD_PROD, TOWER_ALIAS_PROD, TOWER_ALIAS_PASSWORD_PROD
+- Dev target - DJUDJO_KEYSTORE, DJUDJO_KEYSTORE_PASSWORD, DJUDJO_ALIAS, DJUDJO_ALIAS_PASSWORD
+- Prod target - DJUDJO_KEYSTORE, DJUDJO_KEYSTORE_PASSWORD, DJUDJO_ALIAS, DJUDJO_ALIAS_PASSWORD
 
-Value for every variable can be found on [link](https://amodo.sharepoint.com/sites/Foyer_ABC/Shared%20Documents/General/Project%20Certificates/Tower/Android).
 
-### iOS certificates info
-
-Certificates can be found on [link](https://amodo.sharepoint.com/sites/Foyer_ABC/Shared%20Documents/General/Project%20Certificates/Tower/iOS).
 
 ## How to build project
 
