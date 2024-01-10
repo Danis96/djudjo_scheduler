@@ -88,13 +88,15 @@ class NewAppointmentPage extends StatelessWidget {
     );
   }
 
+  TextStyle headlineSeparatorStyle(BuildContext context) => Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 20);
+
   Widget _buildMandatoryFields(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Text(Language.ana_mandatory_title, style: Theme.of(context).textTheme.displayMedium),
+          child: Text(Language.ana_mandatory_title, style: headlineSeparatorStyle(context)),
         ),
         _buildDivider(context),
         const SizedBox(height: 10),
@@ -115,7 +117,7 @@ class NewAppointmentPage extends StatelessWidget {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Text(Language.ana_optional_title, style: Theme.of(context).textTheme.displayMedium),
+          child: Text(Language.ana_optional_title, style: headlineSeparatorStyle(context)),
         ),
         _buildDivider(context),
         const SizedBox(height: 10),
@@ -206,7 +208,7 @@ class NewAppointmentPage extends StatelessWidget {
     );
   }
 
-  final TextStyle _timeRangeStyle = TextStyle(fontSize: 18, color: ColorHelper.black.color);
+  final TextStyle _timeRangeStyle = TextStyle(fontSize: 13, color: ColorHelper.black.color);
 
   Widget _buildTimeField(BuildContext context) {
     return TimeRange(
@@ -308,7 +310,7 @@ class NewAppointmentPage extends StatelessWidget {
       child: CustomSwitchWithTitleDescription(
         onChanged: (bool value) {
           context.read<AppointmentProvider>().setAppointmentFinished(value);
-          if (context.read<AppointmentProvider>().isSelectedDateInPast()) {
+          if (context.read<AppointmentProvider>().isSelectedDateInPast(context.read<AppointmentProvider>().dateController)) {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(customSnackBar(
@@ -320,7 +322,8 @@ class NewAppointmentPage extends StatelessWidget {
         },
         showIconAndTitle: false,
         removePadding: true,
-        switchBool: context.watch<AppointmentProvider>().isSelectedDateInPast() || context.watch<AppointmentProvider>().appointmentFinished,
+        switchBool: context.watch<AppointmentProvider>().isSelectedDateInPast(context.watch<AppointmentProvider>().dateController) ||
+            context.watch<AppointmentProvider>().appointmentFinished,
         switchActiveColor: ColorHelper.black.color,
         subTitle: Language.ana_manually_finished,
       ),
@@ -364,19 +367,35 @@ class NewAppointmentPage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 15),
       child: CommonButton(
         onPressed: () {
-          customLoaderCircleWhite(context: context);
-          context.read<AppointmentProvider>().uploadImage().then((String? valueError) {
-            Navigator.of(context).pop();
-            if (valueError != null) {
-              customSimpleDialog(context, title: Language.common_error, content: valueError, buttonText: Language.common_ok);
-            } else {
-              addAppointment(context);
-            }
-          });
+          if (context.read<AppointmentProvider>().isSelectedDateInPast(context.read<AppointmentProvider>().dateController)) {
+            customSimpleDialog(
+              context,
+              title: Language.ana_past_date_issue,
+              content: Language.ana_past_error,
+              buttonText: Language.hd_cancel,
+              buttonTwoText: Language.common_continue,
+              onButtonTwoPressed: () => uploadImage(context),
+              onButtonPressed: () => Navigator.of(context).pop(),
+            );
+          } else {
+            uploadImage(context);
+          }
         },
         buttonTitle: Language.ana_button,
       ),
     );
+  }
+
+  void uploadImage(BuildContext context) {
+    customLoaderCircleWhite(context: context);
+    context.read<AppointmentProvider>().uploadImage().then((String? valueError) {
+      Navigator.of(context).pop();
+      if (valueError != null) {
+        customSimpleDialog(context, title: Language.common_error, content: valueError, buttonText: Language.common_ok);
+      } else {
+        addAppointment(context);
+      }
+    });
   }
 
   void addAppointment(BuildContext context) {
@@ -423,7 +442,7 @@ class NewAppointmentPage extends StatelessWidget {
               monthCellStyle: DateRangePickerMonthCellStyle(todayTextStyle: TextStyle(color: ColorHelper.towerBronze.color)),
               monthViewSettings: const DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
               onSelectionChanged: (DateRangePickerSelectionChangedArgs args) =>
-                  context.read<AppointmentProvider>().setFormattedDateRange(args),
+                  context.read<AppointmentProvider>().setFormattedDateRange(args, context.read<AppointmentProvider>().dateController),
               controller: context.read<AppointmentProvider>().dateRangePickerController,
             ),
             bottomWidget: const SizedBox(),

@@ -195,6 +195,15 @@ class _HomepageState extends State<Homepage> {
         Image.asset(Assets.assetsHomeEmpty, height: 160),
         const SizedBox(height: 15),
         const Text(Language.home_empty),
+        const SizedBox(height: 15),
+        const Text(Language.home_empty2),
+        const SizedBox(height: 15),
+        GestureDetector(
+            onTap: () {
+              context.read<AppointmentProvider>().clearControllers();
+              Navigator.of(context).pushNamed(NewAppointment, arguments: context.read<AppointmentProvider>());
+            },
+            child: Image.asset(Assets.assetsAddNew, height: 70)),
       ],
     );
   }

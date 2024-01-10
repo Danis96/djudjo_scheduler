@@ -38,6 +38,7 @@ class AppointmentProvider extends ChangeNotifier {
   bool isFavorite = false;
   bool isConfirmed = false;
   bool allDay = false;
+  bool showUnConfirmedList = false;
   TimeOfDay firstTime = const TimeOfDay(hour: 9, minute: 30);
   TimeOfDay lastTime = const TimeOfDay(hour: 23, minute: 30);
   List<String> genders = <String>[ProviderConstants.MALE, ProviderConstants.FEMALE, ProviderConstants.OTHER];
@@ -91,60 +92,6 @@ class AppointmentProvider extends ChangeNotifier {
 
   Appointment get appointmentDetails => _appointmentDetails;
 
-  void setAppointmentDetails(Appointment value) {
-    _appointmentDetails = value;
-    assetsForSlider.clear();
-    if (_appointmentDetails.pictures != null && _appointmentDetails.pictures!.isNotEmpty) {
-      for (final dynamic _p in _appointmentDetails.pictures!) {
-        final String _img = _p as String;
-        assetsForSlider.add(_img);
-      }
-    }
-    notifyListeners();
-  }
-
-  void setDataForEdit() {
-    eNameController.text = appointmentDetails.name ?? '';
-    eDateController.text = appointmentDetails.suggestedDate ?? '';
-    eDescriptionController.text = appointmentDetails.description ?? '';
-    eEmailController.text = appointmentDetails.email ?? '';
-    ePhoneController.text = appointmentDetails.phone ?? '';
-    ePlacementController.text = appointmentDetails.placement ?? '';
-    eAllergiesController.text = appointmentDetails.allergies ?? '';
-    eSizeController.text = appointmentDetails.size ?? '';
-    eTimeController.text = appointmentDetails.suggestedTime ?? '';
-    isFavorite = appointmentDetails.isFavorite ?? false;
-    appointmentFinished = appointmentDetails.appointmentFinished ?? false;
-    genderValue = appointmentDetails.gender ?? '';
-    isConfirmed = appointmentDetails.appointmentConfirmed ?? false;
-    allDay = appointmentDetails.allDay ?? false;
-    firstTime = TimeOfDay(
-        hour: appointmentDetails.suggestedTime!.returnTimeRangeHours(0),
-        minute: appointmentDetails.suggestedTime!.returnTimeRangeMinutes(0));
-    _imageList = appointmentDetails.pictures!;
-    notifyListeners();
-  }
-
-  void setIsFavorite() {
-    isFavorite = !isFavorite;
-    notifyListeners();
-  }
-
-  void setAllDay(bool value) {
-    allDay = value;
-    notifyListeners();
-  }
-
-  void setIsConfirmed() {
-    isConfirmed = !isConfirmed;
-    notifyListeners();
-  }
-
-  void setChosenGender(String value) {
-    genderValue = value;
-    notifyListeners();
-  }
-
   Future<String?> addAppointment() async {
     if (!areMandatoryFieldsEmpty()) {
       setDataToAppointmentModel();
@@ -191,37 +138,6 @@ class AppointmentProvider extends ChangeNotifier {
     }
   }
 
-  void sortAppointmentsByDate() {
-    _appointments.sort(
-      (Appointment a, Appointment b) =>
-          DateFormat('dd.MM.yyyy').parse(a.suggestedDate!).compareTo(DateFormat('dd.MM.yyyy').parse(b.suggestedDate!)),
-    );
-  }
-
-  void sortNotConfirmedAppointments() {
-    _appointmentsNotConfirmed.clear();
-    _appointmentsConfirmed.clear();
-    _appointmentsFinished.clear();
-    _appointmentsFavorites.clear();
-    if (_appointments.isNotEmpty) {
-      for (final Appointment a in _appointments) {
-        if (!a.appointmentConfirmed!) {
-          _appointmentsNotConfirmed.add(a);
-        } else if (a.appointmentFinished!) {
-          if (a.isFavorite!) {
-            _appointmentsFavorites.add(a);
-          }
-          _appointmentsFinished.add(a);
-        } else {
-          if (a.isFavorite!) {
-            _appointmentsFavorites.add(a);
-          }
-          _appointmentsConfirmed.add(a);
-        }
-      }
-    }
-  }
-
   void setDataToAppointmentModel({bool isEdit = false}) {
     _appointment = Appointment(
       name: isEdit ? eNameController.text : nameController.text,
@@ -252,97 +168,159 @@ class AppointmentProvider extends ChangeNotifier {
     );
   }
 
+  void setFormattedDateRange(DateRangePickerSelectionChangedArgs args, TextEditingController controller) {
+    if (args.value.endDate != null) {
+      if (args.value.startDate as DateTime == args.value.endDate as DateTime) {
+        controller.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
+      } else {
+        controller.text = '${DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime)} -'
+            ' ${DateFormat('dd.MM.yyyy').format(args.value.endDate as DateTime)}';
+      }
+    } else {
+      controller.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
+    }
+    if (isSelectedDateInPast(controller)) {
+      appointmentFinished = true;
+    }
+    notifyListeners();
+  }
+
+  void setDataForEdit() {
+    eNameController.text = appointmentDetails.name ?? '';
+    eDateController.text = appointmentDetails.suggestedDate ?? '';
+    eDescriptionController.text = appointmentDetails.description ?? '';
+    eEmailController.text = appointmentDetails.email ?? '';
+    ePhoneController.text = appointmentDetails.phone ?? '';
+    ePlacementController.text = appointmentDetails.placement ?? '';
+    eAllergiesController.text = appointmentDetails.allergies ?? '';
+    eSizeController.text = appointmentDetails.size ?? '';
+    eTimeController.text = appointmentDetails.suggestedTime ?? '';
+    isFavorite = appointmentDetails.isFavorite ?? false;
+    appointmentFinished = appointmentDetails.appointmentFinished ?? false;
+    genderValue = appointmentDetails.gender ?? '';
+    isConfirmed = appointmentDetails.appointmentConfirmed ?? false;
+    allDay = appointmentDetails.allDay ?? false;
+    firstTime = TimeOfDay(
+        hour: appointmentDetails.suggestedTime!.returnTimeRangeHours(0),
+        minute: appointmentDetails.suggestedTime!.returnTimeRangeMinutes(0));
+    _imageList = appointmentDetails.pictures!;
+    notifyListeners();
+  }
+
+  // Setters
+
+  void setAppointmentDetails(Appointment value) {
+    _appointmentDetails = value;
+    assetsForSlider.clear();
+    if (_appointmentDetails.pictures != null && _appointmentDetails.pictures!.isNotEmpty) {
+      for (final dynamic _p in _appointmentDetails.pictures!) {
+        final String _img = _p as String;
+        assetsForSlider.add(_img);
+      }
+    }
+    notifyListeners();
+  }
+
+  void setShowUnConfirmedList() {
+    showUnConfirmedList = !showUnConfirmedList;
+    notifyListeners();
+  }
+
+  void setIsFavorite() {
+    isFavorite = !isFavorite;
+    notifyListeners();
+  }
+
+  // if we choose [allDay = true] then we need to set timeController value, bcz then [areMandatoryFieldsEmpty] will return true
+  void setAllDay(bool value, {bool isEdit = false}) {
+    allDay = value;
+    if (allDay) {
+      if (isEdit) {
+        eTimeController.text = ProviderConstants.ALL_DAY_TIME;
+      } else {
+        timeController.text = ProviderConstants.ALL_DAY_TIME;
+      }
+    }
+    notifyListeners();
+  }
+
+  void setIsConfirmed() {
+    isConfirmed = !isConfirmed;
+    notifyListeners();
+  }
+
+  void setChosenGender(String value) {
+    genderValue = value;
+    notifyListeners();
+  }
+
   void setAppointmentFinished(bool value) {
     appointmentFinished = value;
     notifyListeners();
   }
 
-  void setFormattedDateRange(DateRangePickerSelectionChangedArgs args) {
-    if (args.value.endDate != null) {
-      if (args.value.startDate as DateTime == args.value.endDate as DateTime) {
-        dateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
-      } else {
-        dateController.text = '${DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime)} -'
-            ' ${DateFormat('dd.MM.yyyy').format(args.value.endDate as DateTime)}';
-      }
-    } else {
-      dateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
-    }
-    if (isSelectedDateInPast()) {
-      appointmentFinished = true;
-    }
-    notifyListeners();
+  void sortAppointmentsByDate() {
+    _appointments.sort(
+      (Appointment a, Appointment b) =>
+          DateFormat('dd.MM.yyyy').parse(a.suggestedDate!).compareTo(DateFormat('dd.MM.yyyy').parse(b.suggestedDate!)),
+    );
   }
 
-  void setFormattedDateRangeEdit(DateRangePickerSelectionChangedArgs args) {
-    if (args.value.endDate != null) {
-      if (args.value.startDate as DateTime == args.value.endDate as DateTime) {
-        eDateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
-      } else {
-        eDateController.text = '${DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime)} -'
-            ' ${DateFormat('dd.MM.yyyy').format(args.value.endDate as DateTime)}';
-      }
-    } else {
-      eDateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
-    }
-    if (isSelectedDateInPast()) {
-      appointmentFinished = true;
-    }
-    notifyListeners();
-  }
-
-  bool isSelectedDateInPast() {
+  bool isSelectedDateInPast(TextEditingController dateController) {
     final DateTime currentDate = DateTime.now();
     String selectedFirst = '';
+
     if (dateController.text.isNotEmpty) {
       if (dateController.text.contains('-')) {
         selectedFirst = dateController.text.split(' - ')[0];
       } else {
         selectedFirst = dateController.text;
       }
+
       final DateTime selectedDate = DateFormat('dd.MM.yyyy').parse(selectedFirst);
-      if (selectedDate.isBefore(currentDate)) {
-        return true;
-      } else {
-        return false;
-      }
+
+      return selectedDate.isBefore(currentDate);
     } else {
       return false;
     }
   }
 
-  bool isSelectedDateInPastEdit() {
-    final DateTime currentDate = DateTime.now();
-    String selectedFirst = '';
-    if (eDateController.text.isNotEmpty) {
-      if (eDateController.text.contains('-')) {
-        selectedFirst = eDateController.text.split(' - ')[0];
-      } else {
-        selectedFirst = eDateController.text;
+  void sortNotConfirmedAppointments() {
+    _appointmentsNotConfirmed.clear();
+    _appointmentsConfirmed.clear();
+    _appointmentsFinished.clear();
+    _appointmentsFavorites.clear();
+    if (_appointments.isNotEmpty) {
+      for (final Appointment a in _appointments) {
+        if (!a.appointmentConfirmed!) {
+          _appointmentsNotConfirmed.add(a);
+        } else if (a.appointmentFinished!) {
+          if (a.isFavorite!) {
+            _appointmentsFavorites.add(a);
+          }
+          _appointmentsFinished.add(a);
+        } else {
+          if (a.isFavorite!) {
+            _appointmentsFavorites.add(a);
+          }
+          _appointmentsConfirmed.add(a);
+        }
       }
-      final DateTime selectedDate = DateFormat('dd.MM.yyyy').parse(selectedFirst);
-      if (selectedDate.isBefore(currentDate)) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
     }
   }
 
   bool areMandatoryFieldsEmpty() =>
-      nameController.text.isEmpty &&
-      emailController.text.isEmpty &&
-      phoneController.text.isEmpty &&
-      timeController.text.isEmpty &&
+      nameController.text.isEmpty ||
+      emailController.text.isEmpty ||
+      phoneController.text.isEmpty ||
+      timeController.text.isEmpty ||
       dateController.text.isEmpty;
 
   bool areMandatoryFieldsEmptyEdit() =>
-      eNameController.text.isEmpty &&
-      eEmailController.text.isEmpty &&
-      ePhoneController.text.isEmpty &&
-      eTimeController.text.isEmpty &&
+      eNameController.text.isEmpty ||
+      eEmailController.text.isEmpty ||
+      ePhoneController.text.isEmpty ||
+      eTimeController.text.isEmpty ||
       eDateController.text.isEmpty;
 
   void clearControllers() {
@@ -410,14 +388,7 @@ class AppointmentProvider extends ChangeNotifier {
     }
   }
 
-  bool showUnConfirmedList = false;
-
-  void setShowUnConfirmedList() {
-    showUnConfirmedList = !showUnConfirmedList;
-    notifyListeners();
-  }
-
-  /// Image part - refactor and extend
+  /// Image part
 
   bool isImagePicked = false;
   List<String> imagePaths = <String>[];
@@ -458,8 +429,8 @@ class AppointmentProvider extends ChangeNotifier {
           final String _imgUri = await storageImageToUpload!.getDownloadURL();
           _imageList.add(_imgUri);
         }
-        return null;
       }
+      return null;
     } catch (e) {
       print('Image upload issue: $e');
       return e.toString();
@@ -474,8 +445,6 @@ class AppointmentProvider extends ChangeNotifier {
       final Reference _imgReference = storageDirImages!.storage.refFromURL(_imgUrl);
       print('IMG REF: $_imgReference');
       await _imgReference.delete();
-
-      // TODO refactor and clean code, extend new provider for iamges
 
       // Delete from Firestore Appointment
       List<String> _appImgs = <String>[];

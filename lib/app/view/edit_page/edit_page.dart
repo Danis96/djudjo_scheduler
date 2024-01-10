@@ -318,7 +318,7 @@ Widget _buildIsFinishedSwitch(BuildContext context) {
     child: CustomSwitchWithTitleDescription(
       onChanged: (bool value) {
         context.read<AppointmentProvider>().setAppointmentFinished(value);
-        if (context.read<AppointmentProvider>().isSelectedDateInPastEdit()) {
+        if (context.read<AppointmentProvider>().isSelectedDateInPast(context.read<AppointmentProvider>().eDateController)) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(customSnackBar(
@@ -330,8 +330,8 @@ Widget _buildIsFinishedSwitch(BuildContext context) {
       },
       showIconAndTitle: false,
       removePadding: true,
-      switchBool:
-          context.watch<AppointmentProvider>().isSelectedDateInPastEdit() || context.watch<AppointmentProvider>().appointmentFinished,
+      switchBool: context.watch<AppointmentProvider>().isSelectedDateInPast(context.read<AppointmentProvider>().eDateController) ||
+          context.watch<AppointmentProvider>().appointmentFinished,
       switchActiveColor: ColorHelper.black.color,
       subTitle: Language.ep_manually_finished,
     ),
@@ -453,7 +453,7 @@ void showDateRangeModal(BuildContext context) {
             monthCellStyle: DateRangePickerMonthCellStyle(todayTextStyle: TextStyle(color: ColorHelper.towerBronze.color)),
             monthViewSettings: const DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
             onSelectionChanged: (DateRangePickerSelectionChangedArgs args) =>
-                context.read<AppointmentProvider>().setFormattedDateRangeEdit(args),
+                context.read<AppointmentProvider>().setFormattedDateRange(args, context.read<AppointmentProvider>().eDateController),
             controller: context.read<AppointmentProvider>().dateRangePickerController,
           ),
           bottomWidget: const SizedBox(),

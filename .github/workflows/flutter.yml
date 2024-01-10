@@ -1,0 +1,11 @@
+name: Flutter
+
+
+
+on:  #events (push and pull_request)
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:

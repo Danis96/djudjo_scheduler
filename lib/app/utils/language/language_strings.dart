@@ -2,6 +2,7 @@ class Language {
   // common
   static const String common_ok = 'Ok';
   static const String common_error = 'Error';
+  static const String common_continue = 'Continue';
 
   // drawer
   static const String dr_item_home = 'Home';
@@ -51,6 +52,7 @@ class Language {
   static const String home_headline = 'Appointments';
   static const String home_all_day = 'All day';
   static const String home_empty = 'You do not have any confirmed appointments.';
+  static const String home_empty2 = 'Add new appointments on click';
 
   // Home page drawer
   static const String hd_title = 'Sign out';
@@ -85,6 +87,8 @@ class Language {
   static const String ana_gender_title = 'Choose gender';
   static const String ana_past_content =
       'You cannot turn this switch OFF because selected date for appointment is in the past. So automatically Finished switch is ON.\n\nSelect date in the future to be able to turn it off.';
+  static const String ana_past_error =
+      'Are you sure you want to create this appointment because selected date is in the past. So automatically Finished switch is ON.\n\nYour appointment will be shown in history logs if you choose to continue.';
 
   // Appointment details
   static const String ad_tab_info = 'Info';
@@ -97,7 +101,7 @@ class Language {
   static const String ad_info_finished = 'Appointment finished';
   static const String ad_info_approved = 'Appointment approved';
 
-  // Notificfations
+  // Notifications
   static const String not_empty_state = 'Your notification box is empty.';
   static const String not_app_bar_title = 'Notifications';
   static const String not_headline_title = 'Unconfirmed appointments';
@@ -187,11 +191,10 @@ class Language {
   static const String hp_empty = 'You do not have any finished appointments.';
   static const String hp_headline_info = 'Explore Your Appointment History for a Comprehensive Overview';
 
-  // History page
+  // Favorites page
   static const String fav_app_bar = 'Favorites';
   static const String fav_empty = 'You do not have any favorites appointments.';
   static const String fav_headline_info = 'Manage and Track Preferred Appointments with Ease';
 
-  //
-
+//
 }

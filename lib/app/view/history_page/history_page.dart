@@ -30,7 +30,7 @@ PreferredSizeWidget _buildAppBar(BuildContext context, bool isFromBottom) => com
       color: ColorHelper.white.color,
       titleColor: Colors.black,
       icon: isFromBottom ? null : Icons.arrow_back_ios,
-      title: 'History',
+      title: Language.hp_app_bar,
     );
 
 Widget _buildBody(BuildContext context) {
