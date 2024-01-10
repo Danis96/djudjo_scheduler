@@ -122,7 +122,6 @@ class CustomDrawer extends StatelessWidget {
                     }, backgroundColor);
                   }).toList()),
             ),
-           _buildStupiditySwitch(context),
             const Divider(),
             if (logoutTitle != null)
               _buildLogout(
@@ -145,22 +144,6 @@ class CustomDrawer extends StatelessWidget {
       ),
     );
   }
-}
-
-Widget _buildStupiditySwitch(BuildContext context) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 24),
-    child: CustomSwitchWithTitleDescription(
-      onChanged: (bool value) {
-        context.read<StupidityProvider>().setStupidity();
-      },
-      showIconAndTitle: false,
-      removePadding: true,
-      switchBool: context.watch<StupidityProvider>().stupidityOn,
-      switchActiveColor: ColorHelper.black.color,
-      subTitle: 'Turn headline text on',
-    ),
-  );
 }
 
 Widget _buildLogout(

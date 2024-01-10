@@ -37,6 +37,15 @@ class AppointmentFirestoreRepository {
     }
   }
 
+  Future<String?> deleteImagesFromFirestore({required String id, required Appointment appointment}) async {
+    try {
+      await _appointmentsCollection!.doc(id).update(appointment.toFirestore());
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   Future<dynamic> fetchAppointments() async {
     final List<Appointment> _appointments = <Appointment>[];
     try {

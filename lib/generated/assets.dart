@@ -25,6 +25,7 @@ class Assets {
   static const String assetsIcSlide2 = 'assets/ic_slide_2.png';
   static const String assetsIcSlide3 = 'assets/ic_slide_3.png';
   static const String assetsIcSlide4 = 'assets/ic_slide_4.png';
+  static const String assetsImgEmpty = 'assets/img_empty.png';
   static const String assetsInfo = 'assets/info.png';
   static const String assetsLogoBez = 'assets/logo_bez.png';
   static const String assetsLogout = 'assets/logout.png';
@@ -32,6 +33,7 @@ class Assets {
   static const String assetsOther = 'assets/other.png';
   static const String assetsPassword = 'assets/password.png';
   static const String assetsPhone = 'assets/phone.png';
+  static const String assetsPhotoSuccess = 'assets/photo_success.png';
   static const String assetsProfile = 'assets/profile.png';
   static const String assetsQuestionMark = 'assets/question_mark.png';
   static const String assetsSize = 'assets/size.png';

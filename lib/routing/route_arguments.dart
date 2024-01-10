@@ -1,5 +1,6 @@
 import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_provider.dart';
 import 'package:djudjo_scheduler/app/providers/login_provider/login_provider.dart';
+import 'package:djudjo_scheduler/app/providers/stupidity_provider/stupidity_provider.dart';
 
 class ProfilePageArguments {
   ProfilePageArguments(this.appointmentProvider, this.loginProvider);
@@ -9,8 +10,9 @@ class ProfilePageArguments {
 }
 
 class SettingsPageArguments {
-  SettingsPageArguments(this.appointmentProvider, this.loginProvider);
+  SettingsPageArguments(this.appointmentProvider, this.loginProvider, this.stupidityProvider);
 
   final AppointmentProvider appointmentProvider;
   final LoginProvider loginProvider;
+  final StupidityProvider stupidityProvider;
 }

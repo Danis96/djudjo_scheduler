@@ -63,8 +63,7 @@ class _HomepageState extends State<Homepage> {
         color: ColorHelper.black.color,
         icon: Icons.menu_rounded,
         leadingIconColor: ColorHelper.white.color,
-        // onLeadingTap: () => _scaffoldKey.currentState!.openDrawer(),
-        onLeadingTap: () => FirebaseCrashlytics.instance.crash(),
+        onLeadingTap: () => _scaffoldKey.currentState!.openDrawer(),
         action: _buildNotificationWidget(context),
       );
 
@@ -134,9 +133,12 @@ class _HomepageState extends State<Homepage> {
             Text(Language.home_headline,
                 style: Theme.of(context).textTheme.displayLarge!.copyWith(fontSize: 28, fontWeight: FontWeight.w700)),
             GestureDetector(
-              onTap: () => Navigator.of(context)
-                  .pushNamed(NewAppointment, arguments: context.read<AppointmentProvider>())
-                  .then((Object? value) => _getInitialData()),
+              onTap: () {
+                context.read<AppointmentProvider>().isImagePicked = false;
+                Navigator.of(context)
+                    .pushNamed(NewAppointment, arguments: context.read<AppointmentProvider>())
+                    .then((Object? value) => _getInitialData());
+              },
               child: const Icon(Icons.add, size: 30),
             ),
           ],

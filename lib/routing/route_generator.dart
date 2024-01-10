@@ -49,8 +49,12 @@ mixin RouteGenerator {
         ));
       case NewAppointment:
         return SlideAnimationTween(
-            widget: ChangeNotifierProvider<AppointmentProvider>.value(
-                value: settings.arguments as AppointmentProvider, child: NewAppointmentPage()));
+            widget: MultiProvider(
+          providers: <SingleChildWidget>[
+            ChangeNotifierProvider<AppointmentProvider>.value(value: settings.arguments as AppointmentProvider)
+          ],
+          child: NewAppointmentPage(),
+        ));
       case AppointmentDetails:
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<AppointmentProvider>.value(
@@ -79,19 +83,22 @@ mixin RouteGenerator {
           providers: <SingleChildWidget>[
             ChangeNotifierProvider<AppointmentProvider>.value(value: args.appointmentProvider),
             ChangeNotifierProvider<LoginProvider>.value(value: args.loginProvider),
+            ChangeNotifierProvider<StupidityProvider>.value(value: args.stupidityProvider),
           ],
           child: const SettingsPage(),
         ));
       case ChangePassword:
         return SlideAnimationTween(
-            widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: const ChangePasswordPage()));
+            widget:
+                ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: const ChangePasswordPage()));
       case ForgotPassword:
         return SlideAnimationTween(
-            widget: ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: const ForgotPasswordPage()));
+            widget:
+                ChangeNotifierProvider<LoginProvider>.value(value: settings.arguments as LoginProvider, child: const ForgotPasswordPage()));
       case History:
         return SlideAnimationTween(
-            widget:
-                ChangeNotifierProvider<AppointmentProvider>.value(value: settings.arguments as AppointmentProvider, child: const HistoryPage()));
+            widget: ChangeNotifierProvider<AppointmentProvider>.value(
+                value: settings.arguments as AppointmentProvider, child: const HistoryPage()));
       case Favorites:
         return SlideAnimationTween(
             widget: ChangeNotifierProvider<AppointmentProvider>.value(

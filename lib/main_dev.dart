@@ -31,6 +31,7 @@ Future<void> firebaseInitialize() async {
       appId: FirebaseConstants.APP_ID,
       messagingSenderId: FirebaseConstants.MESSAGING_SENDER_ID,
       projectId: FirebaseConstants.PROJECT_ID,
+      storageBucket: FirebaseConstants.STORAGE_BUCKET,
     ),
   ).then((FirebaseApp value) => print('Firebase Initialize ${DateTime.now().toString().split(' ')[0]}'));
 }

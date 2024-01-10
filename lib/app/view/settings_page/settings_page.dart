@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import '../../../theme/color_helper.dart';
 import '../../../widgets/app_bars/common_app_bar.dart';
 import '../../../widgets/list_item/custom_list_item.dart';
+import '../../../widgets/switches/switch_with_title_description.dart';
+import '../../providers/stupidity_provider/stupidity_provider.dart';
 import '../../utils/language/language_strings.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -49,6 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
           const SizedBox(height: 30),
           _buildHeadline(context),
           const SizedBox(height: 50),
+          _buildStupiditySwitch(context),
           _buildListOfItems(context),
           const SizedBox(height: 10),
           _buildListOfItemsFeedback(context),
@@ -58,6 +61,19 @@ class _SettingsPageState extends State<SettingsPage> {
           _buildAppVersion(context),
         ],
       ),
+    );
+  }
+
+  Widget _buildStupiditySwitch(BuildContext context) {
+    return CustomSwitchWithTitleDescription(
+      onChanged: (bool value) {
+        context.read<StupidityProvider>().setStupidity();
+      },
+      showIconAndTitle: false,
+      removePadding: true,
+      switchBool: context.watch<StupidityProvider>().stupidityOn,
+      switchActiveColor: ColorHelper.black.color,
+      subTitle: 'Turn headline text on',
     );
   }
 

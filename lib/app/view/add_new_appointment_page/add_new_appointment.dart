@@ -3,6 +3,7 @@ import 'package:djudjo_scheduler/app/providers/appointment_provider/appointment_
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
 import 'package:djudjo_scheduler/app/utils/helpers/stupidity_helper.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
+import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/buttons/common_button.dart';
 import 'package:djudjo_scheduler/widgets/custom_picker/custom_picker.dart';
 import 'package:djudjo_scheduler/widgets/dialogs/simple_dialog.dart';
@@ -13,6 +14,7 @@ import 'package:djudjo_scheduler/widgets/switches/switch_with_title_description.
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_radio_button/group_radio_button.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:time_range/time_range.dart';
@@ -343,15 +345,13 @@ class NewAppointmentPage extends StatelessWidget {
 
   Widget _buildUploadImg(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        print('upload img to Google drive');
-        context.read<AppointmentProvider>().setImageToController('Set text');
-      },
+      onTap: () => context.read<AppointmentProvider>().pickImage(ImageSource.gallery),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: <Widget>[
-            Image.asset(Assets.assetsIcImgUpload, height: 50),
+            Image.asset(context.watch<AppointmentProvider>().isImagePicked ? Assets.assetsPhotoSuccess : Assets.assetsIcImgUpload,
+                height: 50),
             const Text(Language.ana_img),
           ],
         ),
@@ -365,25 +365,36 @@ class NewAppointmentPage extends StatelessWidget {
       child: CommonButton(
         onPressed: () {
           customLoaderCircleWhite(context: context);
-          context.read<AppointmentProvider>().addAppointment().then((String? error) {
+          context.read<AppointmentProvider>().uploadImage().then((String? valueError) {
             Navigator.of(context).pop();
-            if (error != null) {
-              customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
+            if (valueError != null) {
+              customSimpleDialog(context, title: Language.common_error, content: valueError, buttonText: Language.common_ok);
             } else {
-              context.read<AppointmentProvider>().clearControllers();
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(customSnackBar(
-                  snackBarTitle: Language.ana_success_title,
-                  snackBarMessage: Language.ana_success_subtitle,
-                  snackBarContentType: ContentType.success,
-                ));
+              addAppointment(context);
             }
           });
         },
         buttonTitle: Language.ana_button,
       ),
     );
+  }
+
+  void addAppointment(BuildContext context) {
+    context.read<AppointmentProvider>().addAppointment().then((String? error) {
+      if (error != null) {
+        customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
+      } else {
+        context.read<AppointmentProvider>().clearControllers();
+        Navigator.of(context).pushNamed(Home);
+        ScaffoldMessenger.of(context)
+          ..hideCurrentSnackBar()
+          ..showSnackBar(customSnackBar(
+            snackBarTitle: Language.ana_success_title,
+            snackBarMessage: Language.ana_success_subtitle,
+            snackBarContentType: ContentType.success,
+          ));
+      }
+    });
   }
 
   void showDateRangeModal(BuildContext context) {

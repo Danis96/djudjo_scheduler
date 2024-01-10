@@ -7,6 +7,7 @@ class Language {
   static const String dr_item_home = 'Home';
   static const String dr_item_profile = 'Profile';
   static const String dr_item_up = 'Unconfirmed appointments';
+  static const String dr_item_new = 'New appointments';
   static const String dr_item_history = 'History';
   static const String dr_item_settings = 'Settings';
   static const String dr_item_favorite = 'Favorites';
@@ -22,6 +23,9 @@ class Language {
 
   // appointment provider
   static const String mandatory_fields = 'Need to fulfill all mandatory fields.';
+  static const String upload_state_paused = 'Upload is paused.';
+  static const String upload_state_canceled = 'Upload is canceled.';
+  static const String upload_state_error = 'Upload has errors.';
 
   // login page
   static const String login_btn = 'Login';

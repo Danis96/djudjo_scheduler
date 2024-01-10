@@ -4,6 +4,7 @@ import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:group_radio_button/group_radio_button.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -106,8 +107,9 @@ Widget _buildMandatoryFields(BuildContext context) {
       _buildNameField(context),
       _buildPhoneField(context),
       _buildEmailField(context),
-      _buildTimeField(context),
-      const SizedBox(height: 30),
+      _buildAllDaySwitch(context),
+      if (!context.watch<AppointmentProvider>().allDay) _buildTimeField(context),
+      if (!context.watch<AppointmentProvider>().allDay) const SizedBox(height: 30),
       _buildDateField(context),
     ],
   );
@@ -336,18 +338,32 @@ Widget _buildIsFinishedSwitch(BuildContext context) {
   );
 }
 
+Widget _buildAllDaySwitch(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 24),
+    child: CustomSwitchWithTitleDescription(
+      onChanged: (bool value) {
+        context.read<AppointmentProvider>().setAllDay(value);
+      },
+      showIconAndTitle: false,
+      removePadding: true,
+      switchBool: context.watch<AppointmentProvider>().allDay,
+      switchActiveColor: ColorHelper.black.color,
+      subTitle: Language.ana_all_day,
+    ),
+  );
+}
+
 Widget _buildUploadImg(BuildContext context) {
   return GestureDetector(
-    onTap: () {
-      print('upload img to Google drive');
-      context.read<AppointmentProvider>().setImageToController('Set text');
-    },
+    onTap: () => context.read<AppointmentProvider>().pickImage(ImageSource.gallery),
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         children: <Widget>[
-          Image.asset(Assets.assetsIcImgUpload, height: 50),
-          const Text(Language.ep_img),
+          Image.asset(context.watch<AppointmentProvider>().isImagePicked ? Assets.assetsPhotoSuccess : Assets.assetsIcImgUpload,
+              height: 50),
+          const Text(Language.ana_img),
         ],
       ),
     ),
@@ -391,19 +407,29 @@ Widget _buildBottomBar(BuildContext context) {
     child: CommonButton(
       onPressed: () {
         customLoaderCircleWhite(context: context);
-        context.read<AppointmentProvider>().updateAppointment().then((String? error) {
+        context.read<AppointmentProvider>().uploadImage().then((String? valueError) {
           Navigator.of(context).pop();
-          if (error != null) {
-            customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
+          if (valueError != null) {
+            customSimpleDialog(context, title: Language.common_error, content: valueError, buttonText: Language.common_ok);
           } else {
-            context.read<AppointmentProvider>().clearControllersEdit();
-            showSuccessModal(context);
+            updateAppointment(context);
           }
         });
       },
       buttonTitle: Language.ep_button,
     ),
   );
+}
+
+void updateAppointment(BuildContext context) {
+  context.read<AppointmentProvider>().updateAppointment().then((String? error) {
+    if (error != null) {
+      customSimpleDialog(context, title: Language.common_error, content: error, buttonText: Language.common_ok);
+    } else {
+      context.read<AppointmentProvider>().clearControllersEdit();
+      showSuccessModal(context);
+    }
+  });
 }
 
 void showDateRangeModal(BuildContext context) {

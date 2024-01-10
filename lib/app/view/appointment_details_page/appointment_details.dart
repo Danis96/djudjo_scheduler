@@ -16,15 +16,6 @@ class AppointmentDetailsPage extends StatefulWidget {
 }
 
 class _AppointmentDetailsPageState extends State<AppointmentDetailsPage> {
-  @override
-  void initState() {
-    _getInitialData();
-    super.initState();
-  }
-
-  Future<void> _getInitialData() async {
-    context.read<AppointmentProvider>().setValuesForSlider();
-  }
 
   final List<TabBarModel> _tabBarItems = <TabBarModel>[
     const TabBarModel(title: Language.ad_tab_info),
