@@ -15,14 +15,9 @@ jobs: #here we specify the jobs - We could have multiple jobs
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
-
-      #      - name: Decode google-services.json
-      #        env:
-      #          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-      #        run: echo "$GOOGLE_SERVICES_JSON" > android/app/google-services.json
 
       - name: Create the Keystore
         env:
@@ -31,17 +26,17 @@ jobs: #here we specify the jobs - We could have multiple jobs
           # import keystore from secrets
           echo $KEYSTORE_BASE64 | base64 -d > $RUNNER_TEMP/my_production.keystore
 
-      - name: Sign Android App APK
-        run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_KEY_PASSWORD }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-dev-release.apk build/app/outputs/flutter-apk/app-dev-release.apk djudjo
-
-      - name: Sign Android App Bundle
-        run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_KEY_PASSWORD }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/bundle/release/app-release-signed.aab build/app/outputs/bundle/release/*.aab djudjo
-
       - name: Install dependencies
         run: flutter pub get
 
       - name: Build android apk and appBundle
         run: flutter build apk --flavor dev -t lib/main_dev.dart --release --no-tree-shake-icons
+
+      - name: Sign Android App APK
+        run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_KEY_PASSWORD }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-dev-release.apk build/app/outputs/flutter-apk/app-dev-release.apk djudjo
+
+      - name: Sign Android App Bundle
+        run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_KEY_PASSWORD }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/bundle/release/app-release-signed.aab build/app/outputs/bundle/release/*.aab djudjo
 
       - name: Publish Android aab
         uses: actions/upload-artifact@v1
@@ -52,7 +47,11 @@ jobs: #here we specify the jobs - We could have multiple jobs
       - name: Publish Android APK
         uses: actions/upload-artifact@v1
         with:
-          name: release-aab-signed
+          name: release-apk-signed
           path: build/app/outputs/flutter-apk/app-dev-release.apk
 
 
+      #      - name: Decode google-services.json
+      #        env:
+      #          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+      #        run: echo "$GOOGLE_SERVICES_JSON" > android/app/google-services.json
