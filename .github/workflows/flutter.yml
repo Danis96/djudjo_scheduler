@@ -42,10 +42,10 @@ jobs: #here we specify the jobs - We could have multiple jobs
           name: release-apk-signed
           path: build/app/outputs/flutter-apk/app-dev-release.apk
 
-      - name: Build Gradle
-        run: ls build/app/outputs/flutter-apk
-      - name: Upload artifact to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
+
+      - uses: actions/checkout@v2
+      - name: Distribute to Firebase App Distribution
+        uses: nickwph/firebase-app-distribution-action@v1
         with:
           appId: ${{secrets.APP_ID}}
           serviceCredentialsFileContent: ${{secrets.CREDENTIAL_FILE_CONTENT}}
