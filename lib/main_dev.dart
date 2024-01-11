@@ -14,7 +14,6 @@ void main() async {
   await storagePrefs.init();
   await firebaseInitialize();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  // Pass all uncaught errors from the framework to Crashlytics.
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   FlavorConfig(flavor: Flavor.DEV, values: FlavorValues(appName: AppName.APP_NAME));
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,11 +35,8 @@ Future<void> firebaseInitialize() async {
   ).then((FirebaseApp value) => print('Firebase Initialize ${DateTime.now().toString().split(' ')[0]}'));
 }
 
-// A new function callback when a crash occurs.
 void onCrash(Object exception, StackTrace stackTrace) {
-  // Prints the exception and the stack trace locally
   print(exception);
   print(stackTrace);
-  // Send the strack trace to Crashlytics
   FirebaseCrashlytics.instance.recordError(exception, stackTrace);
 }
