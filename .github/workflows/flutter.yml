@@ -1,6 +1,6 @@
 name: Flutter Builds
 
-on: #events (push and pull_request)
+on:
   push:
     branches: [ "builds/android_build" ]
   pull_request:
