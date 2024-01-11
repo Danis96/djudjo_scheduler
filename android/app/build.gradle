@@ -28,11 +28,11 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 // todo commented for android build ci cd github actions
-//def keystorePropertiesFile = rootProject.file("key.properties")
-//// Initialize a new Properties() object called keystoreProperties.
-//def keystoreProperties = new Properties()
-//// Load your keystore.properties file into the keystoreProperties object.
-//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def keystorePropertiesFile = rootProject.file("key.properties")
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdkVersion 34
@@ -47,20 +47,20 @@ android {
     }
 
     // todo commented for android build ci cd github actions
-//    signingConfigs {
-//        sign {
-//            storeFile file(keystoreProperties["DJUDJO_KEYSTORE"])
-//            storePassword keystoreProperties["DJUDJO_KEYSTORE_PASSWORD"]
-//            keyAlias keystoreProperties["DJUDJO_ALIAS"]
-//            keyPassword keystoreProperties["DJUDJO_ALIAS_PASSWORD"]
-//        }
-//        release {
-//            storeFile file(keystoreProperties["DJUDJO_KEYSTORE"])
-//            storePassword keystoreProperties["DJUDJO_KEYSTORE_PASSWORD"]
-//            keyAlias keystoreProperties["DJUDJO_ALIAS"]
-//            keyPassword keystoreProperties["DJUDJO_ALIAS_PASSWORD"]
-//        }
-//    }
+    signingConfigs {
+        sign {
+            storeFile file("key.jks")
+            storePassword keystoreProperties["DJUDJO_KEYSTORE_PASSWORD"]
+            keyAlias keystoreProperties["DJUDJO_ALIAS"]
+            keyPassword keystoreProperties["DJUDJO_ALIAS_PASSWORD"]
+        }
+        release {
+            storeFile file("key.jks")
+            storePassword keystoreProperties["DJUDJO_KEYSTORE_PASSWORD"]
+            keyAlias keystoreProperties["DJUDJO_ALIAS"]
+            keyPassword keystoreProperties["DJUDJO_ALIAS_PASSWORD"]
+        }
+    }
 
     flavorDimensions "version"
     productFlavors {
@@ -68,7 +68,7 @@ android {
             applicationIdSuffix ""
             versionNameSuffix ""
             // todo commented for android build ci cd github actions
-//            signingConfig signingConfigs.sign
+            signingConfig signingConfigs.sign
         }
         qa {
             applicationIdSuffix ".qa"
@@ -77,7 +77,7 @@ android {
         prod {
             applicationIdSuffix ""
             // todo commented for android build ci cd github actions
-//            signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
     }
 
@@ -98,14 +98,15 @@ android {
             minifyEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig null
+//            signingConfig null
+            signingConfig signingConfig.release
         }
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // todo set null for android build ci cd github actions
-//            signingConfig signingConfigs.sign
-            signingConfig null
+            signingConfig signingConfigs.sign
+//            signingConfig null
             shrinkResources false
         }
     }
