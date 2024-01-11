@@ -21,12 +21,14 @@ jobs: #here we specify the jobs - We could have multiple jobs
         with:
           channel: 'stable'
 
-      - run: |
+      - name: Sign keystore
+        run: |
           echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
           echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
           echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}} 
 
-      - run: echo "${{ secrets.KEYSTORE_FILE_BASE64 }}" | base64 --decode > android/app/key.jks
+      - name: Create the keystore
+        run: echo "${{ secrets.KEYSTORE_FILE_BASE64 }}" | base64 --decode > android/app/key.jks
 
       #      - name: Create the Keystore
 #        env:
@@ -41,15 +43,15 @@ jobs: #here we specify the jobs - We could have multiple jobs
       - name: Build android apk
         run: flutter build apk --flavor dev -t lib/main_dev.dart --release --no-tree-shake-icons
 
-      - name: Sign App Bundle
-        uses: r0adkll/sign-android-release@v1
-        id: sign_app
-        with:
-          releaseDirectory: build/app/outputs/flutter-apk/
-          signingKeyBase64: ${{ secrets.KEYSTORE_FILE_BASE64 }}
-          alias: ${{ secrets.KEYSTORE_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+#      - name: Sign App Bundle
+#        uses: r0adkll/sign-android-release@v1
+#        id: sign_app
+#        with:
+#          releaseDirectory: build/app/outputs/flutter-apk/
+#          signingKeyBase64: ${{ secrets.KEYSTORE_FILE_BASE64 }}
+#          alias: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+#          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+#          keyPassword: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
 
 #      - name: Sign Android App APK
 #        run: jarsigner -keystore $RUNNER_TEMP/my_production.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} -keypass ${{ secrets.KEYSTORE_KEY_PASSWORD }} -sigalg SHA256withRSA -digestalg SHA-256 -signedjar build/app/outputs/flutter-apk/app-dev-release.apk build/app/outputs/flutter-apk/app-dev-release.apk djudjo
