@@ -23,9 +23,9 @@ jobs: #here we specify the jobs - We could have multiple jobs
 
       - name: Sign keystore
         run: |
-          echo keyPassword=\${{ secrets.KEY_STORE }} > ${{env.PROPERTIES_PATH}}
-          echo storePassword=\${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
-          echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}} 
+          echo keyPassword=\${{ secrets.KEYSTORE_KEY_PASSWORD }} > ${{env.PROPERTIES_PATH}}
+          echo storePassword=\${{ secrets.KEYSTORE_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
+          echo keyAlias=\${{ secrets.KEYSTORE_KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}} 
 
       - name: Create the keystore
         run: echo "${{ secrets.KEYSTORE_FILE_BASE64 }}" | base64 --decode > android/app/key.jks
