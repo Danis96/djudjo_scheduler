@@ -56,9 +56,9 @@ android {
         }
         release {
             storeFile file("key.jks")
-            storePassword keystoreProperties["DJUDJO_KEYSTORE_PASSWORD"]
-            keyAlias keystoreProperties["DJUDJO_ALIAS"]
-            keyPassword keystoreProperties["DJUDJO_ALIAS_PASSWORD"]
+            storePassword keystoreProperties["storePassword"]
+            keyAlias keystoreProperties["keyAlias"]
+            keyPassword keystoreProperties["keyPassword"]
         }
     }
 
