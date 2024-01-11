@@ -43,15 +43,14 @@ jobs: #here we specify the jobs - We could have multiple jobs
           path: build/app/outputs/flutter-apk/app-dev-release.apk
 
       - name: Build Gradle
-        run: flutter build apk --debug
-      - run: ls build/app/outputs/flutter-apk
+        run: ls build/app/outputs/flutter-apk
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{secrets.APP_ID}}
           serviceCredentialsFileContent: ${{secrets.CREDENTIAL_FILE_CONTENT}}
           groups: sparrow_team
-          file: build/app/outputs/flutter-apk/app-debug.apk
+          file: build/app/outputs/flutter-apk/app-dev-release.apk
 
       #      - name: Sign App Bundle
 #        uses: r0adkll/sign-android-release@v1
