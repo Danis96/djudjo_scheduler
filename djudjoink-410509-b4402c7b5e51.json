@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "djudjoink-410509",
+  "private_key_id": "b4402c7b5e51cba8ad15073cda547627ff00ce9a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCoNu0ENGsl5uxZ\nBIrVOI+0G3q12ggmf6fuW0NmELYsmGy5POxcWbTQD+v1NBLymTrx/3ALiWkE75/o\ncLNmnaX7NYGDqD/y6QJ41LDC2x57PhL/CmqfJuTbl6QDdh7QyJpKiRfTupu6ZHAg\nCEcdRsd/TU3d3Otp2UwPDoZ6pihsbyaApxppP3rK220dS0yiPv7/UiM4WEvviz5p\ni13F/LIM2ZEhQlrwFyyJ4KYsW3pftvUDHfNSukUDYgdNxk53rT+yd3TWP0rirr05\njjObxru5v6NjWJi9/pAXBUvhlDYPlypfD03Q4Trrl6+aFJ+iIIttjuLVHjSdjr58\njv34OTsvAgMBAAECggEAHnvJqwPm0PkOprkcgbRc0mpSbAclh/iFUbwnNCVeJim/\nNjh0qu20xynDfG2h62XaWUWNpAGUTwkvxNs7n6J9FE+nd1jzsc0JHiWJHN7BoNro\nbWCRXuMZATRzTA9JWVOpJk2+zCdalkYiTaPCY2tStt6m+EhTPxzaXDYpJ6vZ0oBs\nW03HnxmV4n/q+zjagi5T5IxV3V5xaX8opZfTNa4/JkYS1Zjocpz0BvAzp1/w7fAx\nMm9U8NjvBT+YkS+7WUYZbq1hSDUGJAaF3JED/Iezw8wdKsSdAnhr5YQzQdP3ecoz\n5QbYOq7l1DsyEbefzcLFM1fR4ZJ5XNxSlQg87k++yQKBgQDoZfeZvZNi4yilrOHR\ndxXOyrGKay98Tn/NJ+lc7Lw6Y67SNPdReYc5gWAtIevIJBWmfGcIqioqc1++sEnE\nQyqdauamnmwvl5w68QEKx/lSdkjRTHoS0H2U1pvuodKZDOhW3Y2zUIpmgpfQxLan\nA2jDeIAgLNpueya2hbHkaQ3ERwKBgQC5TEUxse33YGEV2pMnMFv1vWaYAp7RzrUy\nczBTWdcTuwgKJZpkMDrbdwgmXT/OCqz52BAoYLjjlQddJrNEhySmHwY/8PdYGW1d\nzKIkbdpnEJ48LPfP6gCql+8sQOeZByxezR3cup8i48b4FlSHkMqqDAj3zcugeGWQ\ndG0qJRfN2QKBgQDf3dHM1HSUzpPKPKZvW9KzGEg8OZJNoWS1INxIund7m6i9L26K\nmpHrkDgwYbu6WSBN9wpdq2Xg7LDvhOwaVkVHzMGRAYzfr6E8mgpR81610+HDVHNH\ninVemfktv86ZxnhNrTCh6lTX+Lb70XLNoZgarApodCyaPqGFM3awu44aYwKBgQCR\niJ7b/iSp42+9K1PiNrAzXNPEVmKI5LIZ8rCk9m3fWEljNs+BGwRPNLkY8KpZWLcs\n8A8Yt4bfcEA9YFTyYLZfJwTQmaCa+DWWs08yD3m28y1kk+j6yo5FbllyR3PfE+w8\ndRucLpMoYv/2AAvaAdW7IwK0JlVlLsqOX3MR49pDWQKBgQCR9qv7rfPfFHxKIq26\n8ZLWMjpYQYFacxM3sn0y4AzhMGQrfD1/EhBwu9xDgubDKy7TCYivzrYXYeeQmqbz\nJ9O7bmd56kZeQZF/mrVrDm0dsAwc0Bje7z0PMeY5wP2DYeBfWc1bcVu1FaHFyqzi\n2q+mE3sc1sRUlx8M3yARLzra3w==\n-----END PRIVATE KEY-----\n",
+  "client_email": "djudjo-ink-scheduler@djudjoink-410509.iam.gserviceaccount.com",
+  "client_id": "112617321022009020040",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/djudjo-ink-scheduler%40djudjoink-410509.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
