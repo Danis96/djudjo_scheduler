@@ -39,10 +39,11 @@ jobs: #here we specify the jobs - We could have multiple jobs
       - name: Upload artifact Android APK
         uses: actions/upload-artifact@v1
         with:
-          name: release-apk-signed
+          name: app-dev-release
           path: build/app/outputs/flutter-apk/app-dev-release.apk
 
 
+#      NEXT STEP TRY TO ADD CREATION OF APK IN THE SAMO GROUP OF CODE
       - uses: actions/checkout@v2
       - name: Distribute to Firebase App Distribution
         uses: nickwph/firebase-app-distribution-action@v1
