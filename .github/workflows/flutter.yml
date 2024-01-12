@@ -47,9 +47,9 @@ jobs: #here we specify the jobs - We could have multiple jobs
       - name: Distribute to Firebase App Distribution
         uses: nickwph/firebase-app-distribution-action@v1
         with:
-          appId: ${{secrets.APP_ID}}
+          app: ${{secrets.APP_ID}}
           serviceCredentialsFileContent: ${{secrets.CREDENTIAL_FILE_CONTENT}}
-          groups: sparrow_team
+          groups: group_one
           file: build/app/outputs/flutter-apk/app-dev-release.apk
 
       #      - name: Sign App Bundle
