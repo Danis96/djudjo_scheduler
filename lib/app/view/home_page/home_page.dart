@@ -104,6 +104,7 @@ class _HomepageState extends State<Homepage> {
                 width: double.infinity,
                 color: Colors.black,
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+                // TODO vratiti prije builda
                 child: context.watch<StupidityProvider>().stupidityOn
                     ? Text(
                         context.read<StupidityProvider>().models.isNotEmpty

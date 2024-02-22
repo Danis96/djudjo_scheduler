@@ -42,7 +42,7 @@ class RegisterPage extends StatelessWidget {
         text: Language.login_tappable,
         links: Language.login_tappable,
         linkStyle: const TextStyle(decoration: TextDecoration.none, color: Colors.white, fontSize: 17),
-        onPressed: (int i) => Navigator.of(context).pushNamed(Login),
+        onPressed: (int i) => Navigator.of(context).pushNamed(Login, arguments: true),
       ),
     );
   }

@@ -74,7 +74,6 @@ android {
             versionNameSuffix "-qa"
         }
         prod {
-//            applicationId "nz.co.tower.gocarma"
             applicationIdSuffix ""
             signingConfig signingConfigs.release
         }
@@ -86,7 +85,7 @@ android {
         }
         applicationId "com.djudjo.scheduler"
         minSdkVersion 24
-        targetSdkVersion 31
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
@@ -114,24 +113,22 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:28.1.0')
+    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
     implementation 'com.android.support:multidex:1.0.3'
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation 'androidx.work:work-runtime-ktx:2.9.0'
     implementation fileTree(dir: 'libs', include: ['*.aar'])
-
-    //Amodo Mobility SDK Dependencies
     implementation 'cz.msebera.android:httpclient:4.4.1.2'
     implementation 'com.loopj.android:android-async-http:1.4.9'
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.gms:play-services-location:21.1.0'
     implementation 'org.apache.commons:commons-collections4:4.4'
     implementation "androidx.work:work-runtime:2.9.0"
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-process:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-process:2.7.0'
     implementation 'com.facebook.android:facebook-share:[5,6)'
     implementation 'com.google.firebase:firebase-crashlytics'
-    implementation 'com.google.firebase:firebase-analytics:21.5.0'
+    implementation 'com.google.firebase:firebase-analytics:21.5.1'
     implementation "androidx.multidex:multidex:2.0.1"
     implementation "io.objectbox:objectbox-android:3.5.1"
     annotationProcessor "io.objectbox:objectbox-processor:3.5.1"

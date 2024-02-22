@@ -9,7 +9,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../utils/storage_manager/storage_prefs_manager.dart';
 
-
 class LoginProvider extends ChangeNotifier {
   LoginProvider() {
     _adminFirestoreRepository = AdminFirestoreRepository();
@@ -56,6 +55,9 @@ class LoginProvider extends ChangeNotifier {
       try {
         final UserCredential user = await firebase!
             .createUserWithEmailAndPassword(email: registerEmailController.text, password: registerConfirmPasswordController.text);
+        if (user.user != null && !user.user!.emailVerified) {
+          await user.user!.sendEmailVerification();
+        }
         await _setLoggedUserToAdminModel(user.user!);
         await _adminFirestoreRepository!.addAdminToFirestore(_admin);
         await storagePrefs.seEmailToShared(user.user!.email ?? '');

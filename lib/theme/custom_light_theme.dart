@@ -7,6 +7,7 @@ class CustomTheme {
 
   static ThemeData get lightTheme {
     return ThemeData(
+      useMaterial3: false,
       appBarTheme: AppBarTheme(
         color: ColorHelper.mercury.color,
         elevation: 0,

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "497858580033",
-    "project_id": "djudjoapp",
-    "storage_bucket": "djudjoapp.appspot.com"
+    "project_number": "592885880330",
+    "project_id": "djudjoinkscheduler",
+    "storage_bucket": "djudjoinkscheduler.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:497858580033:android:dc9d38c375a98c1c4240c0",
+        "mobilesdk_app_id": "1:592885880330:android:9bcc79ff7b4a7d14ebb1f3",
         "android_client_info": {
           "package_name": "com.djudjo.scheduler"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyB0CIkpaBbyPT0x1ekGqNi4x0KHFF-jsiE"
+          "current_key": "AIzaSyARlC4_ic69tcY8J7sgha9psk_Zmh_H1QY"
         }
       ],
       "services": {
