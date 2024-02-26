@@ -6,7 +6,7 @@ class Language {
   // drawer
   static const String dr_item_home = 'Home';
   static const String dr_item_profile = 'Profile';
-  static const String dr_item_up = 'Unconfirmed appointments';
+  static const String dr_item_up = 'Notifications';
   static const String dr_item_new = 'New appointments';
   static const String dr_item_history = 'History';
   static const String dr_item_settings = 'Settings';

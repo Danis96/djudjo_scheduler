@@ -7,7 +7,6 @@ import 'package:djudjo_scheduler/routing/routes.dart';
 import 'package:djudjo_scheduler/widgets/app_bars/custom_wave_clipper.dart';
 import 'package:djudjo_scheduler/widgets/appointment_card/appointment_card.dart';
 import 'package:djudjo_scheduler/widgets/loaders/loader_app_dialog.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
@@ -104,13 +103,15 @@ class _HomepageState extends State<Homepage> {
                 width: double.infinity,
                 color: Colors.black,
                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
-                // TODO vratiti prije builda
                 child: context.watch<StupidityProvider>().stupidityOn
                     ? Text(
                         context.read<StupidityProvider>().models.isNotEmpty
                             ? context.read<StupidityProvider>().models.first.textValue!
                             : '',
-                        style: Theme.of(context).textTheme.displayLarge!.copyWith(color: ColorHelper.white.color, fontSize: 30),
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayLarge!
+                            .copyWith(color: ColorHelper.white.color, fontSize: 30),
                       )
                     : const SizedBox(),
               )),
@@ -159,7 +160,8 @@ class _HomepageState extends State<Homepage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(date.returnDateMonthForHomeSeparator(), style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 24)),
+              Text(date.returnDateMonthForHomeSeparator(),
+                  style: Theme.of(context).textTheme.displayMedium!.copyWith(fontSize: 24)),
               const Divider(),
             ],
           ),
