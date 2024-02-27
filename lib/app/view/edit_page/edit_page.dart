@@ -190,7 +190,6 @@ Widget _buildPhoneField(BuildContext context) {
     child: CustomTextFormField(
       controller: context.read<AppointmentProvider>().ePhoneController,
       hintText: Language.ep_phone_hint,
-      inputFormatters: <TextInputFormatter>[StupidityHelper().maskFormatterPhone],
       keyboardType: TextInputType.phone,
       key: const Key('ep_phone'),
       onFieldSubmitted: (String? s) {

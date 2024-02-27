@@ -94,7 +94,6 @@ class RegisterPage extends StatelessWidget {
   Widget _buildPhoneField(BuildContext context) {
     return CustomTextFormField(
       controller: context.read<LoginProvider>().registerPhoneController,
-      inputFormatters: <TextInputFormatter>[StupidityHelper().maskFormatterPhone],
       hintText: Language.reg_phone_hint,
       key: const Key('reg_phone'),
       keyboardType: TextInputType.phone,
@@ -140,7 +139,6 @@ class RegisterPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
       child: CommonButton(
-        disabled: !context.watch<LoginProvider>().areRegPasswordIdentical(),
         onPressed: () {
           customLoaderCircleWhite(context: context);
           context.read<LoginProvider>().registerUser().then((String? error) {

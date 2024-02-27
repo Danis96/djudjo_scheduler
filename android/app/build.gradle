@@ -49,10 +49,10 @@ android {
 
     signingConfigs {
         sign {
-            storeFile file(keystoreProperties["DJUDJO_KEYSTORE"])
-            storePassword keystoreProperties["DJUDJO_KEYSTORE_PASSWORD"]
-            keyAlias keystoreProperties["DJUDJO_ALIAS"]
-            keyPassword keystoreProperties["DJUDJO_ALIAS_PASSWORD"]
+            storeFile file(keystoreProperties['DJUDJO_KEYSTORE'])
+            storePassword keystoreProperties['DJUDJO_KEYSTORE_PASSWORD']
+            keyAlias keystoreProperties['DJUDJO_ALIAS']
+            keyPassword keystoreProperties['DJUDJO_ALIAS_PASSWORD']
         }
         release {
             storeFile file(keystoreProperties["DJUDJO_KEYSTORE"])

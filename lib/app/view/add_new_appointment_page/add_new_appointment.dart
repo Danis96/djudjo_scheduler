@@ -181,7 +181,6 @@ class NewAppointmentPage extends StatelessWidget {
       child: CustomTextFormField(
         controller: context.read<AppointmentProvider>().phoneController,
         hintText: Language.ana_phone_hint,
-        inputFormatters: <TextInputFormatter>[StupidityHelper().maskFormatterPhone],
         keyboardType: TextInputType.phone,
         key: const Key('ana_phone'),
         onFieldSubmitted: (String? s) {
