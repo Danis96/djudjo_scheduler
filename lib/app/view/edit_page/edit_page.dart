@@ -2,7 +2,6 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:djudjo_scheduler/app/utils/extensions/string_extensions.dart';
 import 'package:djudjo_scheduler/generated/assets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:group_radio_button/group_radio_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:msh_checkbox/msh_checkbox.dart';
@@ -24,7 +23,6 @@ import '../../../widgets/snackbar/custom_snackbar.dart';
 import '../../../widgets/switches/switch_with_title_description.dart';
 import '../../../widgets/text_fields/custom_text_form_field.dart';
 import '../../providers/appointment_provider/appointment_provider.dart';
-import '../../utils/helpers/stupidity_helper.dart';
 import '../../utils/language/language_strings.dart';
 
 class EditPage extends StatelessWidget {
@@ -47,7 +45,8 @@ PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(
       action: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: FavoriteHeart(
-            onTap: () => context.read<AppointmentProvider>().setIsFavorite(), isSelected: context.watch<AppointmentProvider>().isFavorite),
+            onTap: () => context.read<AppointmentProvider>().setIsFavorite(),
+            isSelected: context.watch<AppointmentProvider>().isFavorite),
       ),
     );
 
@@ -225,7 +224,8 @@ Widget _buildTimeField(BuildContext context) {
       activeTextStyle: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
       borderColor: ColorHelper.black.color,
       backgroundColor: Colors.transparent,
-      initialRange: TimeRangeResult(context.watch<AppointmentProvider>().firstTime, context.watch<AppointmentProvider>().lastTime),
+      initialRange: TimeRangeResult(
+          context.watch<AppointmentProvider>().firstTime, context.watch<AppointmentProvider>().lastTime),
       activeBackgroundColor: ColorHelper.towerBronze.color,
       firstTime: const TimeOfDay(hour: 9, minute: 30),
       lastTime: const TimeOfDay(hour: 23, minute: 30),
@@ -317,7 +317,9 @@ Widget _buildIsFinishedSwitch(BuildContext context) {
     child: CustomSwitchWithTitleDescription(
       onChanged: (bool value) {
         context.read<AppointmentProvider>().setAppointmentFinished(value);
-        if (context.read<AppointmentProvider>().isSelectedDateInPastEdit()) {
+        if (context
+            .read<AppointmentProvider>()
+            .isSelectedDateInPast(context.read<AppointmentProvider>().eDateController)) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(customSnackBar(
@@ -329,8 +331,10 @@ Widget _buildIsFinishedSwitch(BuildContext context) {
       },
       showIconAndTitle: false,
       removePadding: true,
-      switchBool:
-          context.watch<AppointmentProvider>().isSelectedDateInPastEdit() || context.watch<AppointmentProvider>().appointmentFinished,
+      switchBool: context
+              .watch<AppointmentProvider>()
+              .isSelectedDateInPast(context.read<AppointmentProvider>().eDateController) ||
+          context.watch<AppointmentProvider>().appointmentFinished,
       switchActiveColor: ColorHelper.black.color,
       subTitle: Language.ep_manually_finished,
     ),
@@ -360,7 +364,8 @@ Widget _buildUploadImg(BuildContext context) {
       padding: const EdgeInsets.symmetric(horizontal: 24),
       child: Column(
         children: <Widget>[
-          Image.asset(context.watch<AppointmentProvider>().isImagePicked ? Assets.assetsPhotoSuccess : Assets.assetsIcImgUpload,
+          Image.asset(
+              context.watch<AppointmentProvider>().isImagePicked ? Assets.assetsPhotoSuccess : Assets.assetsIcImgUpload,
               height: 50),
           const Text(Language.ana_img),
         ],
@@ -389,7 +394,8 @@ Widget _buildConfirmWidget(BuildContext context) {
         MSHCheckbox(
           size: 60,
           value: context.watch<AppointmentProvider>().isConfirmed,
-          colorConfig: MSHColorConfig.fromCheckedUncheckedDisabled(checkedColor: ColorHelper.black.color.withOpacity(0.7)),
+          colorConfig:
+              MSHColorConfig.fromCheckedUncheckedDisabled(checkedColor: ColorHelper.black.color.withOpacity(0.7)),
           style: MSHCheckboxStyle.stroke,
           onChanged: (bool selected) {
             context.read<AppointmentProvider>().setIsConfirmed();
@@ -409,7 +415,8 @@ Widget _buildBottomBar(BuildContext context) {
         context.read<AppointmentProvider>().uploadImage().then((String? valueError) {
           Navigator.of(context).pop();
           if (valueError != null) {
-            customSimpleDialog(context, title: Language.common_error, content: valueError, buttonText: Language.common_ok);
+            customSimpleDialog(context,
+                title: Language.common_error, content: valueError, buttonText: Language.common_ok);
           } else {
             updateAppointment(context);
           }
@@ -434,7 +441,8 @@ void updateAppointment(BuildContext context) {
 void showDateRangeModal(BuildContext context) {
   showModalBottomSheet<dynamic>(
     context: context,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))),
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16))),
     builder: (BuildContext ctx) {
       return ListenableProvider<AppointmentProvider>.value(
         value: context.read<AppointmentProvider>(),
@@ -449,10 +457,12 @@ void showDateRangeModal(BuildContext context) {
             selectionColor: ColorHelper.towerBronze.color,
             todayHighlightColor: ColorHelper.towerBronze.color,
             selectionShape: DateRangePickerSelectionShape.rectangle,
-            monthCellStyle: DateRangePickerMonthCellStyle(todayTextStyle: TextStyle(color: ColorHelper.towerBronze.color)),
+            monthCellStyle:
+                DateRangePickerMonthCellStyle(todayTextStyle: TextStyle(color: ColorHelper.towerBronze.color)),
             monthViewSettings: const DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
-            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) =>
-                context.read<AppointmentProvider>().setFormattedDateRangeEdit(args),
+            onSelectionChanged: (DateRangePickerSelectionChangedArgs args) => context
+                .read<AppointmentProvider>()
+                .setFormattedDateRange(args, context.read<AppointmentProvider>().eDateController),
             controller: context.read<AppointmentProvider>().dateRangePickerController,
           ),
           bottomWidget: const SizedBox(),
@@ -489,10 +499,12 @@ void showSuccessModal(BuildContext context) {
               children: <Widget>[
                 const SizedBox(height: 10),
                 Text(Language.ep_success_subtitle,
-                    style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
+                    style:
+                        Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
                 const SizedBox(height: 10),
                 Text(Language.ep_click_contact,
-                    style: Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
+                    style:
+                        Theme.of(context).textTheme.displayMedium!.copyWith(fontWeight: FontWeight.w400, fontSize: 18)),
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -486,6 +486,11 @@ obj/
 .cproject
 .settings/
 
+#env variables
+*.env
+lib/env/env.dart
+lib/env/env.g.dart
+
 # Mobile Tools for Java (J2ME)
 
 # Package Files #

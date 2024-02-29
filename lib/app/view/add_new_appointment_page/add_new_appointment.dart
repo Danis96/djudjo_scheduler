@@ -28,7 +28,8 @@ import '../../utils/language/language_strings.dart';
 class NewAppointmentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: _buildAppBar(context), body: _buildBody(context), bottomNavigationBar: _buildBottomBar(context));
+    return Scaffold(
+        appBar: _buildAppBar(context), body: _buildBody(context), bottomNavigationBar: _buildBottomBar(context));
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) => commonAppBar(
@@ -307,7 +308,9 @@ class NewAppointmentPage extends StatelessWidget {
       child: CustomSwitchWithTitleDescription(
         onChanged: (bool value) {
           context.read<AppointmentProvider>().setAppointmentFinished(value);
-          if (context.read<AppointmentProvider>().isSelectedDateInPast()) {
+          if (context
+              .read<AppointmentProvider>()
+              .isSelectedDateInPast(context.read<AppointmentProvider>().dateController)) {
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(customSnackBar(
@@ -319,7 +322,10 @@ class NewAppointmentPage extends StatelessWidget {
         },
         showIconAndTitle: false,
         removePadding: true,
-        switchBool: context.watch<AppointmentProvider>().isSelectedDateInPast() || context.watch<AppointmentProvider>().appointmentFinished,
+        switchBool: context
+                .watch<AppointmentProvider>()
+                .isSelectedDateInPast(context.read<AppointmentProvider>().dateController) ||
+            context.watch<AppointmentProvider>().appointmentFinished,
         switchActiveColor: ColorHelper.black.color,
         subTitle: Language.ana_manually_finished,
       ),
@@ -349,7 +355,10 @@ class NewAppointmentPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: <Widget>[
-            Image.asset(context.watch<AppointmentProvider>().isImagePicked ? Assets.assetsPhotoSuccess : Assets.assetsIcImgUpload,
+            Image.asset(
+                context.watch<AppointmentProvider>().isImagePicked
+                    ? Assets.assetsPhotoSuccess
+                    : Assets.assetsIcImgUpload,
                 height: 50),
             const Text(Language.ana_img),
           ],
@@ -367,7 +376,8 @@ class NewAppointmentPage extends StatelessWidget {
           context.read<AppointmentProvider>().uploadImage().then((String? valueError) {
             Navigator.of(context).pop();
             if (valueError != null) {
-              customSimpleDialog(context, title: Language.common_error, content: valueError, buttonText: Language.common_ok);
+              customSimpleDialog(context,
+                  title: Language.common_error, content: valueError, buttonText: Language.common_ok);
             } else {
               addAppointment(context);
             }
@@ -419,10 +429,12 @@ class NewAppointmentPage extends StatelessWidget {
               selectionColor: ColorHelper.towerBronze.color,
               todayHighlightColor: ColorHelper.towerBronze.color,
               selectionShape: DateRangePickerSelectionShape.rectangle,
-              monthCellStyle: DateRangePickerMonthCellStyle(todayTextStyle: TextStyle(color: ColorHelper.towerBronze.color)),
+              monthCellStyle:
+                  DateRangePickerMonthCellStyle(todayTextStyle: TextStyle(color: ColorHelper.towerBronze.color)),
               monthViewSettings: const DateRangePickerMonthViewSettings(firstDayOfWeek: 1),
-              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) =>
-                  context.read<AppointmentProvider>().setFormattedDateRange(args),
+              onSelectionChanged: (DateRangePickerSelectionChangedArgs args) => context
+                  .read<AppointmentProvider>()
+                  .setFormattedDateRange(args, context.read<AppointmentProvider>().dateController),
               controller: context.read<AppointmentProvider>().dateRangePickerController,
             ),
             bottomWidget: const SizedBox(),

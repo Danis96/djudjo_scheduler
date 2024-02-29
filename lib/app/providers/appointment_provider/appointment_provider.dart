@@ -248,7 +248,8 @@ class AppointmentProvider extends ChangeNotifier {
           : allDay
               ? ProviderConstants.ALL_DAY_TIME
               : timeController.text,
-      dateRange: isEdit ? eDateController.text + ' ' + eTimeController.text : dateController.text + ' ' + timeController.text,
+      dateRange:
+          isEdit ? eDateController.text + ' ' + eTimeController.text : dateController.text + ' ' + timeController.text,
     );
   }
 
@@ -257,75 +258,34 @@ class AppointmentProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setFormattedDateRange(DateRangePickerSelectionChangedArgs args) {
+  void setFormattedDateRange(DateRangePickerSelectionChangedArgs args, TextEditingController controller) {
     if (args.value.endDate != null) {
       if (args.value.startDate as DateTime == args.value.endDate as DateTime) {
-        dateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
+        controller.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
       } else {
-        dateController.text = '${DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime)} -'
+        controller.text = '${DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime)} -'
             ' ${DateFormat('dd.MM.yyyy').format(args.value.endDate as DateTime)}';
       }
     } else {
-      dateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
+      controller.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
     }
-    if (isSelectedDateInPast()) {
+    if (isSelectedDateInPast(controller)) {
       appointmentFinished = true;
     }
     notifyListeners();
   }
 
-  void setFormattedDateRangeEdit(DateRangePickerSelectionChangedArgs args) {
-    if (args.value.endDate != null) {
-      if (args.value.startDate as DateTime == args.value.endDate as DateTime) {
-        eDateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
-      } else {
-        eDateController.text = '${DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime)} -'
-            ' ${DateFormat('dd.MM.yyyy').format(args.value.endDate as DateTime)}';
-      }
-    } else {
-      eDateController.text = DateFormat('dd.MM.yyyy').format(args.value.startDate as DateTime);
-    }
-    if (isSelectedDateInPast()) {
-      appointmentFinished = true;
-    }
-    notifyListeners();
-  }
-
-  bool isSelectedDateInPast() {
+  bool isSelectedDateInPast(TextEditingController controller) {
     final DateTime currentDate = DateTime.now();
     String selectedFirst = '';
-    if (dateController.text.isNotEmpty) {
-      if (dateController.text.contains('-')) {
-        selectedFirst = dateController.text.split(' - ')[0];
+    if (controller.text.isNotEmpty) {
+      if (controller.text.contains('-')) {
+        selectedFirst = controller.text.split(' - ')[0];
       } else {
-        selectedFirst = dateController.text;
+        selectedFirst = controller.text;
       }
       final DateTime selectedDate = DateFormat('dd.MM.yyyy').parse(selectedFirst);
-      if (selectedDate.isBefore(currentDate)) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
-  bool isSelectedDateInPastEdit() {
-    final DateTime currentDate = DateTime.now();
-    String selectedFirst = '';
-    if (eDateController.text.isNotEmpty) {
-      if (eDateController.text.contains('-')) {
-        selectedFirst = eDateController.text.split(' - ')[0];
-      } else {
-        selectedFirst = eDateController.text;
-      }
-      final DateTime selectedDate = DateFormat('dd.MM.yyyy').parse(selectedFirst);
-      if (selectedDate.isBefore(currentDate)) {
-        return true;
-      } else {
-        return false;
-      }
+      return selectedDate.isBefore(currentDate);
     } else {
       return false;
     }
@@ -488,7 +448,8 @@ class AppointmentProvider extends ChangeNotifier {
       _appointmentDetails.pictures!.clear();
       _appImgs.forEach((String e) => _appointmentDetails.pictures!.add(e));
 
-      await _appointmentFirestoreRepository!.deleteImagesFromFirestore(id: _appointmentDetails.id!, appointment: _appointmentDetails);
+      await _appointmentFirestoreRepository!
+          .deleteImagesFromFirestore(id: _appointmentDetails.id!, appointment: _appointmentDetails);
 
       // // Remove from the local list
       _imageList.removeWhere((dynamic image) => image.toString() == _imgUrl);
